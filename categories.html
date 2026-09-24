@@ -1,289 +1,578 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
+    <!-- ======================================================
+         BASIC DOCUMENT INFORMATION
+         ====================================================== -->
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explore by Category | English Teaching Unit - UoP</title>
-    <!-- Supabase JS Client CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabaseClient.js"></script>
-    
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        navy: {
-                            800: '#14294a',
-                            900: '#0c1b33',
-                            950: '#071021',
-                        },
-                        accent: {
-                            gold: '#d4a340',
-                            goldHover: '#b88c32',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    }
-                }
-            }
-        }
-    </script>
+
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+
+    <meta
+        name="description"
+        content="
+            Explore student work by category from the English
+            Teaching Unit, Faculty of Engineering,
+            University of Peradeniya.
+        "
+    >
+
+
+    <title>
+        Explore by Category |
+        English Teaching Unit - UoP
+    </title>
+
+
+
+    <!-- ======================================================
+         SUPABASE SDK
+         ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+
+    <!-- ======================================================
+         TAILWIND
+         ====================================================== -->
+
+    <script
+        src="https://cdn.tailwindcss.com"
+    ></script>
+
+
+
+    <!-- ======================================================
+         SHARED PORTAL THEME
+         ====================================================== -->
+
+    <script
+        src="assets/js/config/tailwind.js"
+    ></script>
+
+
+
+    <!-- ======================================================
+         FONTS
+         ====================================================== -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+
+    <!-- ======================================================
+         SHARED CSS
+         ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="assets/css/app.css"
+    >
+
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased">
 
-    <!-- TOP TIME DISPLAY BAR -->
-    <div class="bg-navy-950 text-slate-400 text-xs py-1.5 px-6 border-b border-navy-800">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <span>Faculty of Engineering, University of Peradeniya</span>
-            <span id="currentTime" class="font-mono text-accent-gold">--:--:--</span>
-        </div>
-    </div>
 
-    <!-- NAVIGATION BAR -->
-    <header class="sticky top-0 z-50 bg-navy-900 text-white shadow-md">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <a href="index.html" class="flex items-center space-x-3">
-                <img src="uoplogo.png" alt="English Teaching Unit Logo" class="h-12 w-auto object-contain">
-                <div>
-                    <div class="font-semibold leading-tight text-sm">English Teaching Unit</div>
-                    <div class="text-xs text-slate-400">Faculty of Engineering · UoP</div>
-                </div>
-            </a>
 
-            <nav class="hidden md:flex items-center space-x-8 text-sm">
-                <a href="index.html" class="text-slate-300 hover:text-white transition">Home</a>
-                <a href="groups.html" class="text-slate-300 hover:text-white transition">Groups</a>
-                <a href="categories.html" class="bg-navy-800 text-accent-gold px-4 py-2 rounded-md font-medium">Categories</a>
-                <a href="groups.html" class="text-slate-300 hover:text-white transition">Gallery</a>
-                <a href="about.html" class="text-slate-300 hover:text-white transition">About</a>
-            </nav>
+<body
+    class="
+        bg-slate-50
+        text-slate-800
+        font-sans
+        antialiased
+    "
+>
 
-            <!-- Mobile Menu Toggle Button -->
-            <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white p-2 focus:outline-none" aria-label="Toggle navigation">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
-            </button>
-        </div>
 
-        <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-navy-950 px-6 py-4 border-t border-navy-800 space-y-3">
-            <a href="index.html" class="block text-slate-300 hover:text-white py-1">Home</a>
-            <a href="groups.html" class="block text-slate-300 hover:text-white py-1">Groups</a>
-            <a href="categories.html" class="block text-accent-gold font-medium py-1">Categories</a>
-            <a href="groups.html" class="block text-slate-300 hover:text-white py-1">Gallery</a>
-            <a href="about.html" class="block text-slate-300 hover:text-white py-1">About</a>
-        </div>
-    </header>
+    <!-- ======================================================
+         SHARED NAVIGATION
+         ======================================================
+         
+         navbar.js also inserts the original small UTC bar on
+         this page because showTimeBar is enabled.
+         ====================================================== -->
 
-    <!-- HERO / BANNER SECTION -->
-    <section class="bg-navy-900 text-white py-14 px-6 border-b border-navy-800">
-        <div class="max-w-7xl mx-auto">
-            <span class="text-xs font-bold uppercase tracking-wider text-accent-gold mb-2 block">CONTENT CATEGORIES</span>
-            <h1 class="text-3xl sm:text-4xl font-serif font-bold mb-4">Explore by Category</h1>
-            <p class="text-slate-300 max-w-2xl text-sm sm:text-base leading-relaxed">
-                Student work organized by content type — from group activities and presentations to documentaries and visual art.
-            </p>
-        </div>
-    </section>
+    <div id="site-header"></div>
 
-    <!-- CATEGORY TABS HEADER -->
-    <div class="bg-white border-b border-slate-200 sticky top-20 z-40">
-        <div class="max-w-7xl mx-auto px-6 flex space-x-8 text-sm font-medium overflow-x-auto">
-            <button data-category="group" class="category-tab py-4 border-b-2 border-accent-gold text-navy-900 font-semibold flex items-center gap-2 whitespace-nowrap transition">
-                <span>🎭</span> Group Activities
-            </button>
-            <button data-category="presentations" class="category-tab py-4 border-b-2 border-transparent text-slate-500 hover:text-navy-900 flex items-center gap-2 whitespace-nowrap transition">
-                <span>📊</span> Presentations
-            </button>
-            <button data-category="documentaries" class="category-tab py-4 border-b-2 border-transparent text-slate-500 hover:text-navy-900 flex items-center gap-2 whitespace-nowrap transition">
-                <span>🎬</span> Documentaries
-            </button>
-            <button data-category="art" class="category-tab py-4 border-b-2 border-transparent text-slate-500 hover:text-navy-900 flex items-center gap-2 whitespace-nowrap transition">
-                <span>🎨</span> Art & Explorer
-            </button>
-        </div>
-    </div>
 
-    <!-- CATEGORY OVERVIEW HERO -->
-    <section class="py-10 px-6">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div class="lg:col-span-5">
-                <div id="cat-emoji" class="text-3xl mb-3">🎭</div>
-                <h2 id="cat-title" class="text-2xl font-serif font-bold text-navy-900 mb-3">Group Activities</h2>
-                <p id="cat-desc" class="text-sm text-slate-600 leading-relaxed mb-6">
-                    Group activities form the backbone of the ETU experience. Students engage in debates, role-plays, workshops, and community outreach programs that build teamwork, fluency, and cultural understanding through hands-on English communication.
+
+    <!-- ======================================================
+         ADMIN BANNER
+         ====================================================== -->
+
+    <div id="admin-banner"></div>
+
+
+
+    <main>
+
+
+        <!-- ==================================================
+             PAGE HERO
+             ==================================================
+             
+             This preserves the institutional category
+             introduction from the original page.
+             ================================================== -->
+
+        <section
+            class="
+                bg-navy-900
+                text-white
+                py-14
+                px-6
+                border-b
+                border-navy-800
+            "
+        >
+
+            <div
+                class="
+                    max-w-7xl
+                    mx-auto
+                "
+            >
+
+                <span
+                    class="
+                        text-xs
+                        font-bold
+                        uppercase
+                        tracking-wider
+                        text-accent-gold
+                        mb-2
+                        block
+                    "
+                >
+                    CONTENT CATEGORIES
+                </span>
+
+
+                <h1
+                    class="
+                        text-3xl
+                        sm:text-4xl
+                        font-serif
+                        font-bold
+                        mb-4
+                    "
+                >
+                    Explore by Category
+                </h1>
+
+
+                <p
+                    class="
+                        text-slate-300
+                        max-w-2xl
+                        text-sm
+                        sm:text-base
+                        leading-relaxed
+                    "
+                >
+                    Student work organized by content type —
+                    from group activities and presentations to
+                    documentaries and visual art.
                 </p>
-                <div class="flex flex-wrap gap-3 mb-6">
-                    <span id="cat-projects" class="bg-slate-100 text-slate-700 text-xs px-3 py-1.5 rounded-md font-medium">4 Projects</span>
-                    <span id="cat-groups" class="bg-slate-100 text-slate-700 text-xs px-3 py-1.5 rounded-md font-medium">4 Groups</span>
-                    <span id="cat-videos" class="bg-slate-100 text-slate-700 text-xs px-3 py-1.5 rounded-md font-medium">1 Video</span>
-                </div>
-                <div>
-                    <a id="cat-explore-btn" href="groups.html?category=Group%20Activities" class="inline-flex items-center gap-2 bg-navy-900 text-white font-semibold text-xs px-5 py-2.5 rounded-lg hover:bg-accent-gold hover:text-navy-900 transition">
-                        Explore Group Activities Projects →
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             CATEGORY TABS
+             ==================================================
+             
+             The old page manually contained four buttons.
+             
+             The new page generates them from:
+             
+                 categories.js
+             
+             so category information has one source of truth.
+             ================================================== -->
+
+        <div
+            class="
+                bg-white
+                border-b
+                border-slate-200
+                sticky
+                top-20
+                z-40
+            "
+        >
+
+            <div
+                id="category-tabs"
+                class="
+                    max-w-7xl
+                    mx-auto
+                    px-6
+                    flex
+                    space-x-8
+                    text-sm
+                    font-medium
+                    overflow-x-auto
+                "
+            >
+
+                <!-- JavaScript creates category buttons here -->
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ==================================================
+             CATEGORY OVERVIEW
+             ==================================================
+             
+             Selected category controls:
+             
+             icon
+             title
+             description
+             counts
+             image
+             explore link
+             ================================================== -->
+
+        <section
+            class="
+                py-12
+                px-6
+            "
+        >
+
+            <div
+                class="
+                    max-w-7xl
+                    mx-auto
+                    grid
+                    grid-cols-1
+                    lg:grid-cols-12
+                    gap-10
+                    items-center
+                "
+            >
+
+
+                <!-- ==========================================
+                     CATEGORY INFORMATION
+                     ========================================== -->
+
+                <div
+                    class="
+                        lg:col-span-5
+                    "
+                >
+
+
+                    <!-- Category icon -->
+                    <div
+                        id="cat-emoji"
+                        class="
+                            text-4xl
+                            mb-3
+                        "
+                    >
+                        🎭
+                    </div>
+
+
+
+                    <!-- Category name -->
+                    <h2
+                        id="cat-title"
+                        class="
+                            text-2xl
+                            sm:text-3xl
+                            font-serif
+                            font-bold
+                            text-navy-900
+                            mb-3
+                        "
+                    >
+                        Group Activities
+                    </h2>
+
+
+
+                    <!-- Category description -->
+                    <p
+                        id="cat-desc"
+                        class="
+                            text-sm
+                            text-slate-600
+                            leading-relaxed
+                            mb-6
+                        "
+                    >
+                        Loading category information...
+                    </p>
+
+
+
+                    <!-- ======================================
+                         LIVE CATEGORY STATISTICS
+                         ======================================
+                         
+                         These are calculated from Supabase.
+                         
+                         They are no longer hardcoded as:
+                         
+                         4 Projects
+                         4 Groups
+                         1 Video
+                         ====================================== -->
+
+                    <div
+                        class="
+                            flex
+                            flex-wrap
+                            gap-3
+                            mb-6
+                        "
+                    >
+
+
+                        <!-- Project count -->
+                        <span
+                            id="cat-projects"
+                            class="
+                                bg-slate-100
+                                text-slate-700
+                                text-xs
+                                px-3
+                                py-1.5
+                                rounded-md
+                                font-medium
+                            "
+                        >
+                            0 Projects
+                        </span>
+
+
+
+                        <!-- Group count -->
+                        <span
+                            id="cat-groups"
+                            class="
+                                bg-slate-100
+                                text-slate-700
+                                text-xs
+                                px-3
+                                py-1.5
+                                rounded-md
+                                font-medium
+                            "
+                        >
+                            0 Groups
+                        </span>
+
+
+
+                        <!-- Video count -->
+                        <span
+                            id="cat-videos"
+                            class="
+                                bg-slate-100
+                                text-slate-700
+                                text-xs
+                                px-3
+                                py-1.5
+                                rounded-md
+                                font-medium
+                            "
+                        >
+                            0 Videos
+                        </span>
+
+                    </div>
+
+
+
+                    <!-- ======================================
+                         OPEN FILTERED PROJECT VIEW
+                         ====================================== -->
+
+                    <a
+                        id="cat-explore-btn"
+                        href="groups.html"
+                        class="
+                            inline-flex
+                            items-center
+                            gap-2
+                            bg-navy-900
+                            text-white
+                            font-semibold
+                            text-xs
+                            px-5
+                            py-2.5
+                            rounded-lg
+                            hover:bg-accent-gold
+                            hover:text-navy-900
+                            transition
+                        "
+                    >
+                        Explore Projects →
                     </a>
+
                 </div>
-            </div>
-            <div class="lg:col-span-7">
-                <img id="cat-image" src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1000&q=80" alt="Group Activities" class="w-full h-72 object-cover rounded-xl border border-slate-200 shadow-sm transition-all duration-300">
-            </div>
-        </div>
-    </section>
 
-    <!-- FOOTER -->
-    <footer class="bg-navy-950 text-white pt-16 pb-12 px-6 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
-            <!-- Col 1 -->
-            <div>
-                <div class="flex items-center space-x-3 mb-4">
-                    <div class="bg-accent-gold text-navy-900 font-bold text-xs px-2 py-1 rounded">ETU</div>
-                    <div class="font-bold text-sm">English Teaching Unit</div>
+
+
+                <!-- ==========================================
+                     CATEGORY IMAGE
+                     ========================================== -->
+
+                <div
+                    class="
+                        lg:col-span-7
+                    "
+                >
+
+                    <img
+                        id="cat-image"
+                        src="assets/images/uopefac.jpg"
+                        alt="Student project category"
+                        class="
+                            w-full
+                            h-72
+                            sm:h-80
+                            object-cover
+                            rounded-xl
+                            border
+                            border-slate-200
+                            shadow-sm
+                            transition-all
+                            duration-300
+                        "
+                    >
+
                 </div>
-                <p class="text-xs text-slate-400 mb-4 leading-relaxed max-w-sm">
-                    Developing English language and communication skills in engineering students at the University of Peradeniya, Sri Lanka.
-                </p>
-                <p class="text-xs text-slate-400">
-                    📍 Faculty of Engineering, University of Peradeniya, Peradeniya 20400, Sri Lanka
-                </p>
+
             </div>
 
-            <!-- Col 2: Navigation Links -->
-            <div>
-                <h4 class="font-bold text-sm text-slate-200 mb-4">Pages</h4>
-                <ul class="space-y-2 text-xs text-slate-400">
-                    <li><a href="index.html" class="hover:text-accent-gold">Home</a></li>
-                    <li><a href="groups.html" class="hover:text-accent-gold">Groups</a></li>
-                    <li><a href="categories.html" class="hover:text-accent-gold">Categories</a></li>
-                    <li><a href="groups.html" class="hover:text-accent-gold">Gallery</a></li>
-                    <li><a href="about.html" class="hover:text-accent-gold">About</a></li>
-                </ul>
+        </section>
+
+
+
+        <!-- ==================================================
+             CATEGORY EXPLANATION
+             ==================================================
+             
+             Small static explanation makes it clear that the
+             category counts are based on current showcase work.
+             ================================================== -->
+
+        <section
+            class="
+                px-6
+                pb-16
+            "
+        >
+
+            <div
+                class="
+                    max-w-7xl
+                    mx-auto
+                    border-t
+                    border-slate-200
+                    pt-8
+                "
+            >
+
+                <div
+                    class="
+                        max-w-3xl
+                    "
+                >
+
+                    <h2
+                        class="
+                            text-lg
+                            font-bold
+                            text-navy-900
+                            mb-2
+                        "
+                    >
+                        Browse Current Student Work
+                    </h2>
+
+
+                    <p
+                        class="
+                            text-sm
+                            text-slate-500
+                            leading-relaxed
+                        "
+                    >
+                        Project, participating-group and video
+                        totals are calculated from the current
+                        student showcase. Select a category above,
+                        then use the Explore button to view the
+                        matching projects across all student
+                        groups.
+                    </p>
+
+                </div>
+
             </div>
 
-            <!-- Col 3: Student Groups Links -->
-            <div>
-                <h4 class="font-bold text-sm text-slate-200 mb-4">Student Groups</h4>
-                <ul class="space-y-2 text-xs text-slate-400">
-                    <li><a href="group.html?group=ab01" class="hover:text-accent-gold">Group AB01</a></li>
-                    <li><a href="group.html?group=ab02" class="hover:text-accent-gold">Group AB02</a></li>
-                    <li><a href="group.html?group=ab03" class="hover:text-accent-gold">Group AB03</a></li>
-                    <li><a href="group.html?group=ab04" class="hover:text-accent-gold">Group AB04</a></li>
-                </ul>
-            </div>
-        </div>
+        </section>
 
-        <div class="max-w-7xl mx-auto pt-8 border-t border-slate-800 text-center text-xs text-slate-500">
-            &copy; English Teaching Unit - Faculty of Engineering, University of Peradeniya. All rights reserved.
-        </div>
-    </footer>
+    </main>
 
-    <!-- INTERACTIVE JAVASCRIPT LOGIC -->
-    <script>
-        // 1. Live Time Display
-        function showTime() {
-            const timeElement = document.getElementById('currentTime');
-            if (timeElement) {
-                timeElement.textContent = new Date().toUTCString();
-            }
-        }
-        showTime();
-        setInterval(showTime, 1000);
 
-        // 2. Category Tab Switcher Data
-        const categoryData = {
-            group: {
-                title: "Group Activities",
-                categoryName: "Group Activities",
-                emoji: "🎭",
-                description: "Group activities form the backbone of the ETU experience. Students engage in debates, role-plays, workshops, and community outreach programs that build teamwork, fluency, and cultural understanding through hands-on English communication.",
-                projects: "4 Projects",
-                groups: "4 Groups",
-                videos: "1 Video",
-                image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1000&q=80"
-            },
-            presentations: {
-                title: "Presentations",
-                categoryName: "Presentations",
-                emoji: "📊",
-                description: "From technical research presentations to creative storytelling sessions, students develop their public speaking and visual communication skills.",
-                projects: "4 Projects",
-                groups: "4 Groups",
-                videos: "4 Videos",
-                image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=1000&q=80"
-            },
-            documentaries: {
-                title: "Documentaries",
-                categoryName: "Documentaries",
-                emoji: "🎬",
-                description: "Student-produced short documentaries exploring themes ranging from campus life and engineering innovation to social issues.",
-                projects: "4 Projects",
-                groups: "4 Groups",
-                videos: "4 Videos",
-                image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?auto=format&fit=crop&w=1000&q=80"
-            },
-            art: {
-                title: "Art & Explorer",
-                categoryName: "Art & Explorer",
-                emoji: "🎨",
-                description: "The Art & Explorer category celebrates creative expression in all its forms — from digital illustrations and mixed-media paintings to photography series.",
-                projects: "4 Projects",
-                groups: "4 Groups",
-                videos: "0 Videos",
-                image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=1000&q=80"
-            }
-        };
 
-        // 3. Dynamic Category Tab Switcher
-        document.addEventListener('DOMContentLoaded', () => {
-            const tabs = document.querySelectorAll('.category-tab');
-            const catEmoji = document.getElementById('cat-emoji');
-            const catTitle = document.getElementById('cat-title');
-            const catDesc = document.getElementById('cat-desc');
-            const catProjects = document.getElementById('cat-projects');
-            const catGroups = document.getElementById('cat-groups');
-            const catVideos = document.getElementById('cat-videos');
-            const catImage = document.getElementById('cat-image');
-            const catExploreBtn = document.getElementById('cat-explore-btn');
+    <!-- ======================================================
+         SHARED FOOTER
+         ======================================================
+         
+         Current student groups are loaded from Supabase.
+         ====================================================== -->
 
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const key = tab.getAttribute('data-category');
-                    const data = categoryData[key];
+    <div id="site-footer"></div>
 
-                    if (!data) return;
 
-                    tabs.forEach(t => {
-                        t.classList.remove('border-accent-gold', 'text-navy-900', 'font-semibold');
-                        t.classList.add('border-transparent', 'text-slate-500');
-                    });
-                    tab.classList.add('border-accent-gold', 'text-navy-900', 'font-semibold');
-                    tab.classList.remove('border-transparent', 'text-slate-500');
 
-                    catEmoji.textContent = data.emoji;
-                    catTitle.textContent = data.title;
-                    catDesc.textContent = data.description;
-                    catProjects.textContent = data.projects;
-                    catGroups.textContent = data.groups;
-                    catVideos.textContent = data.videos;
-                    catImage.src = data.image;
-                    catImage.alt = data.title;
+    <!-- ======================================================
+         CATEGORIES PAGE CONTROLLER
+         ======================================================
+         
+         The old inline category JavaScript is no longer needed.
+         
+         Do NOT load:
+         
+         supabaseClient.js
+         nav.js
+         ====================================================== -->
 
-                    if (catExploreBtn) {
-                        catExploreBtn.href = `groups.html?category=${encodeURIComponent(data.categoryName)}`;
-                        catExploreBtn.textContent = `Explore ${data.title} Projects →`;
-                    }
-                });
-            });
-        });
-    </script>
-    <script src="nav.js"></script>
+    <script
+        type="module"
+        src="assets/js/pages/categoriesPage.js"
+    ></script>
+
+
 </body>
+
 </html>

@@ -1,680 +1,1015 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
-<!-- Supabase JS Client CDN -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> -->
-    
+
+    <!-- ======================================================
+         BASIC PAGE INFORMATION
+         ====================================================== -->
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Browse Student Groups | English Teaching Unit - UoP</title>
-    <!-- Supabase JS Client CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabaseClient.js"></script>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        navy: {
-                            800: '#14294a',
-                            900: '#0c1b33',
-                            950: '#071021',
-                        },
-                        accent: {
-                            gold: '#d4a340',
-                            goldHover: '#b88c32',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .editor-only { display: none !important; }
-        body.is-editor-mode .editor-only { display: flex !important; }
-        body.is-editor-mode .editor-block { display: block !important; }
-    </style>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="
+            Browse student groups and published projects from
+            the English Teaching Unit, Faculty of Engineering,
+            University of Peradeniya.
+        "
+    >
+
+
+    <title>
+        Browse Student Groups |
+        English Teaching Unit - UoP
+    </title>
+
+
+    <!-- ======================================================
+         SUPABASE JAVASCRIPT LIBRARY
+         ======================================================
+         
+         This loads the official Supabase browser client.
+         
+         Our own:
+         
+             assets/js/services/supabase.js
+         
+         will create the actual shared connection.
+         ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+    <!-- ======================================================
+         TAILWIND CSS
+         ======================================================
+         
+         Tailwind provides the majority of the portal styling.
+         ====================================================== -->
+
+    <script
+        src="https://cdn.tailwindcss.com"
+    ></script>
+
+
+    <!-- ======================================================
+         SHARED TAILWIND CONFIGURATION
+         ======================================================
+         
+         Contains:
+         
+         - navy colours
+         - ETU gold
+         - Inter
+         - Playfair Display
+         
+         This replaces duplicated Tailwind configuration that
+         previously existed inside every HTML page.
+         ====================================================== -->
+
+    <script
+        src="assets/js/config/tailwind.js"
+    ></script>
+
+
+    <!-- ======================================================
+         GOOGLE FONTS
+         ====================================================== -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ======================================================
+         SHARED CUSTOM CSS
+         ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="assets/css/app.css"
+    >
+
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased">
 
-    <!-- NAVIGATION BAR -->
-    <header class="sticky top-0 z-50 bg-navy-900 text-white shadow-md">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <!-- Logo -->
-            <a href="index.html" class="flex items-center space-x-3">
-                <img 
-                    src="uoplogo.png" 
-                    alt="English Teaching Unit Logo"
-                    class="h-12 w-auto object-contain"
+
+
+<body
+    class="
+        bg-slate-50
+        text-slate-800
+        font-sans
+        antialiased
+    "
+>
+
+
+    <!-- ======================================================
+         SHARED NAVIGATION MOUNT POINT
+         ======================================================
+         
+         navbar.js inserts the navbar here.
+         
+         There is no duplicated navbar HTML in this page.
+         ====================================================== -->
+
+    <div id="site-header"></div>
+
+
+
+    <!-- ======================================================
+         ADMINISTRATOR BANNER MOUNT POINT
+         ======================================================
+         
+         Public visitor:
+         
+             nothing appears here.
+         
+         Authorized administrator:
+         
+             "Administrator Mode" banner appears.
+         ====================================================== -->
+
+    <div id="admin-banner"></div>
+
+
+
+    <!-- ======================================================
+         MAIN PAGE CONTENT
+         ====================================================== -->
+
+    <main>
+
+
+        <!-- ==================================================
+             PAGE HERO
+             ==================================================
+             
+             This is static institutional presentation content.
+             
+             It is not CMS-managed because administrators only
+             manage student showcase data.
+             ================================================== -->
+
+        <section
+            class="
+                bg-navy-900
+                text-white
+                py-14
+                px-6
+                border-b
+                border-navy-800
+            "
+        >
+
+            <div
+                class="
+                    max-w-7xl
+                    mx-auto
+                "
+            >
+
+                <span
+                    class="
+                        text-xs
+                        font-bold
+                        uppercase
+                        tracking-wider
+                        text-accent-gold
+                        mb-2
+                        block
+                    "
                 >
-            
-                <div>
-                    <div class="font-semibold leading-tight text-sm">
-                        English Teaching Unit
-                    </div>
-                    <div class="text-xs text-slate-400">
-                        Faculty of Engineering · UoP
-                    </div>
-                </div>
-            </a>
-            
-            <!-- Navigation Links & Editor Toggle -->
-            <div class="flex items-center space-x-4 sm:space-x-8">
-                <nav class="hidden md:flex items-center space-x-8 text-sm">
-                    <a href="index.html" class="text-slate-300 hover:text-white transition">Home</a>
-                    <a href="groups.html" class="bg-navy-800 text-accent-gold px-4 py-2 rounded-md font-medium">Groups</a>
-                    <a href="categories.html" class="text-slate-300 hover:text-white transition">Categories</a>
-                    <a href="#projects-grid" class="text-slate-300 hover:text-white transition">Gallery</a>
-                    <a href="about.html" class="text-slate-300 hover:text-white transition">About</a>
-                </nav>
+                    STUDENT GROUPS
+                </span>
 
-                <!-- Editor Mode Toggle Button -->
-                <button id="editor-mode-toggle" onclick="toggleEditorMode()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-navy-800 hover:bg-navy-950 text-slate-300 hover:text-accent-gold border border-slate-700 transition" title="Toggle edit controls for groups, students and projects">
-                    <span id="editor-mode-icon">✏️</span>
-                    <span id="editor-mode-label">Edit Mode</span>
-                </button>
 
-                <!-- Mobile Menu Toggle Button -->
-                <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white p-2 focus:outline-none" aria-label="Toggle navigation">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
+                <h1
+                    class="
+                        text-3xl
+                        sm:text-4xl
+                        font-serif
+                        font-bold
+                        mb-4
+                    "
+                >
+                    Browse by Group
+                </h1>
 
-        <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-navy-950 px-6 py-4 border-t border-navy-800 space-y-3">
-            <a href="index.html" class="block text-slate-300 hover:text-white py-1">Home</a>
-            <a href="groups.html" class="block text-accent-gold font-medium py-1">Groups</a>
-            <a href="categories.html" class="block text-slate-300 hover:text-white py-1">Categories</a>
-            <a href="#projects-grid" class="block text-slate-300 hover:text-white py-1">Gallery</a>
-            <a href="about.html" class="block text-slate-300 hover:text-white py-1">About</a>
-        </div>
-    </header>
 
-    <!-- EDITOR MODE ALERT BANNER -->
-    <div id="editor-banner" class="hidden bg-amber-500/15 border-b border-amber-500/30 px-6 py-2.5 text-xs text-amber-300">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <span class="text-sm">🔧</span>
-                <span class="font-medium text-amber-200">Editor Mode Active:</span>
-                <span>You can create new student groups, edit group info, and manage student rosters & projects.</span>
-            </div>
-            <button onclick="toggleEditorMode()" class="underline hover:text-white font-semibold">Exit Editor</button>
-        </div>
-    </div>
-
-    <!-- HERO / BANNER SECTION -->
-    <section class="bg-navy-900 text-white py-14 px-6 border-b border-navy-800">
-        <div class="max-w-7xl mx-auto">
-            <span class="text-xs font-bold uppercase tracking-wider text-accent-gold mb-2 block">STUDENT GROUPS</span>
-            <h1 class="text-3xl sm:text-4xl font-serif font-bold mb-4">Browse by Group</h1>
-            <p class="text-slate-300 max-w-2xl text-sm sm:text-base leading-relaxed">
-                Select a student group to explore their full collection of projects, or use the filters below to browse all work across groups.
-            </p>
-        </div>
-    </section>
-
-    <!-- SELECT A GROUP SECTION -->
-    <section class="py-12 px-6">
-        <div class="max-w-7xl mx-auto">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-6 block">SELECT A GROUP</span>
-
-            <!-- Cohort Cards Grid (Populated dynamically from ETUDataService) -->
-            <div id="groups-cards-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Group AB01 Card -->
-                <a href="group.html?group=ab01" class="group block bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
-                    <div class="relative h-44">
-                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80" alt="Group AB01" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                        <span class="absolute top-3 left-3 bg-accent-gold text-navy-900 text-xs font-bold px-2.5 py-1 rounded">AB01</span>
-                        <span class="absolute bottom-3 right-3 bg-navy-950/80 text-white text-xs px-2 py-0.5 rounded backdrop-blur-sm">4 projects</span>
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-bold text-navy-900 text-base mb-1 group-hover:text-accent-gold transition">Group AB01</h3>
-                        <p class="text-xs text-slate-500 mb-4 line-clamp-2">Pioneers in collaborative storytelling and visual media.</p>
-                        <span class="text-xs font-semibold text-accent-gold group-hover:underline">View projects →</span>
-                    </div>
-                </a>
-
-                <!-- Group AB02 Card -->
-                <a href="group.html?group=ab02" class="group block bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
-                    <div class="relative h-44">
-                        <img src="https://images.unsplash.com/photo-1531545514256-b1400bc00f31?auto=format&fit=crop&w=600&q=80" alt="Group AB02" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                        <span class="absolute top-3 left-3 bg-accent-gold text-navy-900 text-xs font-bold px-2.5 py-1 rounded">AB02</span>
-                        <span class="absolute bottom-3 right-3 bg-navy-950/80 text-white text-xs px-2 py-0.5 rounded backdrop-blur-sm">4 projects</span>
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-bold text-navy-900 text-base mb-1 group-hover:text-accent-gold transition">Group AB02</h3>
-                        <p class="text-xs text-slate-500 mb-4 line-clamp-2">Exploring documentary arts and engineering narratives.</p>
-                        <span class="text-xs font-semibold text-accent-gold group-hover:underline">View projects →</span>
-                    </div>
-                </a>
-
-                <!-- Group AB03 Card -->
-                <a href="group.html?group=ab03" class="group block bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
-                    <div class="relative h-44">
-                        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80" alt="Group AB03" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                        <span class="absolute top-3 left-3 bg-accent-gold text-navy-900 text-xs font-bold px-2.5 py-1 rounded">AB03</span>
-                        <span class="absolute bottom-3 right-3 bg-navy-950/80 text-white text-xs px-2 py-0.5 rounded backdrop-blur-sm">4 projects</span>
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-bold text-navy-900 text-base mb-1 group-hover:text-accent-gold transition">Group AB03</h3>
-                        <p class="text-xs text-slate-500 mb-4 line-clamp-2">Creative presentations bridging language and technology.</p>
-                        <span class="text-xs font-semibold text-accent-gold group-hover:underline">View projects →</span>
-                    </div>
-                </a>
-
-                <!-- Group AB04 Card -->
-                <a href="group.html?group=ab04" class="group block bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
-                    <div class="relative h-44">
-                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=600&q=80" alt="Group AB04" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                        <span class="absolute top-3 left-3 bg-accent-gold text-navy-900 text-xs font-bold px-2.5 py-1 rounded">AB04</span>
-                        <span class="absolute bottom-3 right-3 bg-navy-950/80 text-white text-xs px-2 py-0.5 rounded backdrop-blur-sm">4 projects</span>
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-bold text-navy-900 text-base mb-1 group-hover:text-accent-gold transition">Group AB04</h3>
-                        <p class="text-xs text-slate-500 mb-4 line-clamp-2">Artistic expression through multimedia and gallery work.</p>
-                        <span class="text-xs font-semibold text-accent-gold group-hover:underline">View projects →</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- FILTER BAR AND PROJECTS GRID SECTION -->
-    <section class="py-10 px-6 border-t border-slate-200">
-        <div class="max-w-7xl mx-auto">
-            <span class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 block">OR BROWSE ALL WORK BY CATEGORY</span>
-            
-            <!-- Filter Pills -->
-            <div class="flex flex-wrap items-center gap-3 mb-6">
-                <button onclick="filterCategory('all')" id="tab-all" class="filter-tab bg-navy-900 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-sm transition">
-                    All Categories
-                </button>
-                <button onclick="filterCategory('Group Activities')" id="tab-group-activities" class="filter-tab bg-slate-200/80 hover:bg-slate-200 text-slate-700 text-xs font-medium px-4 py-2 rounded-full transition flex items-center gap-1.5">
-                    <span>🎭</span> Group Activities
-                </button>
-                <button onclick="filterCategory('Presentations')" id="tab-presentations" class="filter-tab bg-slate-200/80 hover:bg-slate-200 text-slate-700 text-xs font-medium px-4 py-2 rounded-full transition flex items-center gap-1.5">
-                    <span>📊</span> Presentations
-                </button>
-                <button onclick="filterCategory('Documentaries')" id="tab-documentaries" class="filter-tab bg-slate-200/80 hover:bg-slate-200 text-slate-700 text-xs font-medium px-4 py-2 rounded-full transition flex items-center gap-1.5">
-                    <span>🎬</span> Documentaries
-                </button>
-                <button onclick="filterCategory('Art & Explorer')" id="tab-art-explorer" class="filter-tab bg-slate-200/80 hover:bg-slate-200 text-slate-700 text-xs font-medium px-4 py-2 rounded-full transition flex items-center gap-1.5">
-                    <span>🎨</span> Art & Explorer
-                </button>
-            </div>
-
-            <!-- Meta Header Bar -->
-            <div class="flex items-center justify-between mb-6">
-                <div id="counter-text" class="text-xs font-semibold text-slate-500">16 projects</div>
-                <button onclick="filterCategory('all')" id="clear-btn" class="hidden text-xs text-slate-400 hover:text-slate-600 transition">Clear all</button>
-            </div>
-
-            <!-- 4-Column Project Card Grid -->
-            <div id="projects-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Group Activities -->
-                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
-                    <div>
-                        <div class="relative h-44">
-                            <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=600&q=80" alt="Engineering Language Fair 2024" class="w-full h-full object-cover">
-                            <div class="absolute top-3 left-3 flex gap-1">
-                                <a href="group.html?group=ab01" class="bg-accent-gold text-navy-900 text-[10px] font-bold px-2 py-0.5 rounded shadow hover:bg-white transition">AB01</a>
-                                <span class="bg-navy-900 text-white text-[10px] px-1.5 py-0.5 rounded shadow">🎭</span>
-                            </div>
-                        </div>
-                        <div class="p-5">
-                            <span class="text-[10px] text-blue-600 font-semibold uppercase tracking-wider mb-1 block">Group Activities</span>
-                            <h4 class="font-bold text-navy-900 text-sm mb-2 leading-snug">Engineering Language Fair 2024</h4>
-                            <p class="text-xs text-slate-500 mb-3 line-clamp-3 leading-relaxed">A vibrant group activity showcasing language skills through engineering themes and interactive stalls.</p>
-                        </div>
-                    </div>
-                    <div class="p-5 pt-0 border-t border-slate-50 flex items-center justify-between">
-                        <a href="group.html?group=ab01" class="text-xs font-bold text-accent-gold flex items-center hover:underline">View in AB01 →</a>
-                    </div>
-                </div>
-
-                <!-- Presentations -->
-                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
-                    <div>
-                        <div class="relative h-44">
-                            <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=600&q=80" alt="Structural Integrity: An Oral Report" class="w-full h-full object-cover">
-                            <div class="absolute top-3 left-3 flex gap-1">
-                                <a href="group.html?group=ab01" class="bg-accent-gold text-navy-900 text-[10px] font-bold px-2 py-0.5 rounded shadow hover:bg-white transition">AB01</a>
-                                <span class="bg-navy-900 text-white text-[10px] px-1.5 py-0.5 rounded shadow">📊</span>
-                            </div>
-                            <span class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded font-mono">08:20</span>
-                            <button class="absolute inset-0 m-auto w-10 h-10 bg-accent-gold/90 text-navy-900 rounded-full flex items-center justify-center pl-0.5 shadow">
-                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                            </button>
-                        </div>
-                        <div class="p-5">
-                            <span class="text-[10px] text-blue-600 font-semibold uppercase tracking-wider mb-1 block">Presentations</span>
-                            <h4 class="font-bold text-navy-900 text-sm mb-2 leading-snug">Structural Integrity: An Oral Report</h4>
-                            <p class="text-xs text-slate-500 mb-3 line-clamp-3 leading-relaxed">Students present findings on building materials and structural analysis in formal English.</p>
-                        </div>
-                    </div>
-                    <div class="p-5 pt-0 border-t border-slate-50 flex items-center justify-between">
-                        <a href="group.html?group=ab01" class="text-xs font-bold text-accent-gold flex items-center hover:underline">View in AB01 →</a>
-                    </div>
-                </div>
-
-                <!-- Documentaries -->
-                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
-                    <div>
-                        <div class="relative h-44">
-                            <img src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=600&q=80" alt="Campus Life: An Engineer's Story" class="w-full h-full object-cover">
-                            <div class="absolute top-3 left-3 flex gap-1">
-                                <a href="group.html?group=ab01" class="bg-accent-gold text-navy-900 text-[10px] font-bold px-2 py-0.5 rounded shadow hover:bg-white transition">AB01</a>
-                                <span class="bg-navy-900 text-white text-[10px] px-1.5 py-0.5 rounded shadow">🎬</span>
-                            </div>
-                            <span class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded font-mono">15:02</span>
-                            <button class="absolute inset-0 m-auto w-10 h-10 bg-accent-gold/90 text-navy-900 rounded-full flex items-center justify-center pl-0.5 shadow">
-                                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                            </button>
-                        </div>
-                        <div class="p-5">
-                            <span class="text-[10px] text-blue-600 font-semibold uppercase tracking-wider mb-1 block">Documentaries</span>
-                            <h4 class="font-bold text-navy-900 text-sm mb-2 leading-snug">Campus Life: An Engineer's Story</h4>
-                            <p class="text-xs text-slate-500 mb-3 line-clamp-3 leading-relaxed">A short documentary exploring the daily life of an engineering student at Peradeniya.</p>
-                        </div>
-                    </div>
-                    <div class="p-5 pt-0 border-t border-slate-50 flex items-center justify-between">
-                        <a href="group.html?group=ab01" class="text-xs font-bold text-accent-gold flex items-center hover:underline">View in AB01 →</a>
-                    </div>
-                </div>
-
-                <!-- Art & Explorer -->
-                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
-                    <div>
-                        <div class="relative h-44">
-                            <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80" alt="Structures & Strokes" class="w-full h-full object-cover">
-                            <div class="absolute top-3 left-3 flex gap-1">
-                                <a href="group.html?group=ab01" class="bg-accent-gold text-navy-900 text-[10px] font-bold px-2 py-0.5 rounded shadow hover:bg-white transition">AB01</a>
-                                <span class="bg-navy-900 text-white text-[10px] px-1.5 py-0.5 rounded shadow">🎨</span>
-                            </div>
-                        </div>
-                        <div class="p-5">
-                            <span class="text-[10px] text-blue-600 font-semibold uppercase tracking-wider mb-1 block">Art & Explorer</span>
-                            <h4 class="font-bold text-navy-900 text-sm mb-2 leading-snug">Structures & Strokes</h4>
-                            <p class="text-xs text-slate-500 mb-3 line-clamp-3 leading-relaxed">An art series inspired by civil engineering blueprints and the natural forms of the Peradeniya campus.</p>
-                        </div>
-                    </div>
-                    <div class="p-5 pt-0 border-t border-slate-50 flex items-center justify-between">
-                        <a href="group.html?group=ab01" class="text-xs font-bold text-accent-gold flex items-center hover:underline">View in AB01 →</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="bg-navy-950 text-white pt-16 pb-12 px-6 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
-            <div>
-                <div class="flex items-center space-x-3 mb-4">
-                    <div class="bg-accent-gold text-navy-900 font-bold text-xs px-2 py-1 rounded">ETU</div>
-                    <div class="font-bold text-sm">English Teaching Unit</div>
-                </div>
-                <p class="text-xs text-slate-400 mb-4 leading-relaxed max-w-sm">
-                    Developing English language and communication skills in engineering students at the University of Peradeniya, Sri Lanka.
+                <p
+                    class="
+                        text-slate-300
+                        max-w-2xl
+                        text-sm
+                        sm:text-base
+                        leading-relaxed
+                    "
+                >
+                    Select a student group to explore its members,
+                    projects, and gallery, or browse published work
+                    across all groups.
                 </p>
-                <p class="text-xs text-slate-400">
-                    📍 Faculty of Engineering, University of Peradeniya, Peradeniya 20400, Sri Lanka
-                </p>
+
             </div>
 
-            <!-- Col 2: Navigation Links -->
-            <div>
-                <h4 class="font-bold text-sm text-slate-200 mb-4">Pages</h4>
-                <ul class="space-y-2 text-xs text-slate-400">
-                    <li><a href="index.html" class="hover:text-accent-gold">Home</a></li>
-                    <li><a href="groups.html" class="hover:text-accent-gold">Groups</a></li>
-                    <li><a href="categories.html" class="hover:text-accent-gold">Categories</a></li>
-                    <li><a href="#projects-grid" class="hover:text-accent-gold">Gallery</a></li>
-                    <li><a href="about.html" class="hover:text-accent-gold">About</a></li>
-                </ul>
-            </div>
+        </section>
 
-            <!-- Col 3: Student Groups Links -->
-            <div>
-                <h4 class="font-bold text-sm text-slate-200 mb-4">Student Groups</h4>
-                <ul class="space-y-2 text-xs text-slate-400">
-                    <li><a href="group.html?group=ab01" class="hover:text-accent-gold">Group AB01</a></li>
-                    <li><a href="group.html?group=ab02" class="hover:text-accent-gold">Group AB02</a></li>
-                    <li><a href="group.html?group=ab03" class="hover:text-accent-gold">Group AB03</a></li>
-                    <li><a href="group.html?group=ab04" class="hover:text-accent-gold">Group AB04</a></li>
-                </ul>
-            </div>
-        </div>
 
-        <div class="max-w-7xl mx-auto pt-8 border-t border-slate-800 text-center text-xs text-slate-500">
-            &copy; English Teaching Unit - Faculty of Engineering, University of Peradeniya. All rights reserved.
-        </div>
-    </footer>
 
-    <!-- ADD NEW GROUP MODAL -->
-    <div id="modal-add-group" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 relative">
-            <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
-                <h3 class="text-lg font-serif font-bold text-navy-900">Create New Student Group</h3>
-                <button onclick="closeAddGroupModal()" class="text-slate-400 hover:text-slate-600 text-xl leading-none">&times;</button>
-            </div>
-            <form id="form-add-group" onsubmit="handleCreateGroup(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Group Name *</label>
-                    <input type="text" id="input-newgroup-name" required placeholder="e.g. Group AB05" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-accent-gold">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Group Slug * (URL identifier)</label>
-                    <input type="text" id="input-newgroup-slug" required placeholder="e.g. ab05" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-accent-gold font-mono">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Tagline</label>
-                    <input type="text" id="input-newgroup-tagline" placeholder="e.g. Robotics, AI and Technical Communication" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-accent-gold">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Description</label>
-                    <textarea id="input-newgroup-desc" rows="3" placeholder="Brief cohort background or focus areas..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-accent-gold"></textarea>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Cover Image URL</label>
-                    <input type="url" id="input-newgroup-cover" placeholder="https://images.unsplash.com/..." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:border-accent-gold">
-                </div>
-                <div class="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
-                    <button type="button" onclick="closeAddGroupModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900">Cancel</button>
-                    <button type="submit" id="btn-create-group" class="bg-navy-900 hover:bg-navy-950 text-accent-gold font-semibold text-xs px-5 py-2.5 rounded-lg shadow-sm transition">Create Group</button>
-                </div>
-            </form>
-        </div>
-    </div>
+        <!-- ==================================================
+             STUDENT GROUPS SECTION
+             ==================================================
+             
+             Group cards are NOT written here manually.
+             
+             groupsPage.js:
+             
+                 getGroups()
+                       ↓
+                 createGroupCard()
+                       ↓
+                 #groups-grid
+             
+             Therefore adding AB05 in Supabase automatically
+             creates an AB05 card here.
+             ================================================== -->
 
-    <!-- DYNAMIC FILTERING & PROJECT DATA SCRIPT -->
-    <script>
-        let isEditorMode = false;
+        <section
+            class="
+                py-12
+                px-6
+            "
+        >
 
-        // --- EDITOR MODE MANAGEMENT ---
-        function initEditorMode() {
-            try {
-                isEditorMode = localStorage.getItem('ETU_EDITOR_MODE') === 'true';
-            } catch (e) {
-                isEditorMode = false;
-            }
-            updateEditorUI();
-        }
+            <div
+                class="
+                    max-w-7xl
+                    mx-auto
+                "
+            >
 
-        function toggleEditorMode() {
-            isEditorMode = !isEditorMode;
-            try {
-                localStorage.setItem('ETU_EDITOR_MODE', isEditorMode ? 'true' : 'false');
-            } catch (e) {}
-            updateEditorUI();
-            // Re-render group cards so the "+ Add New Group" card appears/disappears
-            if (currentGroupsList.length > 0) {
-                renderGroupCards(currentGroupsList);
-            }
-        }
 
-        function updateEditorUI() {
-            const body = document.body;
-            const banner = document.getElementById('editor-banner');
-            const icon = document.getElementById('editor-mode-icon');
-            const label = document.getElementById('editor-mode-label');
+                <!-- ==========================================
+                     SECTION HEADER
+                     ========================================== -->
 
-            if (isEditorMode) {
-                body.classList.add('is-editor-mode');
-                if (banner) banner.classList.remove('hidden');
-                if (icon) icon.textContent = '🔒';
-                if (label) label.textContent = 'Exit Editor';
-            } else {
-                body.classList.remove('is-editor-mode');
-                if (banner) banner.classList.add('hidden');
-                if (icon) icon.textContent = '✏️';
-                if (label) label.textContent = 'Edit Mode';
-            }
-        }
+                <div
+                    class="
+                        flex
+                        flex-wrap
+                        items-center
+                        justify-between
+                        gap-4
+                        mb-6
+                    "
+                >
 
-        const initialProjectsData = [
-            // AB01 Projects
-            { group: 'AB01', groupSlug: 'ab01', category: 'Group Activities', filterCategory: 'group-activities', icon: '🎭', title: 'Engineering Language Fair 2024', desc: 'A vibrant group activity showcasing language skills through engineering themes and interactive stalls.', img: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=600&q=80', isVideo: false },
-            { group: 'AB01', groupSlug: 'ab01', category: 'Presentations', filterCategory: 'presentations', icon: '📊', title: 'Structural Integrity: An Oral Report', desc: 'Students present findings on building materials and structural analysis in formal English.', img: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=600&q=80', isVideo: true, time: '08:20' },
-            { group: 'AB01', groupSlug: 'ab01', category: 'Documentaries', filterCategory: 'documentaries', icon: '🎬', title: "Campus Life: An Engineer's Story", desc: 'A short documentary exploring the daily life of an engineering student at Peradeniya.', img: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=600&q=80', isVideo: true, time: '15:02' },
-            { group: 'AB01', groupSlug: 'ab01', category: 'Art & Explorer', filterCategory: 'art-explorer', icon: '🎨', title: 'Structures & Strokes', desc: 'An art series inspired by civil engineering blueprints and the natural forms of the Peradeniya campus.', img: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80', isVideo: false },
+                    <span
+                        class="
+                            text-xs
+                            font-bold
+                            uppercase
+                            tracking-wider
+                            text-slate-400
+                        "
+                    >
+                        SELECT A GROUP
+                    </span>
 
-            // AB02 Projects
-            { group: 'AB02', groupSlug: 'ab02', category: 'Group Activities', filterCategory: 'group-activities', icon: '🎭', title: 'Inter-Group Debate: Technology & Society', desc: 'A structured Oxford-style debate challenging the ethical limits of automated engineering systems.', img: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80', isVideo: false },
-            { group: 'AB02', groupSlug: 'ab02', category: 'Presentations', filterCategory: 'presentations', icon: '📊', title: 'Renewable Energy: Speaking Up', desc: 'Group AB02 presents their investigative study on decentralized solar grids across Central Province.', img: 'https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=600&q=80', isVideo: true, time: '10:45' },
-            { group: 'AB02', groupSlug: 'ab02', category: 'Documentaries', filterCategory: 'documentaries', icon: '🎬', title: 'The Making of an Engineer', desc: 'Following three undergraduates across their workshop practicums, exam weeks, and cultural festivals.', img: 'https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=600&q=80', isVideo: true, time: '18:30' },
-            { group: 'AB02', groupSlug: 'ab02', category: 'Art & Explorer', filterCategory: 'art-explorer', icon: '🎨', title: 'Circuit Paintings & Ink', desc: 'Mixed-media fine art combining printed circuit board traces with traditional Sri Lankan motifs.', img: 'https://images.unsplash.com/photo-1501084291732-13b1ba830e22?auto=format&fit=crop&w=600&q=80', isVideo: false },
 
-            // AB03 Projects
-            { group: 'AB03', groupSlug: 'ab03', category: 'Group Activities', filterCategory: 'group-activities', icon: '🎭', title: 'Interactive Technical Drama', desc: 'A theatrical performance highlighting workshop safety protocols written and acted in English.', img: 'https://images.unsplash.com/photo-1531545514256-b1400bc00f31?auto=format&fit=crop&w=600&q=80', isVideo: false },
-            { group: 'AB03', groupSlug: 'ab03', category: 'Presentations', filterCategory: 'presentations', icon: '📊', title: 'AI and the Future of Communication', desc: 'A visionary presentation analyzing how generative language tools assist bilingual students.', img: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=600&q=80', isVideo: true, time: '14:12' },
-            { group: 'AB03', groupSlug: 'ab03', category: 'Documentaries', filterCategory: 'documentaries', icon: '🎬', title: 'Peradeniya Through Our Eyes', desc: 'A cinematic documentary highlighting the architectural marvel of Akbar Bridge.', img: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=600&q=80', isVideo: true, time: '20:05' },
-            { group: 'AB03', groupSlug: 'ab03', category: 'Art & Explorer', filterCategory: 'art-explorer', icon: '🎨', title: 'Language in Motion', desc: 'A typographic poster series exploring how linguistic metaphors guide problem solving.', img: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80', isVideo: false },
+                    <!-- ======================================
+                         ADMIN ONLY - ADD GROUP BUTTON
+                         ======================================
+                         
+                         hidden by default.
+                         
+                         groupsPage.js reveals this only when
+                         authService confirms administrator.
+                         ====================================== -->
 
-            // AB04 Projects
-            { group: 'AB04', groupSlug: 'ab04', category: 'Group Activities', filterCategory: 'group-activities', icon: '🎭', title: 'Language & Design Sprint', desc: 'A high-intensity sprint pitching sustainable consumer products under tight constraints.', img: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80', isVideo: false },
-            { group: 'AB04', groupSlug: 'ab04', category: 'Presentations', filterCategory: 'presentations', icon: '📊', title: 'Infrastructure Development Talk', desc: 'Examining bridge construction techniques, seismic resilience, and urban transit planning.', img: 'https://images.unsplash.com/photo-1477959858617-67f30ac4ce78?auto=format&fit=crop&w=600&q=80', isVideo: true, time: '09:15' },
-            { group: 'AB04', groupSlug: 'ab04', category: 'Documentaries', filterCategory: 'documentaries', icon: '🎬', title: 'Voices of Innovation', desc: 'Documenting engineering prototype fabrication and student teamwork in university labs.', img: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80', isVideo: true, time: '13:40' },
-            { group: 'AB04', groupSlug: 'ab04', category: 'Art & Explorer', filterCategory: 'art-explorer', icon: '🎨', title: 'Botanical Tech Sketches', desc: 'Botanical drawings of campus trees intertwined with precision mechanical gears.', img: 'https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=600&q=80', isVideo: false }
-        ];
-
-        let allProjectsList = [...initialProjectsData];
-        let currentGroupsList = [];
-
-        // RENDER GROUP CARDS
-        function renderGroupCards(groups) {
-            const container = document.getElementById('groups-cards-container');
-            if (!container) return;
-
-            let html = groups.map(grp => {
-                const groupSlug = (grp.slug || '').toLowerCase();
-                const groupBadge = groupSlug.toUpperCase();
-                const count = allProjectsList.filter(p => (p.groupSlug || '').toLowerCase() === groupSlug).length;
-                const cover = grp.cardImage || grp.coverImage || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80';
-                const tagline = grp.tagline || 'Student cohort at Faculty of Engineering.';
-
-                return `
-                    <a href="group.html?group=${groupSlug}" class="group block bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
-                        <div class="relative h-44">
-                            <img src="${cover}" alt="${grp.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                            <span class="absolute top-3 left-3 bg-accent-gold text-navy-900 text-xs font-bold px-2.5 py-1 rounded shadow">${groupBadge}</span>
-                            <span class="absolute bottom-3 right-3 bg-navy-950/80 text-white text-xs px-2 py-0.5 rounded backdrop-blur-sm shadow">${count} project${count !== 1 ? 's' : ''}</span>
-                        </div>
-                        <div class="p-5">
-                            <h3 class="font-bold text-navy-900 text-base mb-1 group-hover:text-accent-gold transition">${grp.name}</h3>
-                            <p class="text-xs text-slate-500 mb-4 line-clamp-2">${tagline}</p>
-                            <span class="text-xs font-semibold text-accent-gold group-hover:underline">View projects →</span>
-                        </div>
-                    </a>
-                `;
-            }).join('');
-
-            if (isEditorMode) {
-                html += `
-                    <button type="button" onclick="openAddGroupModal()" class="flex flex-col items-center justify-center border-2 border-dashed border-accent-gold/60 hover:border-accent-gold bg-amber-500/5 hover:bg-amber-500/10 rounded-xl p-8 text-center transition group min-h-[260px]">
-                        <div class="w-12 h-12 rounded-full bg-accent-gold/20 flex items-center justify-center text-accent-gold text-2xl font-bold mb-3 group-hover:scale-110 transition">
-                            +
-                        </div>
-                        <span class="font-bold text-navy-900 text-sm mb-1">Add New Group</span>
-                        <span class="text-xs text-slate-500">Create a new student cohort</span>
+                    <button
+                        id="add-group-btn"
+                        type="button"
+                        hidden
+                        class="
+                            bg-navy-900
+                            hover:bg-navy-800
+                            text-accent-gold
+                            text-xs
+                            font-bold
+                            px-4
+                            py-2
+                            rounded-lg
+                            shadow-sm
+                            transition
+                        "
+                    >
+                        + Add Student Group
                     </button>
-                `;
-            }
 
-            container.innerHTML = html;
-        }
+                </div>
 
-        // CREATE GROUP MODAL ACTIONS
-        function openAddGroupModal() {
-            document.getElementById('form-add-group').reset();
-            document.getElementById('modal-add-group').classList.remove('hidden');
-        }
 
-        function closeAddGroupModal() {
-            document.getElementById('modal-add-group').classList.add('hidden');
-        }
 
-        async function handleCreateGroup(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-create-group');
-            btn.disabled = true;
-            btn.textContent = 'Creating...';
+                <!-- ==========================================
+                     DYNAMIC GROUP CARD CONTAINER
+                     ==========================================
+                     
+                     This initial loading message disappears
+                     after Supabase data arrives.
+                     ========================================== -->
 
-            const name = document.getElementById('input-newgroup-name').value;
-            const slug = document.getElementById('input-newgroup-slug').value;
-            const tagline = document.getElementById('input-newgroup-tagline').value;
-            const description = document.getElementById('input-newgroup-desc').value;
-            const coverImage = document.getElementById('input-newgroup-cover').value;
+                <div
+                    id="groups-grid"
+                    class="
+                        grid
+                        grid-cols-1
+                        sm:grid-cols-2
+                        lg:grid-cols-4
+                        gap-6
+                    "
+                >
 
-            try {
-                const newGrp = await window.ETUDataService.createGroup({
-                    name,
-                    slug,
-                    tagline,
-                    description,
-                    coverImage
-                });
-
-                currentGroupsList.push(newGrp);
-                renderGroupCards(currentGroupsList);
-                closeAddGroupModal();
-                alert(`Group "${name}" created successfully! Click its card to open its template and add students/projects.`);
-            } catch (err) {
-                alert('Could not create group: ' + err.message);
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Create Group';
-            }
-        }
-
-        function renderProjects(filtered) {
-            const grid = document.getElementById('projects-grid');
-            if (!grid) return;
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `<div class="col-span-full py-12 text-center text-slate-400">No projects found in this category.</div>`;
-                return;
-            }
-
-            grid.innerHTML = filtered.map(item => {
-                const groupBadge = item.groupSlug ? item.groupSlug.toUpperCase() : (item.group || 'AB');
-                const groupSlug = item.groupSlug || (item.group ? item.group.toLowerCase() : 'ab01');
-                const icon = item.icon || '📌';
-                const imageSrc = item.imageUrl || item.img || 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80';
-
-                return `
-                    <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
-                        <div>
-                            <div class="relative h-44">
-                                <img src="${imageSrc}" alt="${item.title}" class="w-full h-full object-cover">
-                                <div class="absolute top-3 left-3 flex gap-1">
-                                    <a href="group.html?group=${groupSlug}" class="bg-accent-gold text-navy-900 text-[10px] font-bold px-2 py-0.5 rounded shadow hover:bg-white transition">${groupBadge}</a>
-                                    <span class="bg-navy-900 text-white text-[10px] px-1.5 py-0.5 rounded shadow">${icon}</span>
-                                </div>
-                                ${item.time ? `<span class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded font-mono">${item.time}</span>` : ''}
-                                ${item.isVideo ? `
-                                    <button class="absolute inset-0 m-auto w-10 h-10 bg-accent-gold/90 text-navy-900 rounded-full flex items-center justify-center pl-0.5 shadow">
-                                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                                    </button>
-                                ` : ''}
-                            </div>
-                            <div class="p-5">
-                                <span class="text-[10px] text-blue-600 font-semibold uppercase tracking-wider mb-1 block">${item.category}</span>
-                                <h4 class="font-bold text-navy-900 text-sm mb-2 leading-snug">${item.title}</h4>
-                                <p class="text-xs text-slate-500 mb-3 line-clamp-3 leading-relaxed">${item.description || item.desc || ''}</p>
-                            </div>
-                        </div>
-                        <div class="p-5 pt-0 border-t border-slate-50 flex items-center justify-between">
-                            <a href="group.html?group=${groupSlug}" class="text-xs font-bold text-accent-gold flex items-center hover:underline">
-                                View in ${groupBadge} →
-                            </a>
-                        </div>
+                    <div
+                        class="
+                            col-span-full
+                            py-10
+                            text-center
+                            text-slate-400
+                        "
+                    >
+                        Loading student groups...
                     </div>
-                `;
-            }).join('');
-        }
 
-        function filterCategory(cat) {
-            const tabs = document.querySelectorAll('.filter-tab');
-            const clearBtn = document.getElementById('clear-btn');
-            const counterText = document.getElementById('counter-text');
+                </div>
 
-            tabs.forEach(tab => {
-                tab.className = "filter-tab bg-slate-200/80 hover:bg-slate-200 text-slate-700 text-xs font-medium px-4 py-2 rounded-full transition flex items-center gap-1.5";
-            });
+            </div>
 
-            let filtered = [];
-            if (cat === 'all' || !cat) {
-                const allTab = document.getElementById('tab-all');
-                if (allTab) allTab.className = "filter-tab bg-navy-900 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-sm transition";
-                filtered = allProjectsList;
-                if (counterText) counterText.innerText = `${allProjectsList.length} projects`;
-                if (clearBtn) clearBtn.classList.add('hidden');
-            } else {
-                const slugified = cat.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
-                const activeTab = document.getElementById(`tab-${slugified}`) || document.getElementById(`tab-${cat}`);
-                if (activeTab) {
-                    activeTab.className = "filter-tab bg-navy-900 text-white text-xs font-semibold px-4 py-2 rounded-full shadow-sm transition flex items-center gap-1.5";
-                }
-                filtered = allProjectsList.filter(p => {
-                    const matchName = p.category && p.category.toLowerCase() === cat.toLowerCase();
-                    const matchSlug = p.filterCategory && p.filterCategory.toLowerCase() === cat.toLowerCase();
-                    return matchName || matchSlug;
-                });
-                if (counterText) counterText.innerText = `${filtered.length} project${filtered.length !== 1 ? 's' : ''} · ${cat}`;
-                if (clearBtn) clearBtn.classList.remove('hidden');
-            }
+        </section>
 
-            renderProjects(filtered);
-        }
 
-        // Render synchronously immediately so the page is never blank
-        const urlParams = new URLSearchParams(window.location.search);
-        const initialCategory = urlParams.get('category') || 'all';
-        filterCategory(initialCategory);
 
-        // Enhance with data service on DOMContentLoaded
-        async function fetchRemoteEnhancements() {
-            initEditorMode();
-            if (!window.ETUDataService) return;
-            try {
-                const groups = await window.ETUDataService.getGroups();
-                if (groups && groups.length > 0) {
-                    currentGroupsList = groups;
-                    renderGroupCards(groups);
-                }
+        <!-- ==================================================
+             ALL PROJECTS SECTION
+             ==================================================
+             
+             This replaces the old 16 hardcoded project cards.
+             
+             The data now comes entirely from:
+             
+                 public.projects
+             
+             through:
+             
+                 dataService.getAllProjects()
+             ================================================== -->
 
-                const remoteProjects = await window.ETUDataService.getAllProjects();
-                if (remoteProjects && remoteProjects.length > initialProjectsData.length) {
-                    allProjectsList = remoteProjects;
-                    filterCategory(initialCategory);
-                    if (currentGroupsList.length > 0) {
-                        renderGroupCards(currentGroupsList);
-                    }
-                }
-            } catch (e) {
-                console.warn('Could not enhance groups data:', e);
-            }
-        }
-        document.addEventListener('DOMContentLoaded', fetchRemoteEnhancements);
+        <section
+            id="projects"
+            class="
+                py-10
+                px-6
+                border-t
+                border-slate-200
+            "
+        >
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeAddGroupModal();
-            }
-        });
-    </script>
-    <script src="nav.js"></script>
+            <div
+                class="
+                    max-w-7xl
+                    mx-auto
+                "
+            >
+
+
+                <!-- ==========================================
+                     PROJECT FILTER HEADING
+                     ========================================== -->
+
+                <span
+                    class="
+                        text-xs
+                        font-bold
+                        uppercase
+                        tracking-wider
+                        text-slate-400
+                        mb-4
+                        block
+                    "
+                >
+                    BROWSE ALL WORK BY CATEGORY
+                </span>
+
+
+
+                <!-- ==========================================
+                     DYNAMIC FILTER BUTTONS
+                     ==========================================
+                     
+                     groupsPage.js generates:
+                     
+                     All Categories
+                     🎭 Group Activities
+                     📊 Presentations
+                     🎬 Documentaries
+                     🎨 Art & Explorer
+                     
+                     using categories.js.
+                     ========================================== -->
+
+                <div
+                    id="project-filters"
+                    class="
+                        flex
+                        flex-wrap
+                        items-center
+                        gap-3
+                        mb-6
+                    "
+                >
+                </div>
+
+
+
+                <!-- ==========================================
+                     PROJECT COUNTER
+                     ==========================================
+                     
+                     Examples:
+                     
+                     0 projects
+                     1 project
+                     12 projects
+                     ========================================== -->
+
+                <div
+                    class="
+                        flex
+                        items-center
+                        justify-between
+                        mb-6
+                    "
+                >
+
+                    <div
+                        id="project-count"
+                        class="
+                            text-xs
+                            font-semibold
+                            text-slate-500
+                        "
+                    >
+                        0 projects
+                    </div>
+
+                </div>
+
+
+
+                <!-- ==========================================
+                     DYNAMIC PROJECT GRID
+                     ==========================================
+                     
+                     projectCard.js creates every card.
+                     ========================================== -->
+
+                <div
+                    id="projects-grid"
+                    class="
+                        grid
+                        grid-cols-1
+                        sm:grid-cols-2
+                        lg:grid-cols-4
+                        gap-6
+                    "
+                >
+
+                    <div
+                        class="
+                            col-span-full
+                            py-10
+                            text-center
+                            text-slate-400
+                        "
+                    >
+                        Loading projects...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ======================================================
+         SHARED FOOTER MOUNT POINT
+         ======================================================
+         
+         footer.js creates the footer.
+         
+         Student group links are generated from Supabase rather
+         than being manually hardcoded AB01-AB04.
+         ====================================================== -->
+
+    <div id="site-footer"></div>
+
+
+
+    <!-- ======================================================
+         CREATE GROUP MODAL
+         ======================================================
+         
+         PUBLIC VISITOR:
+         
+             cannot open this modal.
+         
+         ADMINISTRATOR:
+         
+             Add Student Group button opens it.
+         
+         
+         Data saved:
+         
+         name
+         slug
+         tagline
+         description
+         cover_image
+         card_image
+         sort_order
+         is_published
+         ====================================================== -->
+
+    <div
+        id="group-modal"
+        class="app-modal"
+        hidden
+    >
+
+
+        <!-- Modal white panel -->
+        <div
+            class="
+                app-modal-panel
+                p-6
+            "
+        >
+
+
+            <!-- ==============================================
+                 MODAL HEADER
+                 ============================================== -->
+
+            <div
+                class="
+                    flex
+                    items-center
+                    justify-between
+                    gap-4
+                    pb-4
+                    mb-5
+                    border-b
+                    border-slate-100
+                "
+            >
+
+                <div>
+
+                    <p
+                        class="
+                            text-[10px]
+                            font-bold
+                            uppercase
+                            tracking-wider
+                            text-accent-gold
+                        "
+                    >
+                        Administrator
+                    </p>
+
+
+                    <h2
+                        class="
+                            text-lg
+                            font-serif
+                            font-bold
+                            text-navy-900
+                        "
+                    >
+                        Create Student Group
+                    </h2>
+
+                </div>
+
+
+                <!--
+                    modal.js automatically recognizes
+                    data-modal-close.
+                -->
+                <button
+                    type="button"
+                    data-modal-close="group-modal"
+                    class="
+                        text-slate-400
+                        hover:text-slate-700
+                        text-xl
+                    "
+                    aria-label="Close create group form"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+
+            <!-- ==============================================
+                 CREATE GROUP FORM
+                 ============================================== -->
+
+            <form
+                id="group-form"
+                class="space-y-4"
+            >
+
+
+                <!-- ==========================================
+                     GROUP NAME + SLUG
+                     ========================================== -->
+
+                <div
+                    class="
+                        grid
+                        grid-cols-1
+                        sm:grid-cols-2
+                        gap-4
+                    "
+                >
+
+
+                    <!-- Group display name -->
+                    <div>
+
+                        <label
+                            class="form-label"
+                            for="group-name"
+                        >
+                            Group Name *
+                        </label>
+
+
+                        <input
+                            id="group-name"
+                            class="form-control"
+                            type="text"
+                            placeholder="Group AB05"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!--
+                        URL identifier.
+
+                        Example:
+
+                        ab05
+
+                        generates:
+
+                        group.html?group=ab05
+                    -->
+                    <div>
+
+                        <label
+                            class="form-label"
+                            for="group-slug"
+                        >
+                            Slug *
+                        </label>
+
+
+                        <input
+                            id="group-slug"
+                            class="form-control"
+                            type="text"
+                            placeholder="ab05"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ==========================================
+                     SHORT TAGLINE
+                     ==========================================
+                     
+                     Appears mainly on group cards and page hero.
+                     ========================================== -->
+
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="group-tagline"
+                    >
+                        Tagline
+                    </label>
+
+
+                    <input
+                        id="group-tagline"
+                        class="form-control"
+                        type="text"
+                        placeholder="
+                            Short description shown on group cards
+                        "
+                    >
+
+                </div>
+
+
+
+                <!-- ==========================================
+                     FULL GROUP DESCRIPTION
+                     ==========================================
+                     
+                     Shown on the individual group page.
+                     ========================================== -->
+
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="group-description"
+                    >
+                        Description
+                    </label>
+
+
+                    <textarea
+                        id="group-description"
+                        class="form-control"
+                        rows="4"
+                        placeholder="Full group overview"
+                    ></textarea>
+
+                </div>
+
+
+
+                <!-- ==============================================
+     GROUP IMAGES
+     ==============================================
+
+     Both fields allow:
+
+     - drag & drop upload
+     - file browser upload
+     - external image URL
+
+     File restrictions are controlled by imagePicker.js.
+
+     Group Cover:
+         recommended 1600 × 700 px
+
+     Group Card:
+         recommended 1200 × 750 px
+
+     Each field accepts ONE image only.
+     ============================================== -->
+
+<div
+    class="
+        grid
+        grid-cols-1
+        gap-6
+    "
+>
+
+
+    <!-- ==========================================
+         GROUP COVER IMAGE
+         ========================================== -->
+
+    <div>
+
+        <label
+            class="form-label"
+        >
+            Group Cover Image
+        </label>
+
+
+        <!--
+            imagePicker.js will build the complete uploader
+            inside this element.
+        -->
+        <div id="group-cover-picker"></div>
+
+    </div>
+
+
+
+    <!-- ==========================================
+         GROUP CARD IMAGE
+         ========================================== -->
+
+    <div>
+
+        <label
+            class="form-label"
+        >
+            Group Card Image
+        </label>
+
+
+        <div id="group-card-picker"></div>
+
+    </div>
+
+</div>
+
+
+
+                <!-- ==========================================
+                     ORDER + PUBLISH STATE
+                     ========================================== -->
+
+                <div
+                    class="
+                        grid
+                        grid-cols-1
+                        sm:grid-cols-2
+                        gap-4
+                        items-end
+                    "
+                >
+
+
+                    <!-- Controls group card ordering -->
+                    <div>
+
+                        <label
+                            class="form-label"
+                            for="group-sort-order"
+                        >
+                            Display Order
+                        </label>
+
+
+                        <input
+                            id="group-sort-order"
+                            class="form-control"
+                            type="number"
+                            min="0"
+                            value="0"
+                        >
+
+                    </div>
+
+
+
+                    <!--
+                        Checked:
+                            public can see group.
+
+                        Unchecked:
+                            administrator-only draft.
+                    -->
+                    <label
+                        class="
+                            flex
+                            items-center
+                            gap-2
+                            text-xs
+                            font-semibold
+                            text-slate-700
+                            pb-2
+                        "
+                    >
+
+                        <input
+                            id="group-published"
+                            type="checkbox"
+                            class="rounded"
+                            checked
+                        >
+
+                        Published
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- ==========================================
+                     FORM ACTION BUTTONS
+                     ========================================== -->
+
+                <div
+                    class="
+                        flex
+                        justify-end
+                        gap-2
+                        pt-4
+                        border-t
+                        border-slate-100
+                    "
+                >
+
+
+                    <!-- Cancel -->
+                    <button
+                        type="button"
+                        data-modal-close="group-modal"
+                        class="
+                            px-4
+                            py-2
+                            rounded-lg
+                            text-sm
+                            text-slate-600
+                            hover:bg-slate-100
+                            transition
+                        "
+                    >
+                        Cancel
+                    </button>
+
+
+
+                    <!-- Submit -->
+                    <button
+                        type="submit"
+                        class="
+                            px-4
+                            py-2
+                            rounded-lg
+                            bg-navy-900
+                            text-white
+                            text-sm
+                            font-semibold
+                            hover:bg-navy-800
+                            transition
+                        "
+                    >
+                        Create Group
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ======================================================
+         PAGE CONTROLLER
+         ======================================================
+         
+         type="module" enables ES module imports.
+         
+         groupsPage.js imports all required services,
+         components and utilities.
+         
+         Therefore we DO NOT load:
+         
+             supabaseClient.js
+             nav.js
+         
+         on this page anymore.
+         ====================================================== -->
+
+    <script
+        type="module"
+        src="assets/js/pages/groupsPage.js"
+    ></script>
+
+
 </body>
+
 </html>

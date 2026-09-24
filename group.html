@@ -1,955 +1,3449 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
+    <!-- ======================================================
+         BASIC DOCUMENT INFORMATION
+         ====================================================== -->
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">Group Details | English Teaching Unit - UoP</title>
-    <!-- Supabase JS Client CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabaseClient.js"></script>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        navy: {
-                            800: '#14294a',
-                            900: '#0c1b33',
-                            950: '#071021',
-                        },
-                        accent: {
-                            gold: '#d4a340',
-                            goldHover: '#b88c32',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .editor-only { display: none; }
-        body.is-editor-mode .editor-only { display: inline-flex !important; }
-        body.is-editor-mode .editor-block { display: block !important; }
-    </style>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+
+    <meta
+        name="description"
+        content="
+            Student group projects, members and gallery -
+            English Teaching Unit, Faculty of Engineering,
+            University of Peradeniya.
+        "
+    >
+
+
+    <!--
+        JavaScript changes this title after the group loads.
+
+        Example:
+
+        Group AB04 | English Teaching Unit - UoP
+    -->
+    <title>
+        Student Group |
+        English Teaching Unit - UoP
+    </title>
+
+
+
+    <!-- ======================================================
+         SUPABASE BROWSER CLIENT
+         ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+
+    <!-- ======================================================
+         TAILWIND CSS
+         ====================================================== -->
+
+    <script
+        src="https://cdn.tailwindcss.com"
+    ></script>
+
+
+
+    <!-- ======================================================
+         SHARED PORTAL TAILWIND THEME
+         ====================================================== -->
+
+    <script
+        src="assets/js/config/tailwind.js"
+    ></script>
+
+
+
+    <!-- ======================================================
+         PORTAL FONTS
+         ====================================================== -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+
+    <!-- ======================================================
+         SHARED PORTAL CSS
+         ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="assets/css/app.css"
+    >
+
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased">
 
-    <!-- NAVIGATION BAR -->
-    <header class="sticky top-0 z-50 bg-navy-900 text-white shadow-md">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <!-- Logo -->
-            <a href="index.html" class="flex items-center space-x-3">
-                <img 
-                    src="uoplogo.png" 
-                    alt="English Teaching Unit Logo"
-                    class="h-12 w-auto object-contain"
+
+
+<body
+    class="
+        bg-slate-50
+        text-slate-800
+        font-sans
+        antialiased
+    "
+>
+
+
+    <!-- ======================================================
+         SHARED NAVIGATION
+         ======================================================
+         
+         navbar.js inserts navigation here.
+         ====================================================== -->
+
+    <div id="site-header"></div>
+
+
+
+    <!-- ======================================================
+         ADMINISTRATOR MODE BANNER
+         ======================================================
+         
+         Public visitor:
+             remains empty.
+         
+         Admin:
+             displays Administrator Mode.
+         ====================================================== -->
+
+    <div id="admin-banner"></div>
+
+
+
+    <main>
+
+
+        <!-- ==================================================
+             GROUP NOT FOUND MESSAGE
+             ==================================================
+             
+             Hidden normally.
+             
+             Displayed if:
+             
+             - URL group slug does not exist
+             - unpublished group requested by normal visitor
+             ================================================== -->
+
+        <section
+            id="group-not-found"
+            hidden
+            class="
+                py-24
+                px-6
+                text-center
+            "
+        >
+
+            <div
+                class="
+                    max-w-xl
+                    mx-auto
+                "
+            >
+
+                <div
+                    class="
+                        text-5xl
+                        mb-5
+                    "
                 >
-                <div>
-                    <div class="font-semibold leading-tight text-sm">
-                        English Teaching Unit
-                    </div>
-                    <div class="text-xs text-slate-400">
-                        Faculty of Engineering · UoP
-                    </div>
+                    📁
                 </div>
-            </a>
-            
-            <!-- Navigation Links & Editor Toggle -->
-            <div class="flex items-center space-x-4 sm:space-x-8">
-                <nav class="hidden md:flex items-center space-x-8 text-sm">
-                    <a href="index.html" class="text-slate-300 hover:text-white transition">Home</a>
-                    <a href="groups.html" class="bg-navy-800 text-accent-gold px-4 py-2 rounded-md font-medium">Groups</a>
-                    <a href="categories.html" class="text-slate-300 hover:text-white transition">Categories</a>
-                    <a href="#gallery" class="text-slate-300 hover:text-white transition">Gallery</a>
-                    <a href="about.html" class="text-slate-300 hover:text-white transition">About</a>
-                </nav>
 
-                <!-- Editor Mode Toggle Button -->
-                <button id="editor-mode-toggle" onclick="toggleEditorMode()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-navy-800 hover:bg-navy-950 text-slate-300 hover:text-accent-gold border border-slate-700 transition" title="Toggle edit controls for students and projects">
-                    <span id="editor-mode-icon">✏️</span>
-                    <span id="editor-mode-label">Edit Mode</span>
-                </button>
 
-                <!-- Mobile Menu Toggle Button -->
-                <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white p-2 focus:outline-none" aria-label="Toggle navigation">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-
-        <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-navy-950 px-6 py-4 border-t border-navy-800 space-y-3">
-            <a href="index.html" class="block text-slate-300 hover:text-white py-1">Home</a>
-            <a href="groups.html" class="block text-accent-gold font-medium py-1">Groups</a>
-            <a href="categories.html" class="block text-slate-300 hover:text-white py-1">Categories</a>
-            <a href="#gallery" class="block text-slate-300 hover:text-white py-1">Gallery</a>
-            <a href="about.html" class="block text-slate-300 hover:text-white py-1">About</a>
-        </div>
-    </header>
-
-    <!-- EDITOR MODE ALERT BANNER -->
-    <div id="editor-banner" class="hidden bg-amber-500/15 border-b border-amber-500/30 px-6 py-2.5 text-xs text-amber-300">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <span class="text-sm">🔧</span>
-                <span class="font-medium text-amber-200">Editor Mode Active:</span>
-                <span>You can now add or remove students, add new projects, and edit group info.</span>
-            </div>
-            <button onclick="toggleEditorMode()" class="underline hover:text-white font-semibold">Exit Editor</button>
-        </div>
-    </div>
-
-    <!-- HERO / BANNER SECTION -->
-    <section class="bg-navy-900 text-white py-12 px-6 border-b border-navy-800">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-                <div class="flex items-center space-x-3 text-xs mb-3">
-                    <a href="groups.html" class="text-slate-400 hover:text-accent-gold transition">← All Groups</a>
-                    <span class="text-slate-600">|</span>
-                    <span id="breadcrumb-group-slug" class="text-accent-gold font-bold uppercase tracking-wider">GROUP AB01</span>
-                </div>
-                <h1 id="hero-group-title" class="text-3xl sm:text-4xl font-serif font-bold max-w-3xl leading-tight">
-                    Pioneers in collaborative storytelling and visual media
+                <h1
+                    class="
+                        text-3xl
+                        font-serif
+                        font-bold
+                        text-navy-900
+                        mb-3
+                    "
+                >
+                    Group not found
                 </h1>
-            </div>
-            <!-- Quick Group Edit Button (Editor Mode) -->
-            <button onclick="openEditGroupModal()" class="editor-only hidden items-center gap-1.5 bg-accent-gold hover:bg-accent-goldHover text-navy-950 px-4 py-2 rounded-lg text-xs font-bold transition shadow-sm self-start md:self-auto">
-                <span>✏️</span> Edit Group Info
-            </button>
-        </div>
-    </section>
 
-    <!-- GROUP OVERVIEW BANNER WITH STATS -->
-    <section class="max-w-7xl mx-auto px-6 -mt-6">
-        <div class="relative rounded-xl overflow-hidden shadow-lg bg-navy-950 border border-slate-700 min-h-[160px] flex items-end p-6 md:p-8">
-            <!-- Background Image Overlay -->
-            <img id="hero-cover-img" src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80" alt="Group Cover" class="absolute inset-0 w-full h-full object-cover opacity-25">
-            <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/60 to-transparent"></div>
-            
-            <div class="relative z-10 w-full flex flex-col md:flex-row justify-between md:items-end gap-4">
-                <div>
-                    <h2 id="hero-banner-name" class="text-2xl font-bold text-white mb-1">Group AB01</h2>
-                    <p id="hero-banner-desc" class="text-xs text-slate-300 max-w-2xl leading-relaxed">Pioneers in collaborative storytelling and visual media</p>
-                </div>
-                <div class="flex items-center space-x-8 text-center text-white border-t md:border-t-0 pt-3 md:pt-0 border-slate-700">
-                    <div>
-                        <div id="stat-projects-count" class="text-2xl font-bold font-serif text-accent-gold">4</div>
-                        <div class="text-[10px] uppercase text-slate-400 tracking-wider font-semibold">Projects</div>
-                    </div>
-                    <div>
-                        <div id="stat-students-count" class="text-2xl font-bold font-serif text-slate-200">1</div>
-                        <div class="text-[10px] uppercase text-slate-400 tracking-wider font-semibold">Students</div>
-                    </div>
-                    <div>
-                        <div id="stat-categories-count" class="text-2xl font-bold font-serif text-slate-200">4</div>
-                        <div class="text-[10px] uppercase text-slate-400 tracking-wider font-semibold">Categories</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- STUDENT LIST SECTION (ST-LIST) -->
-    <section class="max-w-7xl mx-auto px-6 pt-10 pb-6">
-        <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-            <div class="flex flex-wrap items-center justify-between gap-4 mb-4 border-b border-slate-100 pb-3">
-                <div class="flex items-center gap-3">
-                    <span id="student-group-badge" class="bg-accent-gold text-navy-900 text-xs font-bold px-2.5 py-1 rounded">AB01</span>
-                    <h3 id="student-group-heading" class="text-base font-bold text-navy-900">Group Student List</h3>
-                </div>
-                <div class="flex items-center gap-3">
-                    <span id="student-count-badge" class="text-xs text-slate-500 font-medium">0 Students</span>
-                    <!-- Add Student Button (Editor Mode) -->
-                    <button onclick="openAddStudentModal()" class="editor-only hidden items-center gap-1 bg-navy-900 hover:bg-navy-800 text-accent-gold text-xs font-bold px-3 py-1.5 rounded-lg transition shadow-sm">
-                        <span>+</span> Add Student
-                    </button>
-                </div>
-            </div>
-
-            <!-- Dynamic Table Structure -->
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs text-slate-700">
-                    <thead class="bg-slate-50 text-slate-500 font-semibold uppercase tracking-wider border-b border-slate-200">
-                        <tr>
-                            <th class="py-2.5 px-4">Reg No</th>
-                            <th class="py-2.5 px-4">Student Name</th>
-                            <th class="py-2.5 px-4">Committee</th>
-                            <th class="py-2.5 px-4 text-right">Role</th>
-                            <th class="py-2.5 px-4 text-right editor-only hidden">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="student-list-tbody" class="divide-y divide-slate-100">
-                        <tr>
-                            <td colspan="5" class="py-6 text-center text-slate-400">Loading student roster...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-
-    <!-- FILTER BUTTONS & PROJECTS SECTION -->
-    <section class="max-w-7xl mx-auto px-6 py-6">
-        
-        <!-- Filter Buttons Bar & Add Project Button -->
-        <div class="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-200">
-            <div class="flex flex-wrap items-center gap-2" id="filter-container">
-                <button data-filter="all" class="filter-btn bg-navy-900 text-white font-semibold text-xs px-4 py-2 rounded-full transition shadow-sm">
-                    All Work
-                </button>
-                <button data-filter="group-activities" class="filter-btn bg-slate-200 text-slate-700 hover:bg-slate-300 font-medium text-xs px-4 py-2 rounded-full transition flex items-center gap-1.5">
-                    <span>🎭</span> Group Activities <span id="badge-count-group-activities" class="bg-slate-300/60 text-slate-800 text-[10px] px-1.5 py-0.2 rounded-full">1</span>
-                </button>
-                <button data-filter="presentations" class="filter-btn bg-slate-200 text-slate-700 hover:bg-slate-300 font-medium text-xs px-4 py-2 rounded-full transition flex items-center gap-1.5">
-                    <span>📊</span> Presentations <span id="badge-count-presentations" class="bg-slate-300/60 text-slate-800 text-[10px] px-1.5 py-0.2 rounded-full">1</span>
-                </button>
-                <button data-filter="documentaries" class="filter-btn bg-slate-200 text-slate-700 hover:bg-slate-300 font-medium text-xs px-4 py-2 rounded-full transition flex items-center gap-1.5">
-                    <span>🎬</span> Documentaries <span id="badge-count-documentaries" class="bg-slate-300/60 text-slate-800 text-[10px] px-1.5 py-0.2 rounded-full">1</span>
-                </button>
-                <button data-filter="art-explorer" class="filter-btn bg-slate-200 text-slate-700 hover:bg-slate-300 font-medium text-xs px-4 py-2 rounded-full transition flex items-center gap-1.5">
-                    <span>🎨</span> Art & Explorer <span id="badge-count-art-explorer" class="bg-slate-300/60 text-slate-800 text-[10px] px-1.5 py-0.2 rounded-full">1</span>
-                </button>
-            </div>
-
-            <div class="flex items-center gap-3">
-                <button id="clear-filters-btn" class="text-xs text-slate-400 hover:text-navy-900 transition">
-                    Clear all
-                </button>
-                <!-- Add Project Button (Editor Mode) -->
-                <button onclick="openAddProjectModal()" class="editor-only hidden items-center gap-1 bg-navy-900 hover:bg-navy-800 text-accent-gold text-xs font-bold px-3.5 py-1.5 rounded-lg transition shadow-sm">
-                    <span>+</span> Add Project
-                </button>
-            </div>
-        </div>
-
-        <!-- Project Counter Banner -->
-        <div class="text-xs font-semibold text-slate-500 mb-6" id="project-counter-text">
-            Showing projects
-        </div>
-
-        <!-- Dynamic Group Projects Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="projects-grid">
-            <div class="col-span-full py-12 text-center text-slate-400">Loading projects for this group...</div>
-        </div>
-    </section>
-
-    <!-- GALLERY / MEDIA GRID SECTION -->
-    <section id="gallery" class="max-w-7xl mx-auto px-6 py-10 border-t border-slate-200 mt-10">
-        <!-- Top Bar: Title & Counter -->
-        <div class="flex items-center justify-between mb-6">
-            <div>
-                <h3 class="text-lg font-bold text-navy-900">Media Gallery</h3>
-                <p id="gallery-subtitle" class="text-xs text-slate-500">Visual highlights and event moments from this group</p>
-            </div>
-            <div class="text-xs text-slate-500 font-medium">
-                Showing <span id="gallery-counter" class="font-bold text-slate-800">8</span> images
-            </div>
-        </div>
-
-        <!-- Masonry Grid Container -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="gallery-grid">
-            <div class="col-span-full py-8 text-center text-slate-400">Loading photo moments...</div>
-        </div>
-    </section>
-
-    <!-- LIGHTBOX MODAL -->
-    <div id="lightbox-modal" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="relative max-w-4xl w-full max-h-[90vh] flex flex-col items-center">
-            <button onclick="closeLightbox()" class="absolute -top-10 right-0 text-white/80 hover:text-white text-2xl font-bold p-2 transition" aria-label="Close modal">✕</button>
-            <img id="lightbox-img" src="" alt="Full view" class="max-w-full max-h-[75vh] object-contain rounded-lg shadow-2xl">
-            <div class="mt-4 flex items-center justify-between w-full text-white px-2">
-                <div>
-                    <div class="flex items-center gap-2 mb-1">
-                        <span id="lightbox-group" class="bg-accent-gold text-navy-900 text-xs font-bold px-2 py-0.5 rounded">Group</span>
-                        <span id="lightbox-activity" class="bg-white/20 text-white text-xs px-2 py-0.5 rounded">Activity</span>
-                    </div>
-                    <p id="lightbox-caption" class="text-xs text-slate-300"></p>
-                </div>
-                <a id="lightbox-original-btn" href="#" target="_blank" rel="noopener noreferrer" class="text-xs text-accent-gold hover:underline font-medium">View original ↗</a>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL: ADD STUDENT -->
-    <div id="modal-add-student" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
-            <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
-                <h3 class="font-bold text-navy-900 text-base flex items-center gap-2">
-                    <span>👤</span> Add Student to Group
-                </h3>
-                <button onclick="closeModal('modal-add-student')" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
-            </div>
-            <form id="form-add-student" onsubmit="handleSaveStudent(event)" class="space-y-4 text-xs">
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-1">Student Full Name *</label>
-                    <input type="text" id="input-student-name" required placeholder="e.g. Kasun Perera" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-navy-900">
-                </div>
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-1">Registration Number *</label>
-                    <input type="text" id="input-student-reg" required placeholder="e.g. E/25/088" class="w-full px-3 py-2 border border-slate-300 rounded-lg font-mono focus:outline-none focus:border-navy-900">
-                </div>
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-1">Committee Responsibilities</label>
-                    <input type="text" id="input-student-committee" placeholder="e.g. Media & Documentation" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-navy-900">
-                </div>
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-1">Role</label>
-                    <select id="input-student-role" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-navy-900">
-                        <option value="Group Leader">Group Leader</option>
-                        <option value="Sub-Leader">Sub-Leader</option>
-                        <option value="Member" selected>Member</option>
-                        <option value="Audio Specialist">Audio Specialist</option>
-                        <option value="Editor">Editor</option>
-                        <option value="Presenter">Presenter</option>
-                        <option value="Coordinator">Coordinator</option>
-                        <option value="Curator">Curator</option>
-                        <option value="Photographer">Photographer</option>
-                    </select>
-                </div>
-                <div class="pt-2 flex items-center justify-end gap-2 border-t border-slate-100">
-                    <button type="button" onclick="closeModal('modal-add-student')" class="px-4 py-2 rounded-lg text-slate-600 hover:bg-slate-100 font-medium">Cancel</button>
-                    <button type="submit" id="btn-save-student" class="px-4 py-2 rounded-lg bg-navy-900 hover:bg-navy-800 text-white font-bold">Save Student</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL: ADD PROJECT -->
-    <div id="modal-add-project" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200">
-            <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
-                <h3 class="font-bold text-navy-900 text-base flex items-center gap-2">
-                    <span>🚀</span> Add Project Showcase
-                </h3>
-                <button onclick="closeModal('modal-add-project')" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
-            </div>
-            <form id="form-add-project" onsubmit="handleSaveProject(event)" class="space-y-4 text-xs">
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-1">Project Title *</label>
-                    <input type="text" id="input-project-title" required placeholder="e.g. Smart Irrigation: An Oral Presentation" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-navy-900">
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">Category *</label>
-                        <select id="input-project-category" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-navy-900">
-                            <option value="Group Activities">🎭 Group Activities</option>
-                            <option value="Presentations">📊 Presentations</option>
-                            <option value="Documentaries">🎬 Documentaries</option>
-                            <option value="Art & Explorer">🎨 Art & Explorer</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block font-semibold text-slate-700 mb-1">YouTube Video Link (Optional)</label>
-                        <input type="url" id="input-project-youtube" placeholder="https://www.youtube.com/watch?v=..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-navy-900">
-                    </div>
-                </div>
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-1">Cover / Thumbnail Image URL</label>
-                    <input type="url" id="input-project-image" placeholder="https://images.unsplash.com/... or image URL" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-navy-900">
-                </div>
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-1">Description *</label>
-                    <textarea id="input-project-desc" rows="3" required placeholder="Describe the project objective, key topics covered, and student contributions..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-navy-900"></textarea>
-                </div>
-                <div class="pt-2 flex items-center justify-end gap-2 border-t border-slate-100">
-                    <button type="button" onclick="closeModal('modal-add-project')" class="px-4 py-2 rounded-lg text-slate-600 hover:bg-slate-100 font-medium">Cancel</button>
-                    <button type="submit" id="btn-save-project" class="px-4 py-2 rounded-lg bg-navy-900 hover:bg-navy-800 text-white font-bold">Save Project</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL: EDIT GROUP INFO -->
-    <div id="modal-edit-group" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
-            <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
-                <h3 class="font-bold text-navy-900 text-base flex items-center gap-2">
-                    <span>✏️</span> Edit Group Details
-                </h3>
-                <button onclick="closeModal('modal-edit-group')" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
-            </div>
-            <form id="form-edit-group" onsubmit="handleSaveGroupInfo(event)" class="space-y-4 text-xs">
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-1">Group Tagline *</label>
-                    <input type="text" id="input-group-tagline" required placeholder="e.g. Pioneers in collaborative storytelling..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-navy-900">
-                </div>
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-1">Group Description</label>
-                    <textarea id="input-group-desc" rows="3" placeholder="Overview of the group's themes and focus area..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-navy-900"></textarea>
-                </div>
-                <div>
-                    <label class="block font-semibold text-slate-700 mb-1">Cover Image URL</label>
-                    <input type="url" id="input-group-cover" placeholder="https://images.unsplash.com/..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-navy-900">
-                </div>
-                <div class="pt-2 flex items-center justify-end gap-2 border-t border-slate-100">
-                    <button type="button" onclick="closeModal('modal-edit-group')" class="px-4 py-2 rounded-lg text-slate-600 hover:bg-slate-100 font-medium">Cancel</button>
-                    <button type="submit" id="btn-save-group" class="px-4 py-2 rounded-lg bg-navy-900 hover:bg-navy-800 text-white font-bold">Save Details</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- FOOTER -->
-    <footer class="bg-navy-950 text-white pt-16 pb-12 px-6 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
-            <div>
-                <div class="flex items-center space-x-3 mb-4">
-                    <div class="bg-accent-gold text-navy-900 font-bold text-xs px-2 py-1 rounded">ETU</div>
-                    <div class="font-bold text-sm">English Teaching Unit</div>
-                </div>
-                <p class="text-xs text-slate-400 mb-4 leading-relaxed max-w-sm">
-                    Developing English language and communication skills in engineering students at the University of Peradeniya, Sri Lanka.
+                <p
+                    class="
+                        text-sm
+                        text-slate-500
+                        mb-6
+                    "
+                >
+                    This group is unavailable or is not currently
+                    published.
                 </p>
-                <p class="text-xs text-slate-400">
-                    📍 Faculty of Engineering, University of Peradeniya, Peradeniya 20400, Sri Lanka
-                </p>
+
+
+                <a
+                    href="groups.html"
+                    class="
+                        inline-flex
+                        bg-navy-900
+                        text-white
+                        px-5
+                        py-2.5
+                        rounded-lg
+                        text-sm
+                        font-semibold
+                    "
+                >
+                    Back to Groups
+                </a>
+
             </div>
 
-            <div>
-                <h4 class="font-bold text-sm text-slate-200 mb-4">Pages</h4>
-                <ul class="space-y-2 text-xs text-slate-400">
-                    <li><a href="index.html" class="hover:text-accent-gold">Home</a></li>
-                    <li><a href="groups.html" class="hover:text-accent-gold">Groups</a></li>
-                    <li><a href="categories.html" class="hover:text-accent-gold">Categories</a></li>
-                    <li><a href="#gallery" class="hover:text-accent-gold">Gallery</a></li>
-                    <li><a href="about.html" class="hover:text-accent-gold">About</a></li>
-                </ul>
-            </div>
+        </section>
 
-            <div>
-                <h4 class="font-bold text-sm text-slate-200 mb-4">Student Groups</h4>
-                <ul id="footer-groups-list" class="space-y-2 text-xs text-slate-400">
-                    <li><a href="group.html?group=ab01" class="hover:text-accent-gold">Group AB01</a></li>
-                    <li><a href="group.html?group=ab02" class="hover:text-accent-gold">Group AB02</a></li>
-                    <li><a href="group.html?group=ab03" class="hover:text-accent-gold">Group AB03</a></li>
-                    <li><a href="group.html?group=ab04" class="hover:text-accent-gold">Group AB04</a></li>
-                </ul>
-            </div>
-        </div>
 
-        <div class="max-w-7xl mx-auto pt-8 border-t border-slate-800 text-center text-xs text-slate-500">
-            &copy; English Teaching Unit - Faculty of Engineering, University of Peradeniya. All rights reserved.
-        </div>
-    </footer>
 
-    <!-- DYNAMIC GROUP CONTROLLER & EDIT SCRIPT -->
-    <script>
-        let currentGroupData = null;
-        let currentProjects = [];
-        let currentStudents = [];
-        let currentMedia = [];
-        let activeGroupSlug = 'ab01';
-        let isEditorMode = false;
+        <!-- ==================================================
+             NORMAL GROUP PAGE
+             ================================================== -->
 
-        // --- EDITOR MODE MANAGEMENT ---
-        function initEditorMode() {
-            try {
-                isEditorMode = localStorage.getItem('ETU_EDITOR_MODE') === 'true';
-            } catch (e) {
-                isEditorMode = false;
-            }
-            updateEditorUI();
-        }
+        <div id="group-page-content">
 
-        function toggleEditorMode() {
-            isEditorMode = !isEditorMode;
-            try {
-                localStorage.setItem('ETU_EDITOR_MODE', isEditorMode ? 'true' : 'false');
-            } catch (e) {}
-            updateEditorUI();
-        }
 
-        function updateEditorUI() {
-            const body = document.body;
-            const banner = document.getElementById('editor-banner');
-            const icon = document.getElementById('editor-mode-icon');
-            const label = document.getElementById('editor-mode-label');
+            <!-- ==============================================
+                 GROUP HERO
+                 ============================================== -->
 
-            if (isEditorMode) {
-                body.classList.add('is-editor-mode');
-                if (banner) banner.classList.remove('hidden');
-                if (icon) icon.textContent = '🔒';
-                if (label) label.textContent = 'Exit Editor';
-            } else {
-                body.classList.remove('is-editor-mode');
-                if (banner) banner.classList.add('hidden');
-                if (icon) icon.textContent = '✏️';
-                if (label) label.textContent = 'Edit Mode';
-            }
-        }
+            <section
+                class="
+                    bg-navy-900
+                    text-white
+                    py-12
+                    px-6
+                    border-b
+                    border-navy-800
+                "
+            >
 
-        // --- FILTERING FUNCTIONALITY ---
-        function applyFilter(category) {
-            const filterBtns = document.querySelectorAll('.filter-btn');
-            const projectCards = document.querySelectorAll('.project-card');
-            const counterText = document.getElementById('project-counter-text');
-            let visibleCount = 0;
+                <div
+                    class="
+                        max-w-7xl
+                        mx-auto
+                        flex
+                        flex-col
+                        md:flex-row
+                        md:items-center
+                        md:justify-between
+                        gap-5
+                    "
+                >
 
-            filterBtns.forEach(btn => {
-                const btnFilter = btn.getAttribute('data-filter');
-                if (btnFilter === category) {
-                    btn.className = 'filter-btn bg-navy-900 text-white font-semibold text-xs px-4 py-2 rounded-full transition shadow-sm';
-                } else {
-                    btn.className = 'filter-btn bg-slate-200 text-slate-700 hover:bg-slate-300 font-medium text-xs px-4 py-2 rounded-full transition flex items-center gap-1.5';
-                }
-            });
 
-            projectCards.forEach(card => {
-                const cardCat = card.getAttribute('data-category');
-                if (category === 'all' || cardCat === category) {
-                    card.style.display = 'flex';
-                    visibleCount++;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
+                    <!-- ======================================
+                         GROUP TITLE / BREADCRUMB
+                         ====================================== -->
 
-            if (counterText) {
-                const groupName = currentGroupData ? currentGroupData.name : activeGroupSlug.toUpperCase();
-                counterText.textContent = `Showing ${visibleCount} project${visibleCount !== 1 ? 's' : ''} in ${groupName}`;
-            }
-        }
+                    <div>
 
-        // --- DYNAMIC PAGE INITIALIZATION ---
-        async function initGroupPage() {
-            const params = new URLSearchParams(window.location.search);
-            const groupSlug = (params.get('group') || 'ab01').toLowerCase();
-            activeGroupSlug = groupSlug;
+                        <div
+                            class="
+                                flex
+                                items-center
+                                space-x-3
+                                text-xs
+                                mb-3
+                            "
+                        >
 
-            try {
-                if (!window.ETUDataService) {
-                    console.warn('ETUDataService not ready');
-                    return;
-                }
+                            <a
+                                href="groups.html"
+                                class="
+                                    text-slate-400
+                                    hover:text-accent-gold
+                                    transition
+                                "
+                            >
+                                ← All Groups
+                            </a>
 
-                const details = await window.ETUDataService.getGroupDetails(groupSlug);
-                currentGroupData = details.group;
-                currentProjects = details.projects || [];
-                currentStudents = details.students || [];
-                currentMedia = details.media || [];
 
-                // 1. Title & Breadcrumbs
-                document.getElementById('page-title').textContent = `${currentGroupData.name} | English Teaching Unit - UoP`;
-                document.getElementById('breadcrumb-group-slug').textContent = currentGroupData.name.toUpperCase();
-                document.getElementById('hero-group-title').textContent = currentGroupData.tagline || currentGroupData.name;
-                document.getElementById('hero-banner-name').textContent = currentGroupData.name;
-                document.getElementById('hero-banner-desc').textContent = currentGroupData.description || currentGroupData.tagline;
-                
-                if (currentGroupData.coverImage) {
-                    document.getElementById('hero-cover-img').src = currentGroupData.coverImage;
-                }
+                            <span
+                                class="
+                                    text-slate-600
+                                "
+                            >
+                                |
+                            </span>
 
-                // 2. Statistics
-                document.getElementById('stat-projects-count').textContent = currentProjects.length;
-                document.getElementById('stat-students-count').textContent = currentStudents.length;
-                const distinctCategories = new Set(currentProjects.map(p => p.category));
-                document.getElementById('stat-categories-count').textContent = distinctCategories.size || 4;
 
-                // 3. Student Roster Section
-                document.getElementById('student-group-badge').textContent = currentGroupData.slug.toUpperCase();
-                document.getElementById('student-group-heading').textContent = `${currentGroupData.name} Student List`;
-                document.getElementById('student-count-badge').textContent = `${currentStudents.length} Student${currentStudents.length !== 1 ? 's' : ''}`;
+                            <span
+                                id="breadcrumb-group"
+                                class="
+                                    text-accent-gold
+                                    font-bold
+                                    uppercase
+                                    tracking-wider
+                                "
+                            >
+                                Group
+                            </span>
 
-                renderStudentRoster(currentStudents);
-
-                // 4. Projects Grid
-                renderProjects(currentProjects);
-
-                // 5. Category Counts on Filter Buttons
-                updateFilterBadgeCounts(currentProjects);
-
-                // 6. Media Gallery
-                renderMediaGallery(currentMedia, currentGroupData);
-
-                applyFilter('all');
-            } catch (err) {
-                console.error('Error initializing group page:', err);
-            }
-        }
-
-        // Render Student Table
-        function renderStudentRoster(students) {
-            const tbody = document.getElementById('student-list-tbody');
-            if (!students || students.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-400">No students added to this cohort yet. Click <strong>+ Add Student</strong> in Editor Mode.</td></tr>`;
-                return;
-            }
-
-            tbody.innerHTML = students.map(st => `
-                <tr class="hover:bg-slate-50 transition group">
-                    <td class="py-3 px-4 font-mono font-medium text-slate-900">${st.regNo}</td>
-                    <td class="py-3 px-4 font-semibold text-navy-900">${st.name}</td>
-                    <td class="py-3 px-4 text-slate-600">${st.committee || '—'}</td>
-                    <td class="py-3 px-4 text-right">
-                        <span class="${st.role && st.role.includes('Leader') ? 'bg-navy-900 text-white' : 'bg-slate-100 text-slate-700'} text-[10px] px-2.5 py-0.5 rounded font-medium">${st.role || 'Member'}</span>
-                    </td>
-                    <td class="py-3 px-4 text-right editor-only hidden">
-                        <button onclick="handleDeleteStudent('${st.id}')" class="text-rose-500 hover:text-rose-700 font-bold p-1 rounded hover:bg-rose-50 transition" title="Delete Student">🗑️</button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        // Render Projects Grid
-        function renderProjects(projects) {
-            const grid = document.getElementById('projects-grid');
-            if (!projects || projects.length === 0) {
-                grid.innerHTML = `
-                    <div class="col-span-full py-12 text-center bg-white rounded-xl border border-dashed border-slate-300 p-8">
-                        <p class="text-slate-500 text-sm mb-2">No projects have been added to this group yet.</p>
-                        <p class="text-xs text-slate-400">Switch to <strong>Editor Mode</strong> to add the first showcase project.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            const groupBadge = currentGroupData ? currentGroupData.slug.toUpperCase() : activeGroupSlug.toUpperCase();
-
-            grid.innerHTML = projects.map(item => {
-                const icon = item.icon || (item.category === 'Group Activities' ? '🎭' : item.category === 'Presentations' ? '📊' : item.category === 'Documentaries' ? '🎬' : '🎨');
-                
-                // If YouTube embed URL exists, render interactive player or video preview
-                const mediaBlock = item.youtubeUrl ? `
-                    <div class="relative h-44 w-full bg-black">
-                        <iframe 
-                            class="w-full h-full object-cover" 
-                            src="${item.youtubeUrl}" 
-                            title="${item.title}" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                            allowfullscreen>
-                        </iframe>
-                        <div class="absolute top-3 left-3 flex gap-1 pointer-events-none">
-                            <span class="bg-accent-gold text-navy-900 text-[10px] font-bold px-2 py-0.5 rounded shadow">${groupBadge}</span>
-                            <span class="bg-navy-900 text-white text-[10px] px-1.5 py-0.5 rounded shadow">${icon}</span>
                         </div>
-                    </div>
-                ` : `
-                    <div class="relative h-44 w-full bg-slate-900">
-                        <img src="${item.imageUrl || 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80'}" alt="${item.title}" class="w-full h-full object-cover opacity-90">
-                        <div class="absolute top-3 left-3 flex gap-1">
-                            <span class="bg-accent-gold text-navy-900 text-[10px] font-bold px-2 py-0.5 rounded shadow">${groupBadge}</span>
-                            <span class="bg-navy-900 text-white text-[10px] px-1.5 py-0.5 rounded shadow">${icon}</span>
-                        </div>
-                        ${item.time ? `<div class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded font-mono">${item.time}</div>` : ''}
-                    </div>
-                `;
 
-                return `
-                    <div class="project-card bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition duration-200 flex flex-col justify-between" data-category="${item.filterCategory || ''}">
-                        <div>
-                            ${mediaBlock}
-                            <div class="p-4">
-                                <div class="flex items-center justify-between mb-1">
-                                    <span class="text-[10px] text-blue-600 font-semibold uppercase tracking-wider block">${item.category}</span>
-                                    <button onclick="handleDeleteProject('${item.id}')" class="editor-only hidden text-rose-500 hover:text-rose-700 text-xs p-1" title="Delete Project">🗑️</button>
-                                </div>
-                                <h4 class="font-bold text-navy-900 text-sm mb-1.5 line-clamp-2">${item.title}</h4>
-                                <p class="text-slate-500 text-xs line-clamp-3 leading-relaxed mb-4">${item.description}</p>
-                            </div>
-                        </div>
-                        <div class="p-4 pt-0 flex items-center justify-between">
-                            ${item.youtubeUrl ? `
-                                <a href="${item.youtubeUrl}" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-accent-gold hover:underline inline-flex items-center gap-1">
-                                    ▶ Watch on YouTube
-                                </a>
-                            ` : `
-                                <span class="text-xs font-semibold text-slate-400 inline-flex items-center gap-1">
-                                    Showcase Article →
+
+                        <!--
+                            Shows group tagline.
+
+                            If tagline is blank, JavaScript uses
+                            the group name.
+                        -->
+                        <h1
+                            id="group-title"
+                            class="
+                                text-3xl
+                                sm:text-4xl
+                                font-serif
+                                font-bold
+                                max-w-3xl
+                                leading-tight
+                            "
+                        >
+                            Loading group...
+                        </h1>
+
+                    </div>
+
+
+
+                    <!-- ======================================
+                         ADMIN GROUP ACTIONS
+                         ======================================
+                         
+                         Both buttons are hidden for visitors.
+                         ====================================== -->
+
+                    <div
+                        class="
+                            flex
+                            flex-wrap
+                            gap-2
+                        "
+                    >
+
+                        <button
+                            id="edit-group-btn"
+                            type="button"
+                            hidden
+                            class="
+                                bg-accent-gold
+                                hover:bg-accent-goldHover
+                                text-navy-950
+                                px-4
+                                py-2
+                                rounded-lg
+                                text-xs
+                                font-bold
+                                shadow-sm
+                                transition
+                            "
+                        >
+                            Edit Group
+                        </button>
+
+
+                        <button
+                            id="delete-group-btn"
+                            type="button"
+                            hidden
+                            class="
+                                border
+                                border-red-300/60
+                                text-red-200
+                                hover:bg-red-500/10
+                                px-4
+                                py-2
+                                rounded-lg
+                                text-xs
+                                font-bold
+                                transition
+                            "
+                        >
+                            Delete Group
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ==============================================
+                 GROUP OVERVIEW CARD
+                 ============================================== -->
+
+            <section
+                class="
+                    max-w-7xl
+                    mx-auto
+                    px-6
+                    -mt-6
+                "
+            >
+
+                <div
+                    class="
+                        relative
+                        rounded-xl
+                        overflow-hidden
+                        shadow-lg
+                        bg-navy-950
+                        border
+                        border-slate-700
+                        min-h-[190px]
+                        flex
+                        items-end
+                        p-6
+                        md:p-8
+                    "
+                >
+
+
+                    <!-- ======================================
+                         COVER IMAGE
+                         ====================================== -->
+
+                    <img
+                        id="group-cover-image"
+                        src="assets/images/uopefac.jpg"
+                        alt="Group cover"
+                        class="
+                            absolute
+                            inset-0
+                            w-full
+                            h-full
+                            object-cover
+                            opacity-25
+                        "
+                    >
+
+
+                    <!-- Dark overlay keeps text readable -->
+                    <div
+                        class="
+                            absolute
+                            inset-0
+                            bg-gradient-to-t
+                            from-navy-950
+                            via-navy-950/60
+                            to-transparent
+                        "
+                    ></div>
+
+
+
+                    <div
+                        class="
+                            relative
+                            z-10
+                            w-full
+                            flex
+                            flex-col
+                            md:flex-row
+                            justify-between
+                            md:items-end
+                            gap-5
+                        "
+                    >
+
+
+                        <!-- ==================================
+                             GROUP DESCRIPTION
+                             ================================== -->
+
+                        <div
+                            class="
+                                max-w-2xl
+                            "
+                        >
+
+                            <div
+                                class="
+                                    flex
+                                    items-center
+                                    gap-3
+                                    mb-2
+                                "
+                            >
+
+                                <span
+                                    id="group-code"
+                                    class="
+                                        bg-accent-gold
+                                        text-navy-900
+                                        text-xs
+                                        font-bold
+                                        px-2.5
+                                        py-1
+                                        rounded
+                                    "
+                                >
+                                    GROUP
                                 </span>
-                            `}
+
+
+                                <h2
+                                    id="group-name"
+                                    class="
+                                        text-2xl
+                                        font-bold
+                                        text-white
+                                    "
+                                >
+                                    Group
+                                </h2>
+
+                            </div>
+
+
+                            <p
+                                id="group-description"
+                                class="
+                                    text-xs
+                                    sm:text-sm
+                                    text-slate-300
+                                    leading-relaxed
+                                "
+                            >
+                            </p>
+
                         </div>
+
+
+
+                        <!-- ==================================
+                             LIVE GROUP STATISTICS
+                             ================================== -->
+
+                        <div
+                            class="
+                                flex
+                                items-center
+                                gap-8
+                                text-center
+                                text-white
+                                border-t
+                                md:border-t-0
+                                pt-4
+                                md:pt-0
+                                border-slate-700
+                            "
+                        >
+
+
+                            <!-- Project count -->
+                            <div>
+
+                                <div
+                                    id="stat-projects"
+                                    class="
+                                        text-2xl
+                                        font-bold
+                                        font-serif
+                                        text-accent-gold
+                                    "
+                                >
+                                    0
+                                </div>
+
+                                <div
+                                    class="
+                                        text-[10px]
+                                        uppercase
+                                        text-slate-400
+                                        tracking-wider
+                                        font-semibold
+                                    "
+                                >
+                                    Projects
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- Student count -->
+                            <div>
+
+                                <div
+                                    id="stat-students"
+                                    class="
+                                        text-2xl
+                                        font-bold
+                                        font-serif
+                                        text-slate-200
+                                    "
+                                >
+                                    0
+                                </div>
+
+                                <div
+                                    class="
+                                        text-[10px]
+                                        uppercase
+                                        text-slate-400
+                                        tracking-wider
+                                        font-semibold
+                                    "
+                                >
+                                    Students
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- Category count -->
+                            <div>
+
+                                <div
+                                    id="stat-categories"
+                                    class="
+                                        text-2xl
+                                        font-bold
+                                        font-serif
+                                        text-slate-200
+                                    "
+                                >
+                                    0
+                                </div>
+
+                                <div
+                                    class="
+                                        text-[10px]
+                                        uppercase
+                                        text-slate-400
+                                        tracking-wider
+                                        font-semibold
+                                    "
+                                >
+                                    Categories
+                                </div>
+
+                            </div>
+
+                        </div>
+
                     </div>
-                `;
-            }).join('');
-        }
 
-        // Update counts on the filter pills
-        function updateFilterBadgeCounts(projects) {
-            const counts = {
-                'group-activities': 0,
-                'presentations': 0,
-                'documentaries': 0,
-                'art-explorer': 0
-            };
-
-            projects.forEach(p => {
-                const cat = (p.filterCategory || '').toLowerCase();
-                if (counts[cat] !== undefined) counts[cat]++;
-            });
-
-            for (const key in counts) {
-                const el = document.getElementById(`badge-count-${key}`);
-                if (el) el.textContent = counts[key];
-            }
-        }
-
-        // Render Media Gallery
-        function renderMediaGallery(media, group) {
-            const grid = document.getElementById('gallery-grid');
-            const subtitle = document.getElementById('gallery-subtitle');
-            const counter = document.getElementById('gallery-counter');
-
-            if (subtitle) subtitle.textContent = `Visual highlights and event moments from ${group.name}`;
-            if (counter) counter.textContent = media.length;
-
-            if (!media || media.length === 0) {
-                grid.innerHTML = `<div class="col-span-full py-8 text-center text-slate-400">No photos in this gallery yet.</div>`;
-                return;
-            }
-
-            // Distribute across 4 columns
-            const cols = [[], [], [], []];
-            media.forEach((item, i) => {
-                cols[i % 4].push(item);
-            });
-
-            grid.innerHTML = cols.map(col => `
-                <div class="flex flex-col gap-4">
-                    ${col.map(item => `
-                        <div class="group relative cursor-pointer overflow-hidden rounded-2xl shadow-sm bg-slate-100" 
-                             onclick="openLightbox('${item.fullUrl || item.url}', '${item.badge || group.name}', '${item.activity || 'Activity'}', '${item.title.replace(/'/g, "\\'")}')">
-                            <img src="${item.url}" alt="${item.title}" class="w-full ${item.height || 'h-56'} object-cover group-hover:scale-105 transition duration-300">
-                            <div class="absolute top-3 left-3 flex gap-1 z-10">
-                                <span class="bg-accent-gold text-navy-900 text-[10px] font-bold px-2 py-0.5 rounded shadow">${item.badge || group.slug.toUpperCase()}</span>
-                                <span class="bg-navy-900/90 text-white text-[10px] px-2 py-0.5 rounded shadow">${item.activity || 'Moments'}</span>
-                            </div>
-                            <div class="absolute inset-0 bg-gradient-to-t from-navy-950/90 via-navy-950/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3 text-white">
-                                <span class="text-xs font-semibold">${item.title}</span>
-                                <span class="text-[10px] text-slate-300">Click to view full size 🔍</span>
-                            </div>
-                        </div>
-                    `).join('')}
                 </div>
-            `).join('');
-        }
 
-        // --- CRUD ACTIONS ---
-        function openAddStudentModal() {
-            document.getElementById('form-add-student').reset();
-            document.getElementById('modal-add-student').classList.remove('hidden');
-        }
+            </section>
 
-        function openAddProjectModal() {
-            document.getElementById('form-add-project').reset();
-            document.getElementById('modal-add-project').classList.remove('hidden');
-        }
 
-        function openEditGroupModal() {
-            if (!currentGroupData) return;
-            document.getElementById('input-group-tagline').value = currentGroupData.tagline || '';
-            document.getElementById('input-group-desc').value = currentGroupData.description || '';
-            document.getElementById('input-group-cover').value = currentGroupData.coverImage || '';
-            document.getElementById('modal-edit-group').classList.remove('hidden');
-        }
 
-        function closeModal(modalId) {
-            const el = document.getElementById(modalId);
-            if (el) el.classList.add('hidden');
-        }
+            <!-- ==============================================
+                 STUDENT ROSTER
+                 ============================================== -->
 
-        async function handleSaveStudent(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-save-student');
-            btn.disabled = true;
-            btn.textContent = 'Saving...';
+            <section
+                class="
+                    max-w-7xl
+                    mx-auto
+                    px-6
+                    pt-10
+                    pb-6
+                "
+            >
 
-            const name = document.getElementById('input-student-name').value;
-            const regNo = document.getElementById('input-student-reg').value;
-            const committee = document.getElementById('input-student-committee').value;
-            const role = document.getElementById('input-student-role').value;
+                <div
+                    class="
+                        bg-white
+                        rounded-xl
+                        border
+                        border-slate-200
+                        p-6
+                        shadow-sm
+                    "
+                >
 
-            try {
-                const newStudent = await window.ETUDataService.addStudent({
-                    groupId: currentGroupData ? currentGroupData.id : null,
-                    slug: activeGroupSlug,
-                    name,
-                    regNo,
-                    committee,
-                    role
-                });
 
-                currentStudents.unshift(newStudent);
-                renderStudentRoster(currentStudents);
-                document.getElementById('stat-students-count').textContent = currentStudents.length;
-                document.getElementById('student-count-badge').textContent = `${currentStudents.length} Student${currentStudents.length !== 1 ? 's' : ''}`;
-                closeModal('modal-add-student');
-            } catch (err) {
-                alert('Could not save student: ' + err.message);
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Save Student';
-            }
-        }
+                    <!-- ======================================
+                         STUDENT LIST HEADER
+                         ====================================== -->
 
-        async function handleDeleteStudent(id) {
-            if (!confirm('Are you sure you want to remove this student?')) return;
-            try {
-                await window.ETUDataService.deleteStudent(id, activeGroupSlug);
-                currentStudents = currentStudents.filter(s => s.id !== id);
-                renderStudentRoster(currentStudents);
-                document.getElementById('stat-students-count').textContent = currentStudents.length;
-                document.getElementById('student-count-badge').textContent = `${currentStudents.length} Student${currentStudents.length !== 1 ? 's' : ''}`;
-            } catch (err) {
-                alert('Could not delete student: ' + err.message);
-            }
-        }
+                    <div
+                        class="
+                            flex
+                            flex-wrap
+                            items-center
+                            justify-between
+                            gap-4
+                            mb-4
+                            border-b
+                            border-slate-100
+                            pb-3
+                        "
+                    >
 
-        async function handleSaveProject(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-save-project');
-            btn.disabled = true;
-            btn.textContent = 'Saving...';
 
-            const title = document.getElementById('input-project-title').value;
-            const category = document.getElementById('input-project-category').value;
-            const youtubeUrl = document.getElementById('input-project-youtube').value;
-            const fileUrl = document.getElementById('input-project-image').value;
-            const description = document.getElementById('input-project-desc').value;
+                        <div
+                            class="
+                                flex
+                                items-center
+                                gap-3
+                            "
+                        >
 
-            try {
-                const newProj = await window.ETUDataService.addProject({
-                    groupId: currentGroupData ? currentGroupData.id : null,
-                    slug: activeGroupSlug,
-                    title,
-                    category,
-                    fileUrl,
-                    youtubeUrl,
-                    description
-                });
+                            <span
+                                id="student-group-code"
+                                class="
+                                    bg-accent-gold
+                                    text-navy-900
+                                    text-xs
+                                    font-bold
+                                    px-2.5
+                                    py-1
+                                    rounded
+                                "
+                            >
+                                GROUP
+                            </span>
 
-                currentProjects.unshift(newProj);
-                renderProjects(currentProjects);
-                updateFilterBadgeCounts(currentProjects);
-                document.getElementById('stat-projects-count').textContent = currentProjects.length;
-                applyFilter('all');
-                closeModal('modal-add-project');
-            } catch (err) {
-                alert('Could not save project: ' + err.message);
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Save Project';
-            }
-        }
 
-        async function handleDeleteProject(id) {
-            if (!confirm('Are you sure you want to delete this project?')) return;
-            try {
-                await window.ETUDataService.deleteProject(id, activeGroupSlug);
-                currentProjects = currentProjects.filter(p => p.id !== id);
-                renderProjects(currentProjects);
-                updateFilterBadgeCounts(currentProjects);
-                document.getElementById('stat-projects-count').textContent = currentProjects.length;
-                applyFilter('all');
-            } catch (err) {
-                alert('Could not delete project: ' + err.message);
-            }
-        }
+                            <h2
+                                id="student-heading"
+                                class="
+                                    text-base
+                                    font-bold
+                                    text-navy-900
+                                "
+                            >
+                                Group Student List
+                            </h2>
 
-        async function handleSaveGroupInfo(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-save-group');
-            btn.disabled = true;
-            btn.textContent = 'Saving...';
+                        </div>
 
-            const tagline = document.getElementById('input-group-tagline').value;
-            const description = document.getElementById('input-group-desc').value;
-            const coverImage = document.getElementById('input-group-cover').value;
 
-            try {
-                const updated = await window.ETUDataService.updateGroupInfo({
-                    groupId: currentGroupData ? currentGroupData.id : null,
-                    slug: activeGroupSlug,
-                    tagline,
-                    description,
-                    coverImage
-                });
 
-                if (updated) {
-                    currentGroupData = updated;
-                    document.getElementById('hero-group-title').textContent = updated.tagline;
-                    document.getElementById('hero-banner-desc').textContent = updated.description;
-                    if (updated.coverImage) document.getElementById('hero-cover-img').src = updated.coverImage;
-                }
-                closeModal('modal-edit-group');
-            } catch (err) {
-                alert('Could not update group: ' + err.message);
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'Save Details';
-            }
-        }
+                        <div
+                            class="
+                                flex
+                                items-center
+                                gap-3
+                            "
+                        >
 
-        // --- LIGHTBOX MODAL ---
-        function openLightbox(fullSrc, groupName, activityType, captionText) {
-            const modal = document.getElementById('lightbox-modal');
-            const modalImg = document.getElementById('lightbox-img');
-            const groupEl = document.getElementById('lightbox-group');
-            const activityEl = document.getElementById('lightbox-activity');
-            const captionEl = document.getElementById('lightbox-caption');
-            const origBtn = document.getElementById('lightbox-original-btn');
-    
-            if (modalImg) modalImg.src = fullSrc;
-            if (groupEl) groupEl.textContent = groupName || 'Group';
-            if (activityEl) activityEl.textContent = activityType || 'Activity';
-            if (captionEl) captionEl.textContent = captionText || '';
-            if (origBtn) origBtn.href = fullSrc;
-    
-            if (modal) modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-    
-        function closeLightbox() {
-            const modal = document.getElementById('lightbox-modal');
-            if (modal) modal.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-    
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeLightbox();
-                closeModal('modal-add-student');
-                closeModal('modal-add-project');
-                closeModal('modal-edit-group');
-            }
-        });
-    
-        document.getElementById('lightbox-modal')?.addEventListener('click', (e) => {
-            if (e.target.id === 'lightbox-modal') closeLightbox();
-        });
+                            <span
+                                id="student-count"
+                                class="
+                                    text-xs
+                                    text-slate-500
+                                    font-medium
+                                "
+                            >
+                                0 Students
+                            </span>
 
-        // Initialize on DOM ready
-        document.addEventListener('DOMContentLoaded', () => {
-            initEditorMode();
-            initGroupPage();
 
-            const filterBtns = document.querySelectorAll('.filter-btn');
-            const clearBtn = document.getElementById('clear-filters-btn');
+                            <!-- Admin-only Add Student -->
+                            <button
+                                id="add-member-btn"
+                                type="button"
+                                hidden
+                                class="
+                                    bg-navy-900
+                                    hover:bg-navy-800
+                                    text-accent-gold
+                                    text-xs
+                                    font-bold
+                                    px-3
+                                    py-1.5
+                                    rounded-lg
+                                    shadow-sm
+                                    transition
+                                "
+                            >
+                                + Add Student
+                            </button>
 
-            filterBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const filter = btn.getAttribute('data-filter');
-                    applyFilter(filter);
-                });
-            });
+                        </div>
 
-            if (clearBtn) {
-                clearBtn.addEventListener('click', () => {
-                    applyFilter('all');
-                });
-            }
-        });
-    </script>
-    <script src="nav.js"></script>
+                    </div>
+
+
+
+                    <!-- ======================================
+                         STUDENT TABLE
+                         ====================================== -->
+
+                    <div
+                        class="
+                            overflow-x-auto
+                        "
+                    >
+
+                        <table
+                            class="
+                                w-full
+                                text-left
+                                text-xs
+                                text-slate-700
+                            "
+                        >
+
+                            <thead
+                                class="
+                                    bg-slate-50
+                                    text-slate-500
+                                    font-semibold
+                                    uppercase
+                                    tracking-wider
+                                    border-b
+                                    border-slate-200
+                                "
+                            >
+
+                                <tr>
+
+                                    <th
+                                        class="
+                                            py-2.5
+                                            px-4
+                                        "
+                                    >
+                                        Reg No
+                                    </th>
+
+
+                                    <th
+                                        class="
+                                            py-2.5
+                                            px-4
+                                        "
+                                    >
+                                        Student Name
+                                    </th>
+
+
+                                    <th
+                                        class="
+                                            py-2.5
+                                            px-4
+                                        "
+                                    >
+                                        Committee
+                                    </th>
+
+
+                                    <th
+                                        class="
+                                            py-2.5
+                                            px-4
+                                            text-right
+                                        "
+                                    >
+                                        Role
+                                    </th>
+
+
+                                    <!--
+                                        Hidden for public users.
+                                    -->
+                                    <th
+                                        id="member-action-header"
+                                        hidden
+                                        class="
+                                            py-2.5
+                                            px-4
+                                            text-right
+                                        "
+                                    >
+                                        Action
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <!--
+                                memberRow.js dynamically adds
+                                student records here.
+                            -->
+                            <tbody
+                                id="members-body"
+                                class="
+                                    divide-y
+                                    divide-slate-100
+                                "
+                            >
+
+                                <tr>
+
+                                    <td
+                                        colspan="5"
+                                        class="
+                                            py-8
+                                            text-center
+                                            text-slate-400
+                                        "
+                                    >
+                                        Loading student roster...
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ==============================================
+                 PROJECT SECTION
+                 ============================================== -->
+
+            <section
+                class="
+                    max-w-7xl
+                    mx-auto
+                    px-6
+                    py-8
+                "
+            >
+
+
+                <!-- ==========================================
+                     FILTERS + ADD PROJECT
+                     ========================================== -->
+
+                <div
+                    class="
+                        flex
+                        flex-wrap
+                        items-center
+                        justify-between
+                        gap-4
+                        mb-6
+                        pb-4
+                        border-b
+                        border-slate-200
+                    "
+                >
+
+
+                    <!--
+                        Project filters are generated dynamically
+                        from categories.js.
+                    -->
+                    <div
+                        id="project-filters"
+                        class="
+                            flex
+                            flex-wrap
+                            items-center
+                            gap-2
+                        "
+                    >
+                    </div>
+
+
+
+                    <!-- Admin-only -->
+                    <button
+                        id="add-project-btn"
+                        type="button"
+                        hidden
+                        class="
+                            bg-navy-900
+                            hover:bg-navy-800
+                            text-accent-gold
+                            text-xs
+                            font-bold
+                            px-3.5
+                            py-2
+                            rounded-lg
+                            shadow-sm
+                            transition
+                        "
+                    >
+                        + Add Project
+                    </button>
+
+                </div>
+
+
+
+                <!-- Real project count -->
+                <div
+                    id="project-count"
+                    class="
+                        text-xs
+                        font-semibold
+                        text-slate-500
+                        mb-6
+                    "
+                >
+                    Showing projects
+                </div>
+
+
+
+                <!-- ==========================================
+                     DYNAMIC PROJECT GRID
+                     ========================================== -->
+
+                <div
+                    id="projects-grid"
+                    class="
+                        grid
+                        grid-cols-1
+                        sm:grid-cols-2
+                        lg:grid-cols-4
+                        gap-6
+                    "
+                >
+
+                    <div
+                        class="
+                            col-span-full
+                            py-10
+                            text-center
+                            text-slate-400
+                        "
+                    >
+                        Loading projects...
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ==============================================
+                 MEDIA GALLERY
+                 ============================================== -->
+
+            <section
+                id="gallery"
+                class="
+                    max-w-7xl
+                    mx-auto
+                    px-6
+                    py-10
+                    border-t
+                    border-slate-200
+                    mt-6
+                "
+            >
+
+
+                <!-- ==========================================
+                     GALLERY HEADER
+                     ========================================== -->
+
+                <div
+                    class="
+                        flex
+                        flex-wrap
+                        items-center
+                        justify-between
+                        gap-4
+                        mb-6
+                    "
+                >
+
+                    <div>
+
+                        <h2
+                            class="
+                                text-lg
+                                font-bold
+                                text-navy-900
+                            "
+                        >
+                            Media Gallery
+                        </h2>
+
+
+                        <p
+                            class="
+                                text-xs
+                                text-slate-500
+                            "
+                        >
+                            Visual highlights and event moments
+                            from this group
+                        </p>
+
+                    </div>
+
+
+
+                    <div
+                        class="
+                            flex
+                            items-center
+                            gap-3
+                        "
+                    >
+
+                        <!-- Real media count -->
+                        <span
+                            id="media-count"
+                            class="
+                                text-xs
+                                text-slate-500
+                                font-medium
+                            "
+                        >
+                            0 images
+                        </span>
+
+
+                        <!-- Admin only -->
+                        <button
+                            id="add-media-btn"
+                            type="button"
+                            hidden
+                            class="
+                                bg-navy-900
+                                hover:bg-navy-800
+                                text-accent-gold
+                                text-xs
+                                font-bold
+                                px-3.5
+                                py-2
+                                rounded-lg
+                                shadow-sm
+                                transition
+                            "
+                        >
+                            + Add Media
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ==========================================
+                     DYNAMIC MEDIA GRID
+                     ========================================== -->
+
+                <div
+                    id="media-grid"
+                    class="
+                        grid
+                        grid-cols-1
+                        sm:grid-cols-2
+                        lg:grid-cols-4
+                        gap-4
+                    "
+                >
+
+                    <div
+                        class="
+                            col-span-full
+                            py-10
+                            text-center
+                            text-slate-400
+                        "
+                    >
+                        Loading gallery...
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- ======================================================
+         SHARED FOOTER
+         ====================================================== -->
+
+    <div id="site-footer"></div>
+
+
+
+    <!-- ======================================================
+         MEMBER ROLE SUGGESTIONS
+         ======================================================
+         
+         The member role remains free text so future roles are
+         not restricted.
+         
+         The datalist simply provides common suggestions.
+         ====================================================== -->
+
+    <datalist id="member-role-options">
+
+        <option value="Group Leader"></option>
+
+        <option value="Sub-Leader"></option>
+
+        <option value="Coordinator"></option>
+
+        <option value="Editor"></option>
+
+        <option value="Photographer"></option>
+
+        <option value="Presenter"></option>
+
+        <option value="Audio Specialist"></option>
+
+        <option value="Curator"></option>
+
+        <option value="Member"></option>
+
+    </datalist>
+
+
+
+    <!-- ======================================================
+         MODAL 1 - EDIT GROUP
+         ====================================================== -->
+
+    <div
+        id="group-edit-modal"
+        class="app-modal"
+        hidden
+    >
+
+        <div
+            class="
+                app-modal-panel
+                p-6
+            "
+        >
+
+
+            <!-- Modal header -->
+            <div
+                class="
+                    flex
+                    items-center
+                    justify-between
+                    pb-4
+                    mb-5
+                    border-b
+                    border-slate-100
+                "
+            >
+
+                <div>
+
+                    <p
+                        class="
+                            text-[10px]
+                            font-bold
+                            uppercase
+                            tracking-wider
+                            text-accent-gold
+                        "
+                    >
+                        Administrator
+                    </p>
+
+
+                    <h2
+                        class="
+                            text-lg
+                            font-serif
+                            font-bold
+                            text-navy-900
+                        "
+                    >
+                        Edit Group Details
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    data-modal-close="group-edit-modal"
+                    class="
+                        text-xl
+                        text-slate-400
+                        hover:text-slate-700
+                    "
+                    aria-label="Close"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+
+            <!-- ==============================================
+                 EDIT GROUP FORM
+                 ============================================== -->
+
+            <form
+                id="group-edit-form"
+                class="space-y-4"
+            >
+
+
+                <!-- Name + slug -->
+                <div
+                    class="
+                        grid
+                        grid-cols-1
+                        sm:grid-cols-2
+                        gap-4
+                    "
+                >
+
+                    <div>
+
+                        <label
+                            class="form-label"
+                            for="edit-group-name"
+                        >
+                            Group Name *
+                        </label>
+
+
+                        <input
+                            id="edit-group-name"
+                            class="form-control"
+                            type="text"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div>
+
+                        <label
+                            class="form-label"
+                            for="edit-group-slug"
+                        >
+                            Slug *
+                        </label>
+
+
+                        <input
+                            id="edit-group-slug"
+                            class="form-control"
+                            type="text"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Tagline -->
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="edit-group-tagline"
+                    >
+                        Tagline
+                    </label>
+
+
+                    <input
+                        id="edit-group-tagline"
+                        class="form-control"
+                        type="text"
+                    >
+
+                </div>
+
+
+
+                <!-- Description -->
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="edit-group-description"
+                    >
+                        Description
+                    </label>
+
+
+                    <textarea
+                        id="edit-group-description"
+                        class="form-control"
+                        rows="4"
+                    ></textarea>
+
+                </div>
+
+
+
+                <!-- ==============================================
+     GROUP IMAGE MANAGEMENT
+     ==============================================
+
+     Existing image:
+         shown first
+
+     To keep it:
+         do nothing
+
+     To replace it:
+         upload another image
+         OR enter another URL
+
+     Only ONE image is allowed for each field.
+     ============================================== -->
+
+<div class="space-y-6">
+
+
+    <!-- ==========================================
+         COVER IMAGE
+         ========================================== -->
+
+    <div>
+
+        <label class="form-label">
+            Group Cover Image
+        </label>
+
+
+        <!-- Current saved image -->
+        <div
+            id="current-group-cover-wrap"
+            hidden
+            class="
+                mb-3
+                rounded-lg
+                border
+                border-slate-200
+                bg-slate-50
+                p-3
+            "
+        >
+
+            <div
+                class="
+                    text-[10px]
+                    font-semibold
+                    uppercase
+                    tracking-wider
+                    text-slate-400
+                    mb-2
+                "
+            >
+                Current Image
+            </div>
+
+
+            <img
+                id="current-group-cover-preview"
+                src=""
+                alt="Current group cover"
+                class="
+                    w-full
+                    max-w-sm
+                    h-32
+                    object-cover
+                    rounded-lg
+                    border
+                    border-slate-200
+                "
+            >
+
+
+            <p
+                class="
+                    mt-2
+                    text-[10px]
+                    text-slate-500
+                "
+            >
+                Leave the picker below unchanged to keep this
+                image.
+            </p>
+
+        </div>
+
+
+        <!-- New image picker -->
+        <div id="edit-group-cover-picker"></div>
+
+    </div>
+
+
+
+    <!-- ==========================================
+         CARD IMAGE
+         ========================================== -->
+
+    <div>
+
+        <label class="form-label">
+            Group Card Image
+        </label>
+
+
+        <!-- Current saved image -->
+        <div
+            id="current-group-card-wrap"
+            hidden
+            class="
+                mb-3
+                rounded-lg
+                border
+                border-slate-200
+                bg-slate-50
+                p-3
+            "
+        >
+
+            <div
+                class="
+                    text-[10px]
+                    font-semibold
+                    uppercase
+                    tracking-wider
+                    text-slate-400
+                    mb-2
+                "
+            >
+                Current Image
+            </div>
+
+
+            <img
+                id="current-group-card-preview"
+                src=""
+                alt="Current group card image"
+                class="
+                    w-full
+                    max-w-sm
+                    h-32
+                    object-cover
+                    rounded-lg
+                    border
+                    border-slate-200
+                "
+            >
+
+
+            <p
+                class="
+                    mt-2
+                    text-[10px]
+                    text-slate-500
+                "
+            >
+                Leave the picker below unchanged to keep this
+                image.
+            </p>
+
+        </div>
+
+
+        <div id="edit-group-card-picker"></div>
+
+    </div>
+
+</div>
+
+
+
+                <!-- Sort + publish -->
+                <div
+                    class="
+                        grid
+                        grid-cols-1
+                        sm:grid-cols-2
+                        gap-4
+                        items-end
+                    "
+                >
+
+                    <div>
+
+                        <label
+                            class="form-label"
+                            for="edit-group-sort"
+                        >
+                            Display Order
+                        </label>
+
+
+                        <input
+                            id="edit-group-sort"
+                            class="form-control"
+                            type="number"
+                            min="0"
+                        >
+
+                    </div>
+
+
+                    <label
+                        class="
+                            flex
+                            items-center
+                            gap-2
+                            text-xs
+                            font-semibold
+                            text-slate-700
+                            pb-2
+                        "
+                    >
+
+                        <input
+                            id="edit-group-published"
+                            type="checkbox"
+                        >
+
+                        Published
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- Actions -->
+                <div
+                    class="
+                        flex
+                        justify-end
+                        gap-2
+                        pt-4
+                        border-t
+                        border-slate-100
+                    "
+                >
+
+                    <button
+                        type="button"
+                        data-modal-close="group-edit-modal"
+                        class="
+                            px-4
+                            py-2
+                            rounded-lg
+                            text-sm
+                            text-slate-600
+                            hover:bg-slate-100
+                        "
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="
+                            px-4
+                            py-2
+                            rounded-lg
+                            bg-navy-900
+                            text-white
+                            text-sm
+                            font-semibold
+                        "
+                    >
+                        Save Changes
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ======================================================
+         MODAL 2 - ADD / EDIT STUDENT
+         ====================================================== -->
+
+    <div
+        id="member-modal"
+        class="app-modal"
+        hidden
+    >
+
+        <div
+            class="
+                app-modal-panel
+                p-6
+            "
+        >
+
+            <div
+                class="
+                    flex
+                    items-center
+                    justify-between
+                    pb-4
+                    mb-5
+                    border-b
+                    border-slate-100
+                "
+            >
+
+                <div>
+
+                    <p
+                        class="
+                            text-[10px]
+                            font-bold
+                            uppercase
+                            tracking-wider
+                            text-accent-gold
+                        "
+                    >
+                        Student Roster
+                    </p>
+
+
+                    <h2
+                        id="member-modal-title"
+                        class="
+                            text-lg
+                            font-serif
+                            font-bold
+                            text-navy-900
+                        "
+                    >
+                        Add Student
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    data-modal-close="member-modal"
+                    class="
+                        text-xl
+                        text-slate-400
+                        hover:text-slate-700
+                    "
+                    aria-label="Close"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+
+            <form
+                id="member-form"
+                class="space-y-4"
+            >
+
+
+                <!--
+                    Empty = create
+                    Existing UUID = update
+                -->
+                <input
+                    id="member-id"
+                    type="hidden"
+                >
+
+
+
+                <!-- Student name -->
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="member-name"
+                    >
+                        Student Full Name *
+                    </label>
+
+
+                    <input
+                        id="member-name"
+                        class="form-control"
+                        type="text"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- Registration + role -->
+                <div
+                    class="
+                        grid
+                        grid-cols-1
+                        sm:grid-cols-2
+                        gap-4
+                    "
+                >
+
+                    <div>
+
+                        <label
+                            class="form-label"
+                            for="member-reg"
+                        >
+                            Registration Number
+                        </label>
+
+
+                        <input
+                            id="member-reg"
+                            class="
+                                form-control
+                                font-mono
+                            "
+                            type="text"
+                            placeholder="E/25/088"
+                        >
+
+                    </div>
+
+
+                    <div>
+
+                        <label
+                            class="form-label"
+                            for="member-role"
+                        >
+                            Role
+                        </label>
+
+
+                        <input
+                            id="member-role"
+                            list="member-role-options"
+                            class="form-control"
+                            type="text"
+                            placeholder="Member"
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Committee -->
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="member-committee"
+                    >
+                        Committee Responsibilities
+                    </label>
+
+
+                    <input
+                        id="member-committee"
+                        class="form-control"
+                        type="text"
+                        placeholder="Media Committee"
+                    >
+
+                </div>
+
+
+
+                <!-- Sort + publish -->
+                <div
+                    class="
+                        grid
+                        grid-cols-1
+                        sm:grid-cols-2
+                        gap-4
+                        items-end
+                    "
+                >
+
+                    <div>
+
+                        <label
+                            class="form-label"
+                            for="member-sort"
+                        >
+                            Display Order
+                        </label>
+
+
+                        <input
+                            id="member-sort"
+                            class="form-control"
+                            type="number"
+                            min="0"
+                        >
+
+                    </div>
+
+
+                    <label
+                        class="
+                            flex
+                            items-center
+                            gap-2
+                            text-xs
+                            font-semibold
+                            text-slate-700
+                            pb-2
+                        "
+                    >
+
+                        <input
+                            id="member-published"
+                            type="checkbox"
+                        >
+
+                        Published
+
+                    </label>
+
+                </div>
+
+
+
+                <!--
+                    Important for existing records such as:
+                    
+                    E
+                    E/
+                    E/25/---
+                    
+                    We do not fabricate replacements.
+                -->
+                <p
+                    class="
+                        text-[11px]
+                        text-slate-500
+                    "
+                >
+                    Incomplete registration numbers are preserved
+                    and shown with a "Needs review" label until
+                    corrected.
+                </p>
+
+
+
+                <!-- Actions -->
+                <div
+                    class="
+                        flex
+                        justify-end
+                        gap-2
+                        pt-4
+                        border-t
+                        border-slate-100
+                    "
+                >
+
+                    <button
+                        type="button"
+                        data-modal-close="member-modal"
+                        class="
+                            px-4
+                            py-2
+                            rounded-lg
+                            text-sm
+                            text-slate-600
+                            hover:bg-slate-100
+                        "
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="
+                            px-4
+                            py-2
+                            rounded-lg
+                            bg-navy-900
+                            text-white
+                            text-sm
+                            font-semibold
+                        "
+                    >
+                        Save Student
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ======================================================
+         MODAL 3 - ADD / EDIT PROJECT
+         ====================================================== -->
+
+    <div
+        id="project-modal"
+        class="app-modal"
+        hidden
+    >
+
+        <div
+            class="
+                app-modal-panel
+                p-6
+            "
+        >
+
+            <div
+                class="
+                    flex
+                    items-center
+                    justify-between
+                    pb-4
+                    mb-5
+                    border-b
+                    border-slate-100
+                "
+            >
+
+                <div>
+
+                    <p
+                        class="
+                            text-[10px]
+                            font-bold
+                            uppercase
+                            tracking-wider
+                            text-accent-gold
+                        "
+                    >
+                        Project Showcase
+                    </p>
+
+
+                    <h2
+                        id="project-modal-title"
+                        class="
+                            text-lg
+                            font-serif
+                            font-bold
+                            text-navy-900
+                        "
+                    >
+                        Add Project
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    data-modal-close="project-modal"
+                    class="
+                        text-xl
+                        text-slate-400
+                        hover:text-slate-700
+                    "
+                    aria-label="Close"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+
+            <form
+                id="project-form"
+                class="space-y-4"
+            >
+
+
+                <!-- Project ID for edit -->
+                <input
+                    id="project-id"
+                    type="hidden"
+                >
+
+
+
+                <!-- Project title -->
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="project-title"
+                    >
+                        Project Title *
+                    </label>
+
+
+                    <input
+                        id="project-title"
+                        class="form-control"
+                        type="text"
+                        required
+                    >
+
+                </div>
+
+
+
+                <!-- Category -->
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="project-category"
+                    >
+                        Category *
+                    </label>
+
+
+                    <!--
+                        Options are created from categories.js.
+                    -->
+                    <select
+                        id="project-category"
+                        class="form-control"
+                        required
+                    >
+                    </select>
+
+                </div>
+
+
+
+                <!-- Description -->
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="project-description"
+                    >
+                        Description
+                    </label>
+
+
+                    <textarea
+                        id="project-description"
+                        class="form-control"
+                        rows="4"
+                        placeholder="
+                            Describe the project and student work
+                        "
+                    ></textarea>
+
+                </div>
+
+
+
+                <!-- ==================================================
+     PROJECT COVER IMAGE
+     ==================================================
+     
+     Supports:
+     
+     - Drag & drop upload
+     - Choose image from device
+     - Existing external image URL
+     
+     Only ONE image can be selected.
+     
+     Recommended:
+     
+         1280 × 720 px
+     
+     Maximum:
+     
+         2 MB
+     
+     Allowed:
+     
+         JPG
+         JPEG
+         PNG
+         WEBP
+     ================================================== -->
+
+<div>
+
+    <label class="form-label">
+        Project Cover Image
+    </label>
+
+
+    <!-- ==============================================
+         CURRENT SAVED PROJECT IMAGE
+         ==============================================
+         
+         Appears when editing an existing project.
+         
+         Hidden while creating a new project.
+         ============================================== -->
+
+    <div
+        id="current-project-image-wrap"
+        hidden
+        class="
+            mb-3
+            rounded-lg
+            border
+            border-slate-200
+            bg-slate-50
+            p-3
+        "
+    >
+
+        <div
+            class="
+                text-[10px]
+                font-semibold
+                uppercase
+                tracking-wider
+                text-slate-400
+                mb-2
+            "
+        >
+            Current Image
+        </div>
+
+
+        <img
+            id="current-project-image-preview"
+            src=""
+            alt="Current project cover"
+            class="
+                w-full
+                max-w-sm
+                aspect-video
+                object-cover
+                rounded-lg
+                border
+                border-slate-200
+            "
+        >
+
+
+        <p
+            class="
+                mt-2
+                text-[10px]
+                text-slate-500
+            "
+        >
+            Leave the image picker below unchanged to keep this
+            image.
+        </p>
+
+    </div>
+
+
+    <!--
+        imagePicker.js creates the upload / URL interface here.
+    -->
+    <div id="project-image-picker"></div>
+
+</div>
+
+
+                <!-- YouTube + duration -->
+                <div
+                    class="
+                        grid
+                        grid-cols-1
+                        sm:grid-cols-2
+                        gap-4
+                    "
+                >
+
+                    <div>
+
+                        <label
+                            class="form-label"
+                            for="project-youtube"
+                        >
+                            YouTube URL
+                        </label>
+
+
+                        <input
+                            id="project-youtube"
+                            class="form-control"
+                            type="url"
+                            placeholder="https://www.youtube.com/watch?v=..."
+                        >
+
+                    </div>
+
+
+                    <div>
+
+                        <label
+                            class="form-label"
+                            for="project-duration"
+                        >
+                            Duration Label
+                        </label>
+
+
+                        <input
+                            id="project-duration"
+                            class="form-control"
+                            type="text"
+                            placeholder="08:20"
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Sort / Featured / Published -->
+                <div
+                    class="
+                        grid
+                        grid-cols-1
+                        sm:grid-cols-3
+                        gap-4
+                        items-end
+                    "
+                >
+
+                    <div>
+
+                        <label
+                            class="form-label"
+                            for="project-sort"
+                        >
+                            Display Order
+                        </label>
+
+
+                        <input
+                            id="project-sort"
+                            class="form-control"
+                            type="number"
+                            min="0"
+                        >
+
+                    </div>
+
+
+                    <label
+                        class="
+                            flex
+                            items-center
+                            gap-2
+                            text-xs
+                            font-semibold
+                            text-slate-700
+                            pb-2
+                        "
+                    >
+
+                        <input
+                            id="project-featured"
+                            type="checkbox"
+                        >
+
+                        Featured
+
+                    </label>
+
+
+                    <label
+                        class="
+                            flex
+                            items-center
+                            gap-2
+                            text-xs
+                            font-semibold
+                            text-slate-700
+                            pb-2
+                        "
+                    >
+
+                        <input
+                            id="project-published"
+                            type="checkbox"
+                        >
+
+                        Published
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- Actions -->
+                <div
+                    class="
+                        flex
+                        justify-end
+                        gap-2
+                        pt-4
+                        border-t
+                        border-slate-100
+                    "
+                >
+
+                    <button
+                        type="button"
+                        data-modal-close="project-modal"
+                        class="
+                            px-4
+                            py-2
+                            rounded-lg
+                            text-sm
+                            text-slate-600
+                            hover:bg-slate-100
+                        "
+                    >
+                        Cancel
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="
+                            px-4
+                            py-2
+                            rounded-lg
+                            bg-navy-900
+                            text-white
+                            text-sm
+                            font-semibold
+                        "
+                    >
+                        Save Project
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ======================================================
+     GALLERY MULTI-UPLOAD MODAL
+     ======================================================
+
+     Used ONLY when clicking:
+
+         + Add Media
+
+     Features:
+
+     - multiple drag & drop
+     - multiple file selection
+     - external URL
+     - maximum 30 images per group
+     - common category/project settings for the batch
+     - automatic titles from filenames
+
+     Example:
+
+     group-presentation-01.jpg
+
+     becomes:
+
+     Group Presentation 01
+
+     The administrator may edit individual titles afterward.
+     ====================================================== -->
+
+<div
+    id="gallery-upload-modal"
+    class="app-modal"
+    hidden
+>
+
+    <div
+        class="
+            app-modal-panel
+            p-6
+        "
+    >
+
+        <!-- ==============================================
+             HEADER
+             ============================================== -->
+
+        <div
+            class="
+                flex
+                items-center
+                justify-between
+                pb-4
+                mb-5
+                border-b
+                border-slate-100
+            "
+        >
+
+            <div>
+
+                <p
+                    class="
+                        text-[10px]
+                        font-bold
+                        uppercase
+                        tracking-wider
+                        text-accent-gold
+                    "
+                >
+                    Media Gallery
+                </p>
+
+
+                <h2
+                    class="
+                        text-lg
+                        font-serif
+                        font-bold
+                        text-navy-900
+                    "
+                >
+                    Add Gallery Images
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                data-modal-close="gallery-upload-modal"
+                class="
+                    text-xl
+                    text-slate-400
+                    hover:text-slate-700
+                "
+                aria-label="Close gallery uploader"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form
+            id="gallery-upload-form"
+            class="space-y-5"
+        >
+
+
+            <!-- ==========================================
+                 CURRENT CAPACITY
+                 ========================================== -->
+
+            <div
+                class="
+                    rounded-lg
+                    border
+                    border-blue-100
+                    bg-blue-50
+                    px-4
+                    py-3
+                "
+            >
+
+                <div
+                    class="
+                        text-xs
+                        font-bold
+                        text-navy-900
+                    "
+                >
+                    Gallery Capacity
+                </div>
+
+
+                <div
+                    id="gallery-capacity-status"
+                    class="
+                        text-[11px]
+                        text-slate-600
+                        mt-1
+                    "
+                >
+                    Calculating available space...
+                </div>
+
+            </div>
+
+
+            <!-- ==========================================
+                 MULTI IMAGE PICKER
+                 ========================================== -->
+
+            <div>
+
+                <label class="form-label">
+                    Gallery Images
+                </label>
+
+
+                <div id="gallery-upload-picker"></div>
+
+
+                <p
+                    class="
+                        text-[11px]
+                        text-slate-500
+                        mt-2
+                        leading-relaxed
+                    "
+                >
+                    When uploading files, each image title is
+                    created automatically from its filename.
+                    You can edit individual titles afterward.
+                </p>
+
+            </div>
+
+
+            <!-- ==========================================
+                 TITLE FOR URL MODE
+                 ==========================================
+
+                 Upload mode:
+                     ignored because filename creates title.
+
+                 URL mode:
+                     required because there is no filename.
+                 ========================================== -->
+
+            <div>
+
+                <label
+                    class="form-label"
+                    for="gallery-url-title"
+                >
+                    Title for URL Image
+                </label>
+
+
+                <input
+                    id="gallery-url-title"
+                    class="form-control"
+                    type="text"
+                    placeholder="Required only when using an image URL"
+                >
+
+
+                <p
+                    class="
+                        text-[10px]
+                        text-slate-400
+                        mt-1
+                    "
+                >
+                    Leave this blank when uploading files.
+                </p>
+
+            </div>
+
+
+            <!-- ==========================================
+                 COMMON BATCH SETTINGS
+                 ========================================== -->
+
+            <div
+                class="
+                    grid
+                    grid-cols-1
+                    sm:grid-cols-2
+                    gap-4
+                "
+            >
+
+                <!-- Category -->
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="gallery-category"
+                    >
+                        Category
+                    </label>
+
+
+                    <select
+                        id="gallery-category"
+                        class="form-control"
+                    >
+                    </select>
+
+                </div>
+
+
+                <!-- Related project -->
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="gallery-project-id"
+                    >
+                        Related Project
+                    </label>
+
+
+                    <select
+                        id="gallery-project-id"
+                        class="form-control"
+                    >
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==========================================
+                 DISPLAY STYLE + PUBLISH STATE
+                 ========================================== -->
+
+            <div
+                class="
+                    grid
+                    grid-cols-1
+                    sm:grid-cols-2
+                    gap-4
+                    items-end
+                "
+            >
+
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="gallery-size"
+                    >
+                        Display Size
+                    </label>
+
+
+                    <select
+                        id="gallery-size"
+                        class="form-control"
+                    >
+
+                        <option value="standard">
+                            Standard
+                        </option>
+
+                        <option value="wide">
+                            Wide
+                        </option>
+
+                        <option value="tall">
+                            Tall
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <label
+                    class="
+                        flex
+                        items-center
+                        gap-2
+                        text-xs
+                        font-semibold
+                        text-slate-700
+                        pb-2
+                    "
+                >
+
+                    <input
+                        id="gallery-published"
+                        type="checkbox"
+                        checked
+                    >
+
+                    Published
+
+                </label>
+
+            </div>
+
+
+            <!-- ==========================================
+                 ADMIN GUIDANCE
+                 ========================================== -->
+
+            <div
+                class="
+                    rounded-lg
+                    bg-slate-50
+                    border
+                    border-slate-200
+                    px-4
+                    py-3
+                    text-[11px]
+                    text-slate-500
+                    leading-relaxed
+                "
+            >
+                Upload only useful showcase photographs.
+                JPG, JPEG, PNG and WEBP are supported.
+                Each image must be 2 MB or smaller.
+                For good display quality, approximately
+                1600 × 1200 px landscape or
+                1200 × 1600 px portrait is recommended.
+                A group can contain a maximum of 30 gallery
+                images.
+            </div>
+
+
+            <!-- ==========================================
+                 ACTIONS
+                 ========================================== -->
+
+            <div
+                class="
+                    flex
+                    justify-end
+                    gap-2
+                    pt-4
+                    border-t
+                    border-slate-100
+                "
+            >
+
+                <button
+                    type="button"
+                    data-modal-close="gallery-upload-modal"
+                    class="
+                        px-4
+                        py-2
+                        rounded-lg
+                        text-sm
+                        text-slate-600
+                        hover:bg-slate-100
+                    "
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="
+                        px-4
+                        py-2
+                        rounded-lg
+                        bg-navy-900
+                        text-white
+                        text-sm
+                        font-semibold
+                        disabled:opacity-60
+                    "
+                >
+                    Upload & Save
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- ======================================================
+     EDIT ONE GALLERY IMAGE
+     ======================================================
+
+     Multi-upload creates the records.
+
+     This modal lets the administrator later edit ONE gallery
+     item at a time.
+
+     They may also replace that individual image using:
+     
+     - upload
+     - URL
+     ====================================================== -->
+
+<div
+    id="media-edit-modal"
+    class="app-modal"
+    hidden
+>
+
+    <div
+        class="
+            app-modal-panel
+            p-6
+        "
+    >
+
+        <!-- Header -->
+        <div
+            class="
+                flex
+                items-center
+                justify-between
+                pb-4
+                mb-5
+                border-b
+                border-slate-100
+            "
+        >
+
+            <div>
+
+                <p
+                    class="
+                        text-[10px]
+                        font-bold
+                        uppercase
+                        tracking-wider
+                        text-accent-gold
+                    "
+                >
+                    Media Gallery
+                </p>
+
+
+                <h2
+                    class="
+                        text-lg
+                        font-serif
+                        font-bold
+                        text-navy-900
+                    "
+                >
+                    Edit Gallery Image
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                data-modal-close="media-edit-modal"
+                class="
+                    text-xl
+                    text-slate-400
+                    hover:text-slate-700
+                "
+                aria-label="Close gallery editor"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form
+            id="media-edit-form"
+            class="space-y-4"
+        >
+
+
+            <!-- Existing media UUID -->
+            <input
+                id="media-edit-id"
+                type="hidden"
+            >
+
+
+            <!-- ==========================================
+                 CURRENT IMAGE
+                 ========================================== -->
+
+            <div
+                id="current-media-image-wrap"
+                class="
+                    rounded-lg
+                    border
+                    border-slate-200
+                    bg-slate-50
+                    p-3
+                "
+            >
+
+                <div
+                    class="
+                        text-[10px]
+                        font-semibold
+                        uppercase
+                        tracking-wider
+                        text-slate-400
+                        mb-2
+                    "
+                >
+                    Current Image
+                </div>
+
+
+                <img
+                    id="current-media-image-preview"
+                    src=""
+                    alt="Current gallery image"
+                    class="
+                        w-full
+                        max-w-sm
+                        h-44
+                        object-cover
+                        rounded-lg
+                        border
+                        border-slate-200
+                    "
+                >
+
+
+                <p
+                    class="
+                        text-[10px]
+                        text-slate-500
+                        mt-2
+                    "
+                >
+                    Leave the picker unchanged to keep this image.
+                </p>
+
+            </div>
+
+
+            <!-- ==========================================
+                 REPLACE IMAGE
+                 ========================================== -->
+
+            <div>
+
+                <label class="form-label">
+                    Replace Image
+                </label>
+
+
+                <div id="media-edit-image-picker"></div>
+
+            </div>
+
+
+            <!-- ==========================================
+                 TITLE
+                 ========================================== -->
+
+            <div>
+
+                <label
+                    class="form-label"
+                    for="media-edit-title"
+                >
+                    Title *
+                </label>
+
+
+                <input
+                    id="media-edit-title"
+                    class="form-control"
+                    type="text"
+                    required
+                >
+
+            </div>
+
+
+            <!-- ==========================================
+                 CATEGORY + PROJECT
+                 ========================================== -->
+
+            <div
+                class="
+                    grid
+                    grid-cols-1
+                    sm:grid-cols-2
+                    gap-4
+                "
+            >
+
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="media-edit-category"
+                    >
+                        Category
+                    </label>
+
+
+                    <select
+                        id="media-edit-category"
+                        class="form-control"
+                    >
+                    </select>
+
+                </div>
+
+
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="media-edit-project-id"
+                    >
+                        Related Project
+                    </label>
+
+
+                    <select
+                        id="media-edit-project-id"
+                        class="form-control"
+                    >
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==========================================
+                 SIZE / ORDER / PUBLISH
+                 ========================================== -->
+
+            <div
+                class="
+                    grid
+                    grid-cols-1
+                    sm:grid-cols-3
+                    gap-4
+                    items-end
+                "
+            >
+
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="media-edit-size"
+                    >
+                        Display Size
+                    </label>
+
+
+                    <select
+                        id="media-edit-size"
+                        class="form-control"
+                    >
+
+                        <option value="standard">
+                            Standard
+                        </option>
+
+                        <option value="wide">
+                            Wide
+                        </option>
+
+                        <option value="tall">
+                            Tall
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="media-edit-sort"
+                    >
+                        Display Order
+                    </label>
+
+
+                    <input
+                        id="media-edit-sort"
+                        class="form-control"
+                        type="number"
+                        min="0"
+                    >
+
+                </div>
+
+
+                <label
+                    class="
+                        flex
+                        items-center
+                        gap-2
+                        text-xs
+                        font-semibold
+                        text-slate-700
+                        pb-2
+                    "
+                >
+
+                    <input
+                        id="media-edit-published"
+                        type="checkbox"
+                    >
+
+                    Published
+
+                </label>
+
+            </div>
+
+
+            <!-- Actions -->
+            <div
+                class="
+                    flex
+                    justify-end
+                    gap-2
+                    pt-4
+                    border-t
+                    border-slate-100
+                "
+            >
+
+                <button
+                    type="button"
+                    data-modal-close="media-edit-modal"
+                    class="
+                        px-4
+                        py-2
+                        rounded-lg
+                        text-sm
+                        text-slate-600
+                        hover:bg-slate-100
+                    "
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="
+                        px-4
+                        py-2
+                        rounded-lg
+                        bg-navy-900
+                        text-white
+                        text-sm
+                        font-semibold
+                    "
+                >
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+    <!-- ======================================================
+         MODAL 5 - GALLERY LIGHTBOX
+         ======================================================
+         
+         This is public.
+         
+         Clicking a gallery image opens the full-size image.
+         ====================================================== -->
+
+    <div
+        id="lightbox-modal"
+        class="app-modal"
+        hidden
+    >
+
+        <div
+            class="
+                relative
+                w-full
+                max-w-5xl
+                max-h-[92vh]
+            "
+        >
+
+
+            <!-- Close lightbox -->
+            <button
+                type="button"
+                data-modal-close="lightbox-modal"
+                class="
+                    absolute
+                    -top-10
+                    right-0
+                    text-white
+                    text-2xl
+                "
+                aria-label="Close gallery image"
+            >
+                ×
+            </button>
+
+
+
+            <!-- Full image -->
+            <div
+                class="
+                    bg-black
+                    rounded-xl
+                    overflow-hidden
+                "
+            >
+
+                <img
+                    id="lightbox-image"
+                    src=""
+                    alt="Gallery image"
+                    class="
+                        w-full
+                        max-h-[75vh]
+                        object-contain
+                    "
+                >
+
+            </div>
+
+
+
+            <!-- Lightbox information -->
+            <div
+                class="
+                    mt-4
+                    flex
+                    flex-wrap
+                    items-center
+                    justify-between
+                    gap-3
+                    text-white
+                "
+            >
+
+                <div>
+
+                    <div
+                        id="lightbox-title"
+                        class="
+                            font-semibold
+                        "
+                    >
+                    </div>
+
+
+                    <div
+                        id="lightbox-category"
+                        class="
+                            text-xs
+                            text-slate-300
+                            mt-1
+                        "
+                    >
+                    </div>
+
+                </div>
+
+
+
+                <a
+                    id="lightbox-original"
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="
+                        text-xs
+                        text-accent-gold
+                        hover:underline
+                    "
+                >
+                    View original ↗
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ======================================================
+         GROUP PAGE CONTROLLER
+         ======================================================
+         
+         This is the ONLY application script needed by this
+         page.
+         
+         Do NOT load:
+         
+             supabaseClient.js
+             adminAuth.js
+             nav.js
+         
+         here anymore.
+         ====================================================== -->
+
+    <script
+        type="module"
+        src="assets/js/pages/groupPage.js"
+    ></script>
+
+
 </body>
+
 </html>

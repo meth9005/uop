@@ -1,0 +1,415 @@
+/**
+ * ============================================================
+ * ETU PORTAL - SHARED CUSTOM STYLES
+ * ============================================================
+ *
+ * Purpose:
+ * Contains styles that are easier or cleaner to maintain here
+ * instead of repeating Tailwind classes.
+ *
+ * Tailwind remains the primary styling system.
+ *
+ * This file is mainly responsible for:
+ *
+ * - modal behaviour
+ * - form controls
+ * - media/gallery sizing
+ * - notifications
+ * - global small improvements
+ *
+ * The old style.css will eventually be removed after all pages
+ * have been migrated.
+ * ============================================================
+ */
+
+
+/* ============================================================
+   GLOBAL DOCUMENT SETTINGS
+   ============================================================ */
+
+
+/**
+ * Portal uses the light colour scheme.
+ */
+:root {
+
+    color-scheme: light;
+}
+
+
+/**
+ * Smooth scrolling improves links such as:
+ *
+ * #projects
+ * #gallery
+ * #work
+ */
+html {
+
+    scroll-behavior: smooth;
+}
+
+
+/**
+ * Prevent page scrolling while a modal is open.
+ */
+body.modal-open {
+
+    overflow: hidden;
+}
+
+
+/**
+ * Make the standard hidden attribute reliable even when an
+ * element also contains flex/grid classes.
+ */
+[hidden] {
+
+    display: none !important;
+}
+
+
+/* ============================================================
+   MODAL SYSTEM
+   ============================================================ */
+
+
+/**
+ * Full-screen modal background.
+ *
+ * Used by:
+ *
+ * Edit Group
+ * Student form
+ * Project form
+ * Media form
+ * Gallery lightbox
+ */
+.app-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 80;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 1rem;
+
+    background:
+        rgba(
+            2,
+            6,
+            23,
+            0.72
+        );
+
+    backdrop-filter:
+        blur(4px);
+}
+
+
+/**
+ * White form panel used inside admin modals.
+ */
+.app-modal-panel {
+
+    width:
+        min(
+            100%,
+            42rem
+        );
+
+    max-height:
+        90vh;
+
+    overflow-y:
+        auto;
+
+    border:
+        1px solid
+        rgb(226 232 240);
+
+    border-radius:
+        1rem;
+
+    background:
+        white;
+
+    box-shadow:
+        0 25px 60px
+        rgba(
+            15,
+            23,
+            42,
+            0.25
+        );
+}
+
+
+/* ============================================================
+   ADMIN FORM ELEMENTS
+   ============================================================ */
+
+
+/**
+ * Standard form label.
+ *
+ * All admin forms use this class.
+ */
+.form-label {
+
+    display: block;
+
+    margin-bottom:
+        0.35rem;
+
+    font-size:
+        0.72rem;
+
+    line-height:
+        1rem;
+
+    font-weight:
+        700;
+
+    color:
+        rgb(51 65 85);
+}
+
+
+/**
+ * Standard text input, textarea and select appearance.
+ */
+.form-control {
+
+    width: 100%;
+
+    border:
+        1px solid
+        rgb(203 213 225);
+
+    border-radius:
+        0.6rem;
+
+    padding:
+        0.6rem
+        0.75rem;
+
+    font-size:
+        0.82rem;
+
+    color:
+        rgb(30 41 59);
+
+    background:
+        white;
+}
+
+
+/**
+ * Focus appearance.
+ *
+ * Gold focus ring matches the ETU portal visual identity.
+ */
+.form-control:focus {
+
+    outline:
+        none;
+
+    border-color:
+        #d4a340;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(
+            212,
+            163,
+            64,
+            0.12
+        );
+}
+
+
+/**
+ * Disabled controls should clearly look unavailable.
+ */
+.form-control:disabled {
+
+    cursor:
+        not-allowed;
+
+    background:
+        rgb(248 250 252);
+
+    color:
+        rgb(148 163 184);
+}
+
+
+/* ============================================================
+   MEDIA GALLERY LAYOUT
+   ============================================================ */
+
+
+/**
+ * Standard images occupy one grid column.
+ *
+ * A media item marked "wide" expands across two columns on
+ * medium+ displays.
+ */
+.media-wide {
+
+    grid-column:
+        span 1;
+}
+
+
+/**
+ * Tall gallery images receive more vertical space.
+ */
+.media-tall img {
+
+    height:
+        30rem;
+}
+
+
+/**
+ * Only make wide images span two columns when enough screen
+ * space exists.
+ */
+@media (
+    min-width: 768px
+) {
+
+    .media-wide {
+
+        grid-column:
+            span 2;
+    }
+}
+
+
+/* ============================================================
+   TOAST NOTIFICATIONS
+   ============================================================ */
+
+
+/**
+ * Fixed area where notifications appear.
+ */
+.toast-container {
+
+    position:
+        fixed;
+
+    z-index:
+        120;
+
+    top:
+        1rem;
+
+    right:
+        1rem;
+
+    display:
+        grid;
+
+    gap:
+        0.5rem;
+
+    width:
+        min(
+            22rem,
+            calc(
+                100vw - 2rem
+            )
+        );
+}
+
+
+/**
+ * Base notification appearance.
+ */
+.app-toast {
+
+    border-radius:
+        0.75rem;
+
+    padding:
+        0.8rem 1rem;
+
+    box-shadow:
+        0 12px 30px
+        rgba(
+            15,
+            23,
+            42,
+            0.18
+        );
+
+    font-size:
+        0.8rem;
+
+    font-weight:
+        600;
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+/**
+ * Successful database action.
+ */
+.app-toast-success {
+
+    border:
+        1px solid
+        rgb(167 243 208);
+
+    background:
+        rgb(236 253 245);
+
+    color:
+        rgb(6 95 70);
+}
+
+
+/**
+ * Failed database/action message.
+ */
+.app-toast-error {
+
+    border:
+        1px solid
+        rgb(254 202 202);
+
+    background:
+        rgb(254 242 242);
+
+    color:
+        rgb(153 27 27);
+}
+
+
+/**
+ * Applied immediately before the toast is removed.
+ */
+.app-toast-hide {
+
+    opacity:
+        0;
+
+    transform:
+        translateY(
+            -0.35rem
+        );
+}

@@ -1,479 +1,1639 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
-    <!-- Supabase JS Client CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="supabaseClient.js"></script>
-    
+
+    <!-- ======================================================
+         BASIC DOCUMENT INFORMATION
+         ====================================================== -->
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Teaching Unit | Faculty of Engineering - UoP</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts (Inter & Serif accents) -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        navy: {
-                            800: '#14294a',
-                            900: '#0c1b33',
-                            950: '#071021',
-                        },
-                        accent: {
-                            gold: '#d4a340',
-                            goldHover: '#b88c32',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    }
-                }
-            }
-        }
-    </script>
+
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+
+    <meta
+        name="description"
+        content="
+            English Teaching Unit student showcase,
+            Faculty of Engineering,
+            University of Peradeniya.
+        "
+    >
+
+
+    <title>
+        English Teaching Unit |
+        Faculty of Engineering - UoP
+    </title>
+
+
+
+    <!-- ======================================================
+         SUPABASE JAVASCRIPT SDK
+         ======================================================
+         
+         services/supabase.js uses the global Supabase client
+         provided by this library.
+         ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+
+    <!-- ======================================================
+         TAILWIND CSS
+         ====================================================== -->
+
+    <script
+        src="https://cdn.tailwindcss.com"
+    ></script>
+
+
+
+    <!-- ======================================================
+         SHARED PORTAL TAILWIND CONFIG
+         ====================================================== -->
+
+    <script
+        src="assets/js/config/tailwind.js"
+    ></script>
+
+
+
+    <!-- ======================================================
+         PORTAL FONTS
+         ====================================================== -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+
+    <!-- ======================================================
+         SHARED CUSTOM CSS
+         ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="assets/css/app.css"
+    >
+
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased">
 
-    <!-- NAVIGATION BAR -->
-    <header class="sticky top-0 z-50 bg-navy-900 text-white shadow-md">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            
-            <!-- Logo -->
-            <a href="index.html" class="flex items-center space-x-3">
-                <img 
-                    src="uoplogo.png" 
-                    alt="English Teaching Unit Logo"
-                    class="h-12 w-auto object-contain"
-                >
-            
+
+
+<body
+    class="
+        bg-slate-50
+        text-slate-800
+        font-sans
+        antialiased
+    "
+>
+
+
+    <!-- ======================================================
+         SHARED NAVIGATION
+         ====================================================== -->
+
+    <div id="site-header"></div>
+
+
+
+    <!-- ======================================================
+         ADMINISTRATOR MODE BANNER
+         ======================================================
+         
+         Public visitor:
+         
+             empty
+         
+         Administrator:
+         
+             Administrator Mode + Sign Out
+         ====================================================== -->
+
+    <div id="admin-banner"></div>
+
+
+
+    <main>
+
+
+        <!-- ==================================================
+             HERO SECTION
+             ==================================================
+             
+             Institutional introduction remains static.
+             
+             It is not CMS content because it describes the ETU
+             itself rather than a student group/project.
+             ================================================== -->
+
+        <section
+            id="home"
+            class="
+                bg-navy-900
+                text-white
+                py-20
+                px-6
+                relative
+                overflow-hidden
+            "
+        >
+
+
+            <div
+                class="
+                    max-w-7xl
+                    mx-auto
+                    grid
+                    grid-cols-1
+                    lg:grid-cols-2
+                    gap-12
+                    items-center
+                "
+            >
+
+
+                <!-- ==========================================
+                     HERO TEXT
+                     ========================================== -->
+
                 <div>
-                    <div class="font-semibold leading-tight text-sm">
+
+
+                    <span
+                        class="
+                            inline-block
+                            text-xs
+                            font-semibold
+                            tracking-wider
+                            text-accent-gold
+                            border
+                            border-accent-gold/40
+                            px-3
+                            py-1
+                            rounded-full
+                            uppercase
+                            mb-6
+                        "
+                    >
+                        UNIVERSITY OF PERADENIYA · SRI LANKA
+                    </span>
+
+
+
+                    <h1
+                        class="
+                            text-4xl
+                            lg:text-5xl
+                            font-serif
+                            font-bold
+                            leading-tight
+                            mb-6
+                        "
+                    >
                         English Teaching Unit
-                    </div>
-                    <div class="text-xs text-slate-400">
-                        Faculty of Engineering · UoP
-                    </div>
-                </div>
-            </a>
 
-            <!-- Links -->
-            <nav class="hidden md:flex items-center space-x-8 text-sm">
-                <a href="index.html" class="bg-navy-800 text-accent-gold px-4 py-2 rounded-md font-medium">Home</a>
-                <a href="groups.html" class="text-slate-300 hover:text-white transition">Groups</a>
-                <a href="categories.html" class="text-slate-300 hover:text-white transition">Categories</a>
-                <a href="#work" class="text-slate-300 hover:text-white transition">Gallery</a>
-                <a href="about.html" class="text-slate-300 hover:text-white transition">About</a>
-            </nav>
+                        <br>
 
-            <!-- Mobile Menu Toggle Button -->
-            <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white p-2 focus:outline-none" aria-label="Toggle navigation">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                </svg>
-            </button>
-        </div>
+                        <span
+                            class="text-accent-gold"
+                        >
+                            Faculty of
 
-        <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-navy-950 px-6 py-4 border-t border-navy-800 space-y-3">
-            <a href="index.html" class="block text-accent-gold font-medium py-1">Home</a>
-            <a href="groups.html" class="block text-slate-300 hover:text-white py-1">Groups</a>
-            <a href="categories.html" class="block text-slate-300 hover:text-white py-1">Categories</a>
-            <a href="#work" class="block text-slate-300 hover:text-white py-1">Gallery</a>
-            <a href="about.html" class="block text-slate-300 hover:text-white py-1">About</a>
-        </div>
-    </header>
+                            <br>
 
-    <!-- HERO SECTION class="bg-navy-900 text-white py-20 px-6 relative overflow-hidden"-->
-    <!-- <section id="home" class="#2B4C7E" > -->
-    <section id="home" class="bg-navy-900/100 bg-cover bg-center text-white py-20 px-6 relative overflow-hidden">
-   
-        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <!-- Left Text Content -->
-            <div>
-                <span class="inline-block text-xs font-semibold tracking-wider text-accent-gold border border-accent-gold/40 px-3 py-1 rounded-full uppercase mb-6">
-                    UNIVERSITY OF PERADENIYA · SRI LANKA
-                </span>
-                <h1 class="text-4xl lg:text-5xl font-serif font-bold leading-tight mb-6">
-                    English Teaching Unit <br/>
-                    <span class="text-accent-gold">Faculty of <br/>Engineering</span>
-                </h1>
-                <p class="text-slate-300 text-lg mb-8 leading-relaxed max-w-xl">
-                    The Foundation Course in English at the Faculty of Engineering, University of Peradeniya is a preparatory programme designed to equip students with the essential English language skills required for their undergraduate engineering studies. It provides a practical foundation in technical communication, academic reading, listening, speaking, and writing, with emphasis on using English effectively in an engineering context.
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <a href="#work" class="bg-accent-gold hover:bg-accent-goldHover text-navy-900 font-semibold px-6 py-3 rounded-md transition shadow-lg">
-                        Explore Student Work
-                    </a>
-                    <a href="#gallery" class="border border-slate-600 hover:border-white text-white font-medium px-6 py-3 rounded-md transition">
-                        View Gallery
-                    </a>
-                </div>
-            </div>
+                            Engineering
+                        </span>
 
-            <!-- Right Featured Image Card -->
-            <div class="relative bg-navy-800 border border-slate-700/50 rounded-2xl overflow-hidden shadow-2xl">
-                <div class="relative h-72 sm:h-80 w-full overflow-hidden">
-                    <img 
-                        src="uope25.jpg" 
-                        alt="Featured Image" 
-                        class="w-full h-full object-cover"
+                    </h1>
+
+
+
+                    <p
+                        class="
+                            text-slate-300
+                            text-lg
+                            mb-8
+                            leading-relaxed
+                            max-w-xl
+                        "
+                    >
+                        The Foundation Course in English at the
+                        Faculty of Engineering, University of
+                        Peradeniya is a preparatory programme
+                        designed to equip students with the
+                        essential English language skills required
+                        for their undergraduate engineering
+                        studies. It provides a practical foundation
+                        in technical communication, academic
+                        reading, listening, speaking, and writing,
+                        with emphasis on using English effectively
+                        in an engineering context.
+                    </p>
+
+
+
+                    <div
+                        class="
+                            flex
+                            flex-wrap
+                            gap-4
+                        "
                     >
 
-                    <div class="absolute inset-0 bg-navy-950/20"></div>
 
-                    <span class="absolute top-4 left-4 bg-accent-gold text-navy-900 text-xs font-bold px-3 py-1 rounded-md">
-                        Featured
-                    </span>
+                        <!-- Scroll to latest student work -->
+                        <a
+                            href="#work"
+                            class="
+                                bg-accent-gold
+                                hover:bg-accent-goldHover
+                                text-navy-900
+                                font-semibold
+                                px-6
+                                py-3
+                                rounded-md
+                                transition
+                                shadow-lg
+                            "
+                        >
+                            Explore Student Work
+                        </a>
+
+
+
+                        <!-- Open complete project collection -->
+                        <a
+                            href="groups.html#projects"
+                            class="
+                                border
+                                border-slate-600
+                                hover:border-white
+                                text-white
+                                font-medium
+                                px-6
+                                py-3
+                                rounded-md
+                                transition
+                            "
+                        >
+                            View Gallery
+                        </a>
+
+                    </div>
+
                 </div>
 
-                <div class="p-6">
-                    <h3 class="font-bold text-lg text-white mb-1">
-                        Bridging Creativity and Science
-                    </h3>
-                    <p class="text-sm text-slate-400">
-                        25 Bachelors
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- METRICS STATS BAR -->
-    <section class="bg-navy-950 border-t border-b border-slate-800 text-white py-10 px-6">
-        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-                <div class="text-3xl lg:text-4xl font-bold text-accent-gold mb-1">4</div>
-                <div class="text-xs uppercase tracking-wider text-slate-400">Student Groups</div>
-            </div>
-            <div>
-                <div class="text-3xl lg:text-4xl font-bold text-accent-gold mb-1">0</div>
-                <div class="text-xs uppercase tracking-wider text-slate-400">Projects Published</div>
-            </div>
-            <div>
-                <div class="text-3xl lg:text-4xl font-bold text-accent-gold mb-1">4</div>
-                <div class="text-xs uppercase tracking-wider text-slate-400">Content Categories</div>
-            </div>
-            <div>
-                <div class="text-3xl lg:text-4xl font-bold text-accent-gold mb-1">100</div>
-                <div class="text-xs uppercase tracking-wider text-slate-400">Students</div>
-            </div>
-        </div>
-    </section>
 
-    <!-- ABOUT THIS PLATFORM SECTION -->
-    <section id="about" class="py-20 px-6">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-accent-gold mb-3 block">ABOUT THIS PLATFORM</span>
-                <h2 class="text-3xl sm:text-4xl font-serif font-bold text-navy-900 mb-6">
-                    Where Engineering Meets Creative Expression
-                </h2>
-                <p class="text-slate-600 mb-4 leading-relaxed">
-                    The English Teaching Unit (ETU) at the Faculty of Engineering, University of Peradeniya, is dedicated to developing the English language and communication skills of engineering students. This digital showcase presents the exceptional work our students produce — from compelling documentaries to innovative art projects.
-                </p>
-                <p class="text-slate-600 mb-6 leading-relaxed">
-                    Browse student group projects organized by cohort (AB01–AB04) and category. Whether you're a student, educator, or visitor, we invite you to explore the creativity and talent of our engineering community.
-                </p>
-                <a href="about.html" class="inline-flex items-center text-navy-900 font-semibold hover:text-accent-gold transition">
-                    Learn more about us <span class="ml-2">→</span>
-                </a>
-            </div>
+                <!-- ==========================================
+                     FEATURED LOCAL IMAGE
+                     ==========================================
+                     
+                     This remains a static university visual.
+                     
+                     Student project/gallery content itself comes
+                     from Supabase.
+                     ========================================== -->
 
-            <div class="relative rounded-2xl overflow-hidden shadow-lg border border-slate-200">
-                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1000&q=80" alt="Students Working" class="w-full h-96 object-cover">
-                <div class="absolute bottom-4 left-4 bg-accent-gold text-navy-900 p-4 rounded-xl max-w-xs shadow-md">
-                    <div class="font-bold text-lg">2024</div>
-                    <div class="text-xs font-medium">Latest student cohort showcase</div>
-                </div>
-            </div>
-        </div>
-    </section>
+                <div
+                    class="
+                        relative
+                        bg-navy-800
+                        border
+                        border-slate-700/50
+                        rounded-2xl
+                        overflow-hidden
+                        shadow-2xl
+                    "
+                >
 
-    <!-- MEET OUR GROUPS SECTION -->
-    <section id="groups" class="py-16 px-6 bg-slate-100/70 border-t border-slate-200">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex justify-between items-end mb-10">
-                <div>
-                    <span class="text-xs font-bold uppercase tracking-wider text-accent-gold mb-1 block">STUDENT GROUPS</span>
-                    <h2 class="text-3xl font-serif font-bold text-navy-900">Meet Our Groups</h2>
-                </div>
-                <a href="groups.html" class="text-sm font-semibold text-navy-900 hover:text-accent-gold transition">View all groups →</a>
-            </div>
 
-            <!-- 4 Column Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Group AB01 -->
-                <a href="group.html?group=ab01" class="group block bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
-                    <div class="relative h-44">
-                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                        <span class="absolute top-3 left-3 bg-accent-gold text-navy-900 text-xs font-bold px-2.5 py-1 rounded">AB01</span>
+                    <div
+                        class="
+                            relative
+                            h-72
+                            sm:h-80
+                            w-full
+                            overflow-hidden
+                        "
+                    >
+
+
+                        <img
+                            src="assets/images/uope25.jpg"
+                            alt="University of Peradeniya engineering students"
+                            class="
+                                w-full
+                                h-full
+                                object-cover
+                            "
+                        >
+
+
+                        <div
+                            class="
+                                absolute
+                                inset-0
+                                bg-navy-950/20
+                            "
+                        ></div>
+
+
+                        <span
+                            class="
+                                absolute
+                                top-4
+                                left-4
+                                bg-accent-gold
+                                text-navy-900
+                                text-xs
+                                font-bold
+                                px-3
+                                py-1
+                                rounded-md
+                            "
+                        >
+                            Featured
+                        </span>
+
                     </div>
-                    <div class="p-5">
-                        <h3 class="font-bold text-navy-900 text-lg mb-2 group-hover:text-accent-gold transition">Group AB01</h3>
-                        <p class="text-xs text-slate-500 mb-4 line-clamp-2">Pioneers in collaborative storytelling and visual media.</p>
-                        <div class="text-xs text-slate-400 flex justify-between pt-3 border-t border-slate-100">
-                            <span>4 projects</span>
-                            <span>5 students</span>
-                        </div>
-                    </div>
-                </a>
 
-                <!-- Group AB02 -->
-                <a href="group.html?group=ab02" class="group block bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
-                    <div class="relative h-44">
-                        <img src="https://images.unsplash.com/photo-1531545514256-b1400bc00f31?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                        <span class="absolute top-3 left-3 bg-accent-gold text-navy-900 text-xs font-bold px-2.5 py-1 rounded">AB02</span>
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-bold text-navy-900 text-lg mb-2 group-hover:text-accent-gold transition">Group AB02</h3>
-                        <p class="text-xs text-slate-500 mb-4 line-clamp-2">Exploring documentary arts and engineering narratives.</p>
-                        <div class="text-xs text-slate-400 flex justify-between pt-3 border-t border-slate-100">
-                            <span>4 projects</span>
-                            <span>5 students</span>
-                        </div>
-                    </div>
-                </a>
 
-                <!-- Group AB03 -->
-                <a href="group.html?group=ab03" class="group block bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
-                    <div class="relative h-44">
-                        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                        <span class="absolute top-3 left-3 bg-accent-gold text-navy-900 text-xs font-bold px-2.5 py-1 rounded">AB03</span>
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-bold text-navy-900 text-lg mb-2 group-hover:text-accent-gold transition">Group AB03</h3>
-                        <p class="text-xs text-slate-500 mb-4 line-clamp-2">Creative presentations bridging language and technology.</p>
-                        <div class="text-xs text-slate-400 flex justify-between pt-3 border-t border-slate-100">
-                            <span>4 projects</span>
-                            <span>5 students</span>
-                        </div>
-                    </div>
-                </a>
 
-                <!-- Group AB04 -->
-                <a href="group.html?group=ab04" class="group block bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
-                    <div class="relative h-44">
-                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                        <span class="absolute top-3 left-3 bg-accent-gold text-navy-900 text-xs font-bold px-2.5 py-1 rounded">AB04</span>
-                    </div>
-                    <div class="p-5">
-                        <h3 class="font-bold text-navy-900 text-lg mb-2 group-hover:text-accent-gold transition">Group AB04</h3>
-                        <p class="text-xs text-slate-500 mb-4 line-clamp-2">Artistic expression through multimedia and gallery work.</p>
-                        <div class="text-xs text-slate-400 flex justify-between pt-3 border-t border-slate-100">
-                            <span>4 projects</span>
-                            <span>5 students</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- LATEST STUDENT WORK / FEATURED PROJECTS -->
-    <section id="work" class="py-16 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex justify-between items-end mb-10">
-                <div>
-                    <span class="text-xs font-bold uppercase tracking-wider text-accent-gold mb-1 block">FEATURED PROJECTS</span>
-                    <h2 class="text-3xl font-serif font-bold text-navy-900">Latest Student Work</h2>
-                </div>
-                <a href="groups.html" class="text-sm font-semibold text-navy-900 hover:text-accent-gold transition">View all projects →</a>
-            </div>
-    
-            <!-- 3 Column Work Cards (Dynamically loaded) -->
-            <div id="latest-projects-container" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="col-span-full py-8 text-center text-slate-400">Loading latest student projects...</div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- JavaScript to load dynamic data into this section -->
-    <script>
-    async function loadLatestProjects() {
-      const container = document.getElementById('latest-projects-container');
-      if (!container) return;
-
-      try {
-        const projects = await window.ETUDataService.getLatestProjects(3);
-
-        if (!projects || projects.length === 0) {
-          container.innerHTML = '<p class="col-span-full text-center text-slate-500 py-8">No projects uploaded yet.</p>';
-          return;
-        }
-
-        container.innerHTML = '';
-        projects.forEach(project => {
-          const imageUrl = project.imageUrl || project.image_url || 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80';
-          const groupName = project.groupName || (project.groups ? project.groups.name : 'Group');
-          const groupSlug = project.groupSlug || (project.groups ? project.groups.slug : 'ab01');
-
-          container.innerHTML += `
-            <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
-                <div>
-                    <div class="relative h-48">
-                        <img src="${imageUrl}" alt="${project.title}" class="w-full h-full object-cover">
-                        <span class="absolute top-3 left-3 bg-accent-gold text-navy-900 text-xs font-bold px-2 py-0.5 rounded shadow-sm">${groupName}</span>
-                        ${project.icon ? `<span class="absolute top-3 right-3 bg-navy-900/80 text-white text-xs px-2 py-0.5 rounded shadow-sm">${project.icon}</span>` : ''}
-                    </div>
                     <div class="p-6">
-                        <span class="text-xs text-blue-600 font-semibold uppercase tracking-wider mb-1 block">${project.category}</span>
-                        <h3 class="font-bold text-navy-900 text-lg mb-2">${project.title}</h3>
-                        <p class="text-xs text-slate-500 mb-4 leading-relaxed line-clamp-3">${project.description || 'Explore the details of this project.'}</p>
+
+                        <h3
+                            class="
+                                font-bold
+                                text-lg
+                                text-white
+                                mb-1
+                            "
+                        >
+                            Bridging Creativity and Science
+                        </h3>
+
+
+                        <p
+                            class="
+                                text-sm
+                                text-slate-400
+                            "
+                        >
+                            25 Bachelors
+                        </p>
+
                     </div>
-                </div>
-                <div class="px-6 pb-6 pt-2 border-t border-slate-100 flex items-center justify-between">
-                    <a href="group.html?group=${groupSlug}" class="text-xs font-bold text-accent-gold flex items-center hover:underline">
-                        View in ${groupName} →
-                    </a>
-                    ${project.time ? `<span class="text-[10px] font-mono text-slate-400">${project.time}</span>` : ''}
-                </div>
-            </div>
-          `;
-        });
-      } catch (err) {
-        console.error('Error loading projects:', err);
-        container.innerHTML = '<p class="col-span-full text-center text-red-500 py-8">Failed to load projects.</p>';
-      }
-    }
-    
-    // Run after DOM is loaded
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', loadLatestProjects);
-    } else {
-      loadLatestProjects();
-    }
-    </script>
 
-    <!-- OUR MISSION SECTION -->
-    <section class="bg-navy-900 text-white py-20 px-6">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-accent-gold mb-3 block">OUR MISSION</span>
-                <h2 class="text-3xl sm:text-4xl font-serif font-bold mb-6">
-                    Empowering Engineers Through Language
-                </h2>
-                <p class="text-slate-300 mb-4 leading-relaxed">
-                    Our mission is to equip engineering students with the English communication skills they need to thrive in a globally connected profession — from technical writing and oral presentation to creative and critical expression.
-                </p>
-                <p class="text-slate-300 leading-relaxed">
-                    We believe that great engineers are also great communicators. This platform is a testament to the remarkable things our students achieve when language and creativity meet engineering curiosity.
-                </p>
+                </div>
+
             </div>
 
-            <!-- 2x2 Mission Grid Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div class="bg-navy-800 p-6 rounded-xl border border-slate-700/50">
-                    <div class="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center mb-4">💬</div>
-                    <h4 class="font-bold mb-1">Communication</h4>
-                    <p class="text-xs text-slate-400">Developing fluent English for professional and academic contexts</p>
+        </section>
+
+
+
+        <!-- ==================================================
+             LIVE STATISTICS
+             ==================================================
+             
+             OLD PAGE:
+             
+             these values were manually written into HTML.
+             
+             NEW PAGE:
+             
+             homePage.js calculates them from real data.
+             ================================================== -->
+
+        <section
+            class="
+                bg-navy-950
+                border-t
+                border-b
+                border-slate-800
+                text-white
+                py-10
+                px-6
+            "
+        >
+
+
+            <div
+                class="
+                    max-w-7xl
+                    mx-auto
+                    grid
+                    grid-cols-2
+                    md:grid-cols-4
+                    gap-8
+                    text-center
+                "
+            >
+
+
+                <!-- ==========================================
+                     GROUP COUNT
+                     ========================================== -->
+
+                <div>
+
+                    <div
+                        id="stat-groups"
+                        class="
+                            text-3xl
+                            lg:text-4xl
+                            font-bold
+                            text-accent-gold
+                            mb-1
+                        "
+                    >
+                        —
+                    </div>
+
+
+                    <div
+                        class="
+                            text-xs
+                            uppercase
+                            tracking-wider
+                            text-slate-400
+                        "
+                    >
+                        Student Groups
+                    </div>
+
                 </div>
-                <div class="bg-navy-800 p-6 rounded-xl border border-slate-700/50">
-                    <div class="w-8 h-8 rounded-lg bg-orange-500/20 text-orange-400 flex items-center justify-center mb-4">🎓</div>
-                    <h4 class="font-bold mb-1">Academic Excellence</h4>
-                    <p class="text-xs text-slate-400">Supporting high-quality written and oral academic work</p>
+
+
+
+                <!-- ==========================================
+                     PROJECT COUNT
+                     ========================================== -->
+
+                <div>
+
+                    <div
+                        id="stat-projects"
+                        class="
+                            text-3xl
+                            lg:text-4xl
+                            font-bold
+                            text-accent-gold
+                            mb-1
+                        "
+                    >
+                        —
+                    </div>
+
+
+                    <div
+                        class="
+                            text-xs
+                            uppercase
+                            tracking-wider
+                            text-slate-400
+                        "
+                    >
+                        Projects Published
+                    </div>
+
                 </div>
-                <div class="bg-navy-800 p-6 rounded-xl border border-slate-700/50">
-                    <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center mb-4">🌐</div>
-                    <h4 class="font-bold mb-1">Global Readiness</h4>
-                    <p class="text-xs text-slate-400">Preparing students for international engineering careers</p>
+
+
+
+                <!-- ==========================================
+                     CATEGORY COUNT
+                     ========================================== -->
+
+                <div>
+
+                    <div
+                        id="stat-categories"
+                        class="
+                            text-3xl
+                            lg:text-4xl
+                            font-bold
+                            text-accent-gold
+                            mb-1
+                        "
+                    >
+                        —
+                    </div>
+
+
+                    <div
+                        class="
+                            text-xs
+                            uppercase
+                            tracking-wider
+                            text-slate-400
+                        "
+                    >
+                        Content Categories
+                    </div>
+
                 </div>
-                <div class="bg-navy-800 p-6 rounded-xl border border-slate-700/50">
-                    <div class="w-8 h-8 rounded-lg bg-yellow-500/20 text-yellow-400 flex items-center justify-center mb-4">✨</div>
-                    <h4 class="font-bold mb-1">Creative Confidence</h4>
-                    <p class="text-xs text-slate-400">Fostering creativity alongside technical discipline</p>
+
+
+
+                <!-- ==========================================
+                     STUDENT COUNT
+                     ========================================== -->
+
+                <div>
+
+                    <div
+                        id="stat-students"
+                        class="
+                            text-3xl
+                            lg:text-4xl
+                            font-bold
+                            text-accent-gold
+                            mb-1
+                        "
+                    >
+                        —
+                    </div>
+
+
+                    <div
+                        class="
+                            text-xs
+                            uppercase
+                            tracking-wider
+                            text-slate-400
+                        "
+                    >
+                        Students
+                    </div>
+
                 </div>
+
             </div>
-        </div>
-    </section>
 
-    <!-- GET IN TOUCH / CONTACT CARDS -->
-    <section class="py-20 px-6 bg-slate-50">
-        <div class="max-w-7xl mx-auto text-center">
-            <span class="text-xs font-bold uppercase tracking-wider text-accent-gold mb-2 block">GET IN TOUCH</span>
-            <h2 class="text-3xl font-serif font-bold text-navy-900 mb-3">Contact Us</h2>
-            <p class="text-sm text-slate-500 mb-12 max-w-xl mx-auto">
-                Reach out to the English Teaching Unit for inquiries, collaborations, or more information about our programmes.
-            </p>
+        </section>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Location -->
-                <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center">
-                    <div class="w-12 h-12 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center mb-4 text-xl">📍</div>
-                    <h3 class="font-bold text-navy-900 mb-2">Location</h3>
-                    <p class="text-xs text-slate-500 leading-relaxed text-center">
-                        Faculty of Engineering<br/>
-                        University of Peradeniya<br/>
-                        Peradeniya 20400, Sri Lanka
+
+
+        <!-- ==================================================
+             ABOUT THIS PLATFORM
+             ==================================================
+             
+             Static institutional information.
+             ================================================== -->
+
+        <section
+            id="about"
+            class="
+                py-20
+                px-6
+            "
+        >
+
+
+            <div
+                class="
+                    max-w-7xl
+                    mx-auto
+                    grid
+                    grid-cols-1
+                    lg:grid-cols-2
+                    gap-12
+                    items-center
+                "
+            >
+
+
+                <!-- About text -->
+                <div>
+
+                    <span
+                        class="
+                            text-xs
+                            font-bold
+                            uppercase
+                            tracking-wider
+                            text-accent-gold
+                            mb-3
+                            block
+                        "
+                    >
+                        ABOUT THIS PLATFORM
+                    </span>
+
+
+                    <h2
+                        class="
+                            text-3xl
+                            sm:text-4xl
+                            font-serif
+                            font-bold
+                            text-navy-900
+                            mb-6
+                        "
+                    >
+                        Where Engineering Meets Creative Expression
+                    </h2>
+
+
+                    <p
+                        class="
+                            text-slate-600
+                            mb-4
+                            leading-relaxed
+                        "
+                    >
+                        The English Teaching Unit (ETU) at the
+                        Faculty of Engineering, University of
+                        Peradeniya, is dedicated to developing the
+                        English language and communication skills
+                        of engineering students. This digital
+                        showcase presents the exceptional work our
+                        students produce — from compelling
+                        documentaries to innovative art projects.
                     </p>
+
+
+                    <p
+                        class="
+                            text-slate-600
+                            mb-6
+                            leading-relaxed
+                        "
+                    >
+                        Browse student group projects organized by
+                        cohort and category. Whether you're a
+                        student, educator, or visitor, we invite
+                        you to explore the creativity and talent
+                        of our engineering community.
+                    </p>
+
+
+                    <a
+                        href="about.html"
+                        class="
+                            inline-flex
+                            items-center
+                            text-navy-900
+                            font-semibold
+                            hover:text-accent-gold
+                            transition
+                        "
+                    >
+                        Learn more about us
+
+                        <span class="ml-2">
+                            →
+                        </span>
+                    </a>
+
                 </div>
 
-                <!-- Email -->
-                <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center">
-                    <div class="w-12 h-12 rounded-full bg-purple-50 text-purple-500 flex items-center justify-center mb-4 text-xl">✉️</div>
-                    <h3 class="font-bold text-navy-900 mb-2">Email</h3>
-                    <a href="mailto:etu@eng.pdn.ac.lk" class="text-xs text-slate-500 hover:text-accent-gold">etu@eng.pdn.ac.lk</a>
+
+
+                <!-- ==========================================
+                     LOCAL FACULTY IMAGE
+                     ==========================================
+                     
+                     We use an existing project image instead of
+                     a third-party stock image.
+                     ========================================== -->
+
+                <div
+                    class="
+                        relative
+                        rounded-2xl
+                        overflow-hidden
+                        shadow-lg
+                        border
+                        border-slate-200
+                    "
+                >
+
+
+                    <img
+                        src="assets/images/uopefac.jpg"
+                        alt="Faculty of Engineering, University of Peradeniya"
+                        class="
+                            w-full
+                            h-96
+                            object-cover
+                        "
+                    >
+
+
+                    <div
+                        class="
+                            absolute
+                            bottom-4
+                            left-4
+                            bg-accent-gold
+                            text-navy-900
+                            p-4
+                            rounded-xl
+                            max-w-xs
+                            shadow-md
+                        "
+                    >
+
+                        <div
+                            class="
+                                font-bold
+                                text-lg
+                            "
+                        >
+                            Student Showcase
+                        </div>
+
+
+                        <div
+                            class="
+                                text-xs
+                                font-medium
+                            "
+                        >
+                            English Teaching Unit
+                        </div>
+
+                    </div>
+
                 </div>
 
-                <!-- Website -->
-                <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center">
-                    <div class="w-12 h-12 rounded-full bg-cyan-50 text-cyan-500 flex items-center justify-center mb-4 text-xl">🌐</div>
-                    <h3 class="font-bold text-navy-900 mb-2">Website</h3>
-                    <a href="http://www.eng.pdn.ac.lk" target="_blank" class="text-xs text-slate-500 hover:text-accent-gold">www.eng.pdn.ac.lk</a>
-                </div>
             </div>
-        </div>
-    </section>
 
-    <!-- FOOTER -->
-    <footer class="bg-navy-950 text-white pt-16 pb-12 px-6 border-t border-slate-800">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
-            <!-- Col 1 -->
-            <div>
-                <div class="flex items-center space-x-3 mb-4">
-                    <div class="bg-accent-gold text-navy-900 font-bold text-xs px-2 py-1 rounded">ETU</div>
-                    <div class="font-bold text-sm">English Teaching Unit</div>
+        </section>
+
+
+
+        <!-- ==================================================
+             DYNAMIC STUDENT GROUPS
+             ==================================================
+             
+             No AB01 / AB02 / AB03 / AB04 HTML is hardcoded.
+             
+             homePage.js loads real groups from Supabase.
+             ================================================== -->
+
+        <section
+            id="groups"
+            class="
+                py-16
+                px-6
+                bg-slate-100/70
+                border-t
+                border-slate-200
+            "
+        >
+
+
+            <div
+                class="
+                    max-w-7xl
+                    mx-auto
+                "
+            >
+
+
+                <!-- Section heading -->
+                <div
+                    class="
+                        flex
+                        flex-wrap
+                        justify-between
+                        items-end
+                        gap-4
+                        mb-10
+                    "
+                >
+
+                    <div>
+
+                        <span
+                            class="
+                                text-xs
+                                font-bold
+                                uppercase
+                                tracking-wider
+                                text-accent-gold
+                                mb-1
+                                block
+                            "
+                        >
+                            STUDENT GROUPS
+                        </span>
+
+
+                        <h2
+                            class="
+                                text-3xl
+                                font-serif
+                                font-bold
+                                text-navy-900
+                            "
+                        >
+                            Meet Our Groups
+                        </h2>
+
+                    </div>
+
+
+                    <a
+                        href="groups.html"
+                        class="
+                            text-sm
+                            font-semibold
+                            text-navy-900
+                            hover:text-accent-gold
+                            transition
+                        "
+                    >
+                        View all groups →
+                    </a>
+
                 </div>
-                <p class="text-xs text-slate-400 mb-4 leading-relaxed max-w-sm">
-                    Developing English language and communication skills in engineering students at the University of Peradeniya, Sri Lanka.
+
+
+
+                <!-- ==========================================
+                     DYNAMIC GROUP CARDS
+                     ========================================== -->
+
+                <div
+                    id="home-groups-grid"
+                    class="
+                        grid
+                        grid-cols-1
+                        sm:grid-cols-2
+                        lg:grid-cols-4
+                        gap-6
+                    "
+                >
+
+                    <div
+                        class="
+                            col-span-full
+                            py-10
+                            text-center
+                            text-slate-400
+                        "
+                    >
+                        Loading student groups...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             LATEST STUDENT WORK
+             ==================================================
+             
+             The old inline script and duplicated project-card
+             HTML are gone.
+             
+             homePage.js:
+             
+             getLatestProjects(3)
+                    ↓
+             projectCard.js
+                    ↓
+             this container
+             ================================================== -->
+
+        <section
+            id="work"
+            class="
+                py-16
+                px-6
+            "
+        >
+
+
+            <div
+                class="
+                    max-w-7xl
+                    mx-auto
+                "
+            >
+
+
+                <div
+                    class="
+                        flex
+                        flex-wrap
+                        justify-between
+                        items-end
+                        gap-4
+                        mb-10
+                    "
+                >
+
+                    <div>
+
+                        <span
+                            class="
+                                text-xs
+                                font-bold
+                                uppercase
+                                tracking-wider
+                                text-accent-gold
+                                mb-1
+                                block
+                            "
+                        >
+                            FEATURED PROJECTS
+                        </span>
+
+
+                        <h2
+                            class="
+                                text-3xl
+                                font-serif
+                                font-bold
+                                text-navy-900
+                            "
+                        >
+                            Latest Student Work
+                        </h2>
+
+                    </div>
+
+
+                    <a
+                        href="groups.html#projects"
+                        class="
+                            text-sm
+                            font-semibold
+                            text-navy-900
+                            hover:text-accent-gold
+                            transition
+                        "
+                    >
+                        View all projects →
+                    </a>
+
+                </div>
+
+
+
+                <!-- Latest projects -->
+                <div
+                    id="latest-projects-container"
+                    class="
+                        grid
+                        grid-cols-1
+                        md:grid-cols-3
+                        gap-8
+                    "
+                >
+
+                    <div
+                        class="
+                            col-span-full
+                            py-10
+                            text-center
+                            text-slate-400
+                        "
+                    >
+                        Loading latest student projects...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             OUR MISSION
+             ==================================================
+             
+             Static institutional content.
+             ================================================== -->
+
+        <section
+            class="
+                bg-navy-900
+                text-white
+                py-20
+                px-6
+            "
+        >
+
+
+            <div
+                class="
+                    max-w-7xl
+                    mx-auto
+                    grid
+                    grid-cols-1
+                    lg:grid-cols-2
+                    gap-12
+                    items-center
+                "
+            >
+
+
+                <div>
+
+                    <span
+                        class="
+                            text-xs
+                            font-bold
+                            uppercase
+                            tracking-wider
+                            text-accent-gold
+                            mb-3
+                            block
+                        "
+                    >
+                        OUR MISSION
+                    </span>
+
+
+                    <h2
+                        class="
+                            text-3xl
+                            sm:text-4xl
+                            font-serif
+                            font-bold
+                            mb-6
+                        "
+                    >
+                        Empowering Engineers Through Language
+                    </h2>
+
+
+                    <p
+                        class="
+                            text-slate-300
+                            mb-4
+                            leading-relaxed
+                        "
+                    >
+                        Our mission is to equip engineering
+                        students with the English communication
+                        skills they need to thrive in a globally
+                        connected profession — from technical
+                        writing and oral presentation to creative
+                        and critical expression.
+                    </p>
+
+
+                    <p
+                        class="
+                            text-slate-300
+                            leading-relaxed
+                        "
+                    >
+                        We believe that great engineers are also
+                        great communicators. This platform is a
+                        testament to the remarkable things our
+                        students achieve when language and
+                        creativity meet engineering curiosity.
+                    </p>
+
+                </div>
+
+
+
+                <!-- ==========================================
+                     MISSION VALUES
+                     ========================================== -->
+
+                <div
+                    class="
+                        grid
+                        grid-cols-1
+                        sm:grid-cols-2
+                        gap-4
+                    "
+                >
+
+
+                    <!-- Communication -->
+                    <div
+                        class="
+                            bg-navy-800
+                            p-6
+                            rounded-xl
+                            border
+                            border-slate-700/50
+                        "
+                    >
+
+                        <div
+                            class="
+                                w-8
+                                h-8
+                                rounded-lg
+                                bg-indigo-500/20
+                                text-indigo-400
+                                flex
+                                items-center
+                                justify-center
+                                mb-4
+                            "
+                        >
+                            💬
+                        </div>
+
+
+                        <h4 class="font-bold mb-1">
+                            Communication
+                        </h4>
+
+
+                        <p
+                            class="
+                                text-xs
+                                text-slate-400
+                            "
+                        >
+                            Developing fluent English for
+                            professional and academic contexts
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- Academic excellence -->
+                    <div
+                        class="
+                            bg-navy-800
+                            p-6
+                            rounded-xl
+                            border
+                            border-slate-700/50
+                        "
+                    >
+
+                        <div
+                            class="
+                                w-8
+                                h-8
+                                rounded-lg
+                                bg-orange-500/20
+                                text-orange-400
+                                flex
+                                items-center
+                                justify-center
+                                mb-4
+                            "
+                        >
+                            🎓
+                        </div>
+
+
+                        <h4 class="font-bold mb-1">
+                            Academic Excellence
+                        </h4>
+
+
+                        <p
+                            class="
+                                text-xs
+                                text-slate-400
+                            "
+                        >
+                            Supporting high-quality written and
+                            oral academic work
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- Global readiness -->
+                    <div
+                        class="
+                            bg-navy-800
+                            p-6
+                            rounded-xl
+                            border
+                            border-slate-700/50
+                        "
+                    >
+
+                        <div
+                            class="
+                                w-8
+                                h-8
+                                rounded-lg
+                                bg-blue-500/20
+                                text-blue-400
+                                flex
+                                items-center
+                                justify-center
+                                mb-4
+                            "
+                        >
+                            🌐
+                        </div>
+
+
+                        <h4 class="font-bold mb-1">
+                            Global Readiness
+                        </h4>
+
+
+                        <p
+                            class="
+                                text-xs
+                                text-slate-400
+                            "
+                        >
+                            Preparing students for international
+                            engineering careers
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- Creative confidence -->
+                    <div
+                        class="
+                            bg-navy-800
+                            p-6
+                            rounded-xl
+                            border
+                            border-slate-700/50
+                        "
+                    >
+
+                        <div
+                            class="
+                                w-8
+                                h-8
+                                rounded-lg
+                                bg-yellow-500/20
+                                text-yellow-400
+                                flex
+                                items-center
+                                justify-center
+                                mb-4
+                            "
+                        >
+                            ✨
+                        </div>
+
+
+                        <h4 class="font-bold mb-1">
+                            Creative Confidence
+                        </h4>
+
+
+                        <p
+                            class="
+                                text-xs
+                                text-slate-400
+                            "
+                        >
+                            Fostering creativity alongside
+                            technical discipline
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             CONTACT
+             ================================================== -->
+
+        <section
+            class="
+                py-20
+                px-6
+                bg-slate-50
+            "
+        >
+
+
+            <div
+                class="
+                    max-w-7xl
+                    mx-auto
+                    text-center
+                "
+            >
+
+                <span
+                    class="
+                        text-xs
+                        font-bold
+                        uppercase
+                        tracking-wider
+                        text-accent-gold
+                        mb-2
+                        block
+                    "
+                >
+                    GET IN TOUCH
+                </span>
+
+
+                <h2
+                    class="
+                        text-3xl
+                        font-serif
+                        font-bold
+                        text-navy-900
+                        mb-3
+                    "
+                >
+                    Contact Us
+                </h2>
+
+
+                <p
+                    class="
+                        text-sm
+                        text-slate-500
+                        mb-12
+                        max-w-xl
+                        mx-auto
+                    "
+                >
+                    Reach out to the English Teaching Unit for
+                    inquiries, collaborations, or more information
+                    about our programmes.
                 </p>
-                <p class="text-xs text-slate-400">
-                    📍 Faculty of Engineering, University of Peradeniya, Peradeniya 20400, Sri Lanka
-                </p>
+
+
+
+                <div
+                    class="
+                        grid
+                        grid-cols-1
+                        md:grid-cols-3
+                        gap-8
+                    "
+                >
+
+
+                    <!-- ======================================
+                         LOCATION
+                         ====================================== -->
+
+                    <div
+                        class="
+                            bg-white
+                            p-8
+                            rounded-2xl
+                            border
+                            border-slate-200
+                            shadow-sm
+                            flex
+                            flex-col
+                            items-center
+                        "
+                    >
+
+                        <div
+                            class="
+                                w-12
+                                h-12
+                                rounded-full
+                                bg-rose-50
+                                text-rose-500
+                                flex
+                                items-center
+                                justify-center
+                                mb-4
+                                text-xl
+                            "
+                        >
+                            📍
+                        </div>
+
+
+                        <h3
+                            class="
+                                font-bold
+                                text-navy-900
+                                mb-2
+                            "
+                        >
+                            Location
+                        </h3>
+
+
+                        <p
+                            class="
+                                text-xs
+                                text-slate-500
+                                leading-relaxed
+                                text-center
+                            "
+                        >
+                            Faculty of Engineering
+                            <br>
+                            University of Peradeniya
+                            <br>
+                            Peradeniya 20400, Sri Lanka
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- ======================================
+                         EMAIL
+                         ====================================== -->
+
+                    <div
+                        class="
+                            bg-white
+                            p-8
+                            rounded-2xl
+                            border
+                            border-slate-200
+                            shadow-sm
+                            flex
+                            flex-col
+                            items-center
+                        "
+                    >
+
+                        <div
+                            class="
+                                w-12
+                                h-12
+                                rounded-full
+                                bg-purple-50
+                                text-purple-500
+                                flex
+                                items-center
+                                justify-center
+                                mb-4
+                                text-xl
+                            "
+                        >
+                            ✉️
+                        </div>
+
+
+                        <h3
+                            class="
+                                font-bold
+                                text-navy-900
+                                mb-2
+                            "
+                        >
+                            Email
+                        </h3>
+
+
+                        <a
+                            href="mailto:etu@eng.pdn.ac.lk"
+                            class="
+                                text-xs
+                                text-slate-500
+                                hover:text-accent-gold
+                            "
+                        >
+                            etu@eng.pdn.ac.lk
+                        </a>
+
+                    </div>
+
+
+
+                    <!-- ======================================
+                         WEBSITE
+                         ====================================== -->
+
+                    <div
+                        class="
+                            bg-white
+                            p-8
+                            rounded-2xl
+                            border
+                            border-slate-200
+                            shadow-sm
+                            flex
+                            flex-col
+                            items-center
+                        "
+                    >
+
+                        <div
+                            class="
+                                w-12
+                                h-12
+                                rounded-full
+                                bg-cyan-50
+                                text-cyan-500
+                                flex
+                                items-center
+                                justify-center
+                                mb-4
+                                text-xl
+                            "
+                        >
+                            🌐
+                        </div>
+
+
+                        <h3
+                            class="
+                                font-bold
+                                text-navy-900
+                                mb-2
+                            "
+                        >
+                            Website
+                        </h3>
+
+
+                        <a
+                            href="https://www.eng.pdn.ac.lk"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="
+                                text-xs
+                                text-slate-500
+                                hover:text-accent-gold
+                            "
+                        >
+                            www.eng.pdn.ac.lk
+                        </a>
+
+                    </div>
+
+                </div>
+
             </div>
 
-            <!-- Col 2: Navigation Links -->
-            <div>
-                <h4 class="font-bold text-sm text-slate-200 mb-4">Pages</h4>
-                <ul class="space-y-2 text-xs text-slate-400">
-                    <li><a href="index.html" class="hover:text-accent-gold">Home</a></li>
-                    <li><a href="groups.html" class="hover:text-accent-gold">Groups</a></li>
-                    <li><a href="categories.html" class="hover:text-accent-gold">Categories</a></li>
-                    <li><a href="#work" class="hover:text-accent-gold">Gallery</a></li>
-                </ul>
-            </div>
+        </section>
 
-            <!-- Col 3: Student Groups Links -->
-            <div>
-                <h4 class="font-bold text-sm text-slate-200 mb-4">Student Groups</h4>
-                <ul class="space-y-2 text-xs text-slate-400">
-                    <li><a href="group.html?group=ab01" class="hover:text-accent-gold">Group AB01</a></li>
-                    <li><a href="group.html?group=ab02" class="hover:text-accent-gold">Group AB02</a></li>
-                    <li><a href="group.html?group=ab03" class="hover:text-accent-gold">Group AB03</a></li>
-                    <li><a href="group.html?group=ab04" class="hover:text-accent-gold">Group AB04</a></li>
-                </ul>
-            </div>
-        </div>
+    </main>
 
-        <div class="max-w-7xl mx-auto pt-8 border-t border-slate-800 text-center text-xs text-slate-500">
-            &copy; English Teaching Unit - Faculty of Engineering, University of Peradeniya. All rights reserved.
-        </div>
-    </footer>
 
-    <script src="nav.js"></script>
+
+    <!-- ======================================================
+         SHARED FOOTER
+         ======================================================
+         
+         footer.js inserts:
+         
+         - institutional footer
+         - current database groups
+         - Admin Login / Sign Out
+         ====================================================== -->
+
+    <div id="site-footer"></div>
+
+
+
+    <!-- ======================================================
+         HOMEPAGE CONTROLLER
+         ======================================================
+         
+         Do NOT load:
+         
+         supabaseClient.js
+         nav.js
+         
+         on this page anymore.
+         ====================================================== -->
+
+    <script
+        type="module"
+        src="assets/js/pages/homePage.js"
+    ></script>
+
 
 </body>
+
 </html>
