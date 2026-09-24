@@ -162,105 +162,26 @@ export function isIncompleteRegistration(regNo) {
  * https://www.youtube.com/shorts/VIDEO_ID
  */
 export function toYouTubeEmbedUrl(url) {
-
-    const value =
-        String(url || '')
-            .trim();
-
-
-    // No URL provided.
-    if (!value) {
-
-        return '';
-    }
-
-
     try {
+        const parsed = new URL(String(url || '').trim());
+        if (!['http:', 'https:'].includes(parsed.protocol)) return '';
 
-        const parsed =
-            new URL(value);
-
-
-        /**
-         * Handle:
-         *
-         * https://youtu.be/VIDEO_ID
-         */
-        if (
-            parsed.hostname.includes('youtu.be')
-        ) {
-
-            const id =
-                parsed.pathname
-                    .replace('/', '')
-                    .trim();
-
-
-            return id
-                ? `https://www.youtube.com/embed/${id}`
-                : '';
+        const host = parsed.hostname;
+        let id;
+        if (host === 'youtu.be' || host === 'www.youtu.be') {
+            id = parsed.pathname.slice(1);
+        } else if (['youtube.com', 'www.youtube.com', 'm.youtube.com',
+                    'youtube-nocookie.com', 'www.youtube-nocookie.com'].includes(host)) {
+            const match = parsed.pathname.match(/^\/(?:embed|shorts|live)\/([^/]+)\/?$/);
+            id = match?.[1] || (parsed.pathname === '/watch' ? parsed.searchParams.get('v') : '');
         }
 
-
-        /**
-         * Handle standard YouTube domain.
-         */
-        if (
-            parsed.hostname.includes('youtube.com')
-        ) {
-
-            /**
-             * Already an embed URL.
-             */
-            if (
-                parsed.pathname.startsWith('/embed/')
-            ) {
-
-                return value;
-            }
-
-
-            /**
-             * Standard:
-             *
-             * youtube.com/watch?v=...
-             */
-            const id =
-                parsed.searchParams.get('v');
-
-
-            if (id) {
-
-                return `https://www.youtube.com/embed/${id}`;
-            }
-
-
-            /**
-             * YouTube Shorts.
-             */
-            const shortsMatch =
-                parsed.pathname.match(
-                    /^\/shorts\/([^/?]+)/
-                );
-
-
-            if (shortsMatch) {
-
-                return (
-                    `https://www.youtube.com/embed/` +
-                    shortsMatch[1]
-                );
-            }
-        }
-    }
-
-    catch {
-
+        return /^[a-zA-Z0-9_-]{11}$/.test(id || '')
+            ? 'https://www.youtube.com/embed/' + id
+            : '';
+    } catch {
         return '';
     }
-
-
-    return '';
 }
 
 

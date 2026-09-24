@@ -75,7 +75,7 @@
          ====================================================== -->
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet"
     >
 
@@ -87,15 +87,15 @@
 
     <link
         rel="stylesheet"
-        href="assets/css/app.css"
+        href="assets/css/app.css?v=20260924-crest"
     >
 
+    <link rel="icon" type="image/png" href="assets/images/uoplogo.png">
 </head>
 
 
 
-<body
-    class="
+<body class="portal
         bg-slate-50
         text-slate-800
         font-sans
@@ -107,7 +107,7 @@
     <!-- ======================================================
          SHARED NAVIGATION
          ======================================================
-         
+
          navbar.js inserts navigation here.
          ====================================================== -->
 
@@ -118,10 +118,10 @@
     <!-- ======================================================
          ADMINISTRATOR MODE BANNER
          ======================================================
-         
+
          Public visitor:
              remains empty.
-         
+
          Admin:
              displays Administrator Mode.
          ====================================================== -->
@@ -136,11 +136,11 @@
         <!-- ==================================================
              GROUP NOT FOUND MESSAGE
              ==================================================
-             
+
              Hidden normally.
-             
+
              Displayed if:
-             
+
              - URL group slug does not exist
              - unpublished group requested by normal visitor
              ================================================== -->
@@ -162,14 +162,7 @@
                 "
             >
 
-                <div
-                    class="
-                        text-5xl
-                        mb-5
-                    "
-                >
-                    📁
-                </div>
+
 
 
                 <h1
@@ -199,7 +192,7 @@
 
                 <a
                     href="groups.html"
-                    class="
+                    class="button button-primary
                         inline-flex
                         bg-navy-900
                         text-white
@@ -230,10 +223,7 @@
                  GROUP HERO
                  ============================================== -->
 
-            <section
-                class="
-                    bg-navy-900
-                    text-white
+            <section class="page-intro bg-navy-900 text-white
                     py-12
                     px-6
                     border-b
@@ -334,7 +324,7 @@
                     <!-- ======================================
                          ADMIN GROUP ACTIONS
                          ======================================
-                         
+
                          Both buttons are hidden for visitors.
                          ====================================== -->
 
@@ -350,7 +340,7 @@
                             id="edit-group-btn"
                             type="button"
                             hidden
-                            class="
+                            class="button button-primary
                                 bg-accent-gold
                                 hover:bg-accent-goldHover
                                 text-navy-950
@@ -359,7 +349,7 @@
                                 rounded-lg
                                 text-xs
                                 font-bold
-                                shadow-sm
+                                shadow-none
                                 transition
                             "
                         >
@@ -371,7 +361,7 @@
                             id="delete-group-btn"
                             type="button"
                             hidden
-                            class="
+                            class="button button-secondary
                                 border
                                 border-red-300/60
                                 text-red-200
@@ -411,9 +401,9 @@
                 <div
                     class="
                         relative
-                        rounded-xl
+                        rounded-md
                         overflow-hidden
-                        shadow-lg
+                        shadow-none
                         bg-navy-950
                         border
                         border-slate-700
@@ -676,11 +666,11 @@
                 <div
                     class="
                         bg-white
-                        rounded-xl
+                        rounded-md
                         border
                         border-slate-200
                         p-6
-                        shadow-sm
+                        shadow-none
                     "
                 >
 
@@ -768,7 +758,7 @@
                                 id="add-member-btn"
                                 type="button"
                                 hidden
-                                class="
+                                class="button button-primary
                                     bg-navy-900
                                     hover:bg-navy-800
                                     text-accent-gold
@@ -777,7 +767,7 @@
                                     px-3
                                     py-1.5
                                     rounded-lg
-                                    shadow-sm
+                                    shadow-none
                                     transition
                                 "
                             >
@@ -978,7 +968,7 @@
                         id="add-project-btn"
                         type="button"
                         hidden
-                        class="
+                        class="button button-primary
                             bg-navy-900
                             hover:bg-navy-800
                             text-accent-gold
@@ -987,7 +977,7 @@
                             px-3.5
                             py-2
                             rounded-lg
-                            shadow-sm
+                            shadow-none
                             transition
                         "
                     >
@@ -1131,7 +1121,7 @@
                             id="add-media-btn"
                             type="button"
                             hidden
-                            class="
+                            class="button button-primary
                                 bg-navy-900
                                 hover:bg-navy-800
                                 text-accent-gold
@@ -1140,7 +1130,7 @@
                                 px-3.5
                                 py-2
                                 rounded-lg
-                                shadow-sm
+                                shadow-none
                                 transition
                             "
                         >
@@ -1200,10 +1190,10 @@
     <!-- ======================================================
          MEMBER ROLE SUGGESTIONS
          ======================================================
-         
+
          The member role remains free text so future roles are
          not restricted.
-         
+
          The datalist simply provides common suggestions.
          ====================================================== -->
 
@@ -1672,7 +1662,7 @@
 
                     <button
                         type="submit"
-                        class="
+                        class="button button-primary
                             px-4
                             py-2
                             rounded-lg
@@ -1947,11 +1937,11 @@
 
                 <!--
                     Important for existing records such as:
-                    
+
                     E
                     E/
                     E/25/---
-                    
+
                     We do not fabricate replacements.
                 -->
                 <p
@@ -1997,7 +1987,7 @@
 
                     <button
                         type="submit"
-                        class="
+                        class="button button-primary
                             px-4
                             py-2
                             rounded-lg
@@ -2184,25 +2174,25 @@
                 <!-- ==================================================
      PROJECT COVER IMAGE
      ==================================================
-     
+
      Supports:
-     
+
      - Drag & drop upload
      - Choose image from device
      - Existing external image URL
-     
+
      Only ONE image can be selected.
-     
+
      Recommended:
-     
+
          1280 × 720 px
-     
+
      Maximum:
-     
+
          2 MB
-     
+
      Allowed:
-     
+
          JPG
          JPEG
          PNG
@@ -2219,9 +2209,9 @@
     <!-- ==============================================
          CURRENT SAVED PROJECT IMAGE
          ==============================================
-         
+
          Appears when editing an existing project.
-         
+
          Hidden while creating a new project.
          ============================================== -->
 
@@ -2451,7 +2441,7 @@
 
                     <button
                         type="submit"
-                        class="
+                        class="button button-primary
                             px-4
                             py-2
                             rounded-lg
@@ -2881,7 +2871,7 @@
 
                 <button
                     type="submit"
-                    class="
+                    class="button button-primary
                         px-4
                         py-2
                         rounded-lg
@@ -2913,7 +2903,7 @@
      item at a time.
 
      They may also replace that individual image using:
-     
+
      - upload
      - URL
      ====================================================== -->
@@ -3273,7 +3263,7 @@
 
                 <button
                     type="submit"
-                    class="
+                    class="button button-primary
                         px-4
                         py-2
                         rounded-lg
@@ -3298,9 +3288,9 @@
     <!-- ======================================================
          MODAL 5 - GALLERY LIGHTBOX
          ======================================================
-         
+
          This is public.
-         
+
          Clicking a gallery image opens the full-size image.
          ====================================================== -->
 
@@ -3342,7 +3332,7 @@
             <div
                 class="
                     bg-black
-                    rounded-xl
+                    rounded-md
                     overflow-hidden
                 "
             >
@@ -3425,16 +3415,16 @@
     <!-- ======================================================
          GROUP PAGE CONTROLLER
          ======================================================
-         
+
          This is the ONLY application script needed by this
          page.
-         
+
          Do NOT load:
-         
+
              supabaseClient.js
              adminAuth.js
              nav.js
-         
+
          here anymore.
          ====================================================== -->
 

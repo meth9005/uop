@@ -72,13 +72,13 @@ export function createGroupCard(
 
             {
                 className:
-                    'group block ' +
+                    'showcase-card group block ' +
                     'bg-white ' +
-                    'rounded-xl ' +
+                    'rounded-md ' +
                     'border border-slate-200 ' +
                     'overflow-hidden ' +
-                    'shadow-sm ' +
-                    'hover:shadow-md ' +
+                    'shadow-none ' +
+                    ' ' +
                     'transition',
 
                 attrs: {
@@ -123,11 +123,12 @@ export function createGroupCard(
                 className:
                     'w-full h-full ' +
                     'object-cover ' +
-                    'group-hover:scale-105 ' +
+                    '' +
                     'transition duration-300',
 
                 attrs: {
-
+                    loading: 'lazy',
+                    decoding: 'async',
                     alt:
                         group.name ||
                         'Student group'

@@ -36,9 +36,9 @@ import {
 
     DEFAULT_PROJECT_IMAGE,
 
-    categoryIcon,
+groupCode,
 
-    groupCode
+    toYouTubeEmbedUrl
 
 } from '../utils/format.js';
 
@@ -79,12 +79,12 @@ export function createProjectCard(
 
             {
                 className:
-                    'bg-white ' +
+                    'showcase-card bg-white ' +
                     'border border-slate-200 ' +
-                    'rounded-xl ' +
+                    'rounded-md ' +
                     'overflow-hidden ' +
-                    'shadow-sm ' +
-                    'hover:shadow-md ' +
+                    'shadow-none ' +
+                    ' ' +
                     'transition ' +
                     'flex flex-col ' +
                     'justify-between'
@@ -120,7 +120,8 @@ export function createProjectCard(
                     'w-full h-full object-cover',
 
                 attrs: {
-
+                    loading: 'lazy',
+                    decoding: 'async',
                     alt:
                         project.title ||
                         'Student project'
@@ -204,31 +205,7 @@ export function createProjectCard(
     }
 
 
-    /**
-     * Category icon.
-     */
-    imageWrap.append(
-
-        el(
-            'span',
-
-            {
-                className:
-                    'absolute top-3 right-3 ' +
-                    'bg-navy-900/90 ' +
-                    'text-white text-xs ' +
-                    'px-2 py-1 rounded shadow-sm',
-
-                text:
-                    categoryIcon(
-                        project.category
-                    )
-            }
-        )
-    );
-
-
-    /**
+/**
      * Optional duration label.
      *
      * Example:
@@ -465,7 +442,7 @@ export function createProjectCard(
     /**
      * Direct YouTube link if the project contains a video.
      */
-    if (project.youtube_url) {
+    if (toYouTubeEmbedUrl(project.youtube_url)) {
 
         footer.append(
 

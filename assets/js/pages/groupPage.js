@@ -182,7 +182,6 @@ import {
  */
 
 import {
-  getGroups,
   getGroupDetails,
   updateGroup,
   deleteGroup,
@@ -695,6 +694,7 @@ function renderProjectFilters() {
 
         attrs: {
           type: "button",
+          "aria-pressed": String(state.activeFilter === "all"),
         },
 
         on: {
@@ -746,10 +746,11 @@ function renderProjectFilters() {
                 "px-4 py-2 " +
                 "rounded-full",
 
-          text: `${category.icon} ` + `${category.name} ` + `(${count})`,
+          text: `${category.name} (${count})`,
 
           attrs: {
             type: "button",
+          "aria-pressed": String(state.activeFilter === category.name),
           },
 
           on: {
@@ -985,16 +986,11 @@ function renderAdminControls() {
 /**
  * renderFooterForPage()
  *
- * The footer needs the full list of groups.
- *
- * This keeps footer links dynamic.
+ * Render administrator access for the current page.
  */
-async function renderFooterForPage() {
-  const groups = await getGroups();
+function renderFooterForPage() {
 
   renderFooter(
-    groups,
-
     {
       admin: state.admin,
 
@@ -1048,7 +1044,7 @@ async function refresh() {
       notFound.hidden = false;
     }
 
-    await renderFooterForPage();
+    renderFooterForPage();
 
     return;
   }
@@ -1086,7 +1082,7 @@ async function refresh() {
 
   renderAdminControls();
 
-  await renderFooterForPage();
+  renderFooterForPage();
 }
 
 /**
@@ -1142,7 +1138,7 @@ function fillCategorySelect(
         "option",
 
         {
-          text: `${category.icon} ${category.name}`,
+          text: `${category.name}`,
 
           attrs: {
             value: category.name,
@@ -3301,16 +3297,8 @@ function setupEvents() {
 async function init() {
   /**
    * Shared navbar.
-   *
-   * Gallery link scrolls to this group's gallery.
    */
-  renderNavbar(
-    "groups",
-
-    {
-      galleryHref: "#gallery",
-    },
-  );
+  renderNavbar("groups");
 
   /**
    * Enable:
@@ -3369,7 +3357,7 @@ async function init() {
       notFound.hidden = false;
     }
 
-    renderFooter([]);
+    renderFooter();
   }
 }
 

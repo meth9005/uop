@@ -31,7 +31,7 @@
  * - Number of students
  * - Group cards
  * - Latest projects
- * - Footer group links
+ * - Shared footer
  *
  *
  * ARCHITECTURE:
@@ -615,18 +615,8 @@ async function init() {
      * --------------------------------------------------------
      *
      * "Home" appears active.
-     *
-     * Gallery link scrolls to Latest Student Work.
      */
-    renderNavbar(
-
-        'home',
-
-        {
-            galleryHref:
-                '#work'
-        }
-    );
+    renderNavbar('home');
 
 
     try {
@@ -705,14 +695,9 @@ async function init() {
          * SHARED FOOTER
          * ----------------------------------------------------
          *
-         * Group links inside the footer now come directly from
-         * Supabase.
          */
 
         renderFooter(
-
-            state.groups,
-
             {
                 admin:
                     state.admin,
@@ -775,7 +760,7 @@ async function init() {
         /**
          * Keep footer/navigation usable.
          */
-        renderFooter([]);
+        renderFooter();
     }
 }
 

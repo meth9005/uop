@@ -69,7 +69,7 @@
          ====================================================== -->
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet"
     >
 
@@ -81,15 +81,15 @@
 
     <link
         rel="stylesheet"
-        href="assets/css/app.css"
+        href="assets/css/app.css?v=20260924-crest"
     >
 
+    <link rel="icon" type="image/png" href="assets/images/uoplogo.png">
 </head>
 
 
 
-<body
-    class="
+<body class="portal
         bg-slate-50
         text-slate-800
         font-sans
@@ -101,7 +101,7 @@
     <!-- ======================================================
          SHARED NAVIGATION
          ======================================================
-         
+
          navbar.js also inserts the original small UTC bar on
          this page because showTimeBar is enabled.
          ====================================================== -->
@@ -124,15 +124,12 @@
         <!-- ==================================================
              PAGE HERO
              ==================================================
-             
+
              This preserves the institutional category
              introduction from the original page.
              ================================================== -->
 
-        <section
-            class="
-                bg-navy-900
-                text-white
+        <section class="page-intro bg-navy-900 text-white
                 py-14
                 px-6
                 border-b
@@ -198,13 +195,13 @@
         <!-- ==================================================
              CATEGORY TABS
              ==================================================
-             
+
              The old page manually contained four buttons.
-             
+
              The new page generates them from:
-             
+
                  categories.js
-             
+
              so category information has one source of truth.
              ================================================== -->
 
@@ -244,9 +241,9 @@
         <!-- ==================================================
              CATEGORY OVERVIEW
              ==================================================
-             
+
              Selected category controls:
-             
+
              icon
              title
              description
@@ -287,15 +284,7 @@
 
 
                     <!-- Category icon -->
-                    <div
-                        id="cat-emoji"
-                        class="
-                            text-4xl
-                            mb-3
-                        "
-                    >
-                        🎭
-                    </div>
+
 
 
 
@@ -334,11 +323,11 @@
                     <!-- ======================================
                          LIVE CATEGORY STATISTICS
                          ======================================
-                         
+
                          These are calculated from Supabase.
-                         
+
                          They are no longer hardcoded as:
-                         
+
                          4 Projects
                          4 Groups
                          1 Video
@@ -417,7 +406,7 @@
                     <a
                         id="cat-explore-btn"
                         href="groups.html"
-                        class="
+                        class="button button-primary
                             inline-flex
                             items-center
                             gap-2
@@ -459,10 +448,10 @@
                             h-72
                             sm:h-80
                             object-cover
-                            rounded-xl
+                            rounded-md
                             border
                             border-slate-200
-                            shadow-sm
+                            shadow-none
                             transition-all
                             duration-300
                         "
@@ -479,7 +468,7 @@
         <!-- ==================================================
              CATEGORY EXPLANATION
              ==================================================
-             
+
              Small static explanation makes it clear that the
              category counts are based on current showcase work.
              ================================================== -->
@@ -547,7 +536,7 @@
     <!-- ======================================================
          SHARED FOOTER
          ======================================================
-         
+
          Current student groups are loaded from Supabase.
          ====================================================== -->
 
@@ -558,11 +547,11 @@
     <!-- ======================================================
          CATEGORIES PAGE CONTROLLER
          ======================================================
-         
+
          The old inline category JavaScript is no longer needed.
-         
+
          Do NOT load:
-         
+
          supabaseClient.js
          nav.js
          ====================================================== -->

@@ -68,7 +68,7 @@
          ====================================================== -->
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet"
     >
 
@@ -80,15 +80,15 @@
 
     <link
         rel="stylesheet"
-        href="assets/css/app.css"
+        href="assets/css/app.css?v=20260924-crest"
     >
 
+    <link rel="icon" type="image/png" href="assets/images/uoplogo.png">
 </head>
 
 
 
-<body
-    class="
+<body class="portal
         min-h-screen
         bg-slate-100
         text-slate-800
@@ -123,8 +123,8 @@
                 bg-white
                 border
                 border-slate-200
-                shadow-xl
-                rounded-2xl
+                shadow-none
+                rounded-md
                 p-8
             "
         >
@@ -198,9 +198,9 @@
             <!-- ==============================================
                  LOGIN ERROR MESSAGE
                  ==============================================
-                 
+
                  Hidden normally.
-                 
+
                  JavaScript reveals this when login fails.
                  ============================================== -->
 
@@ -265,20 +265,20 @@
                 <!-- ======================================================
      ADMIN PASSWORD
      ======================================================
-     
+
      The password field is wrapped in a relative container
      so the eye button can appear inside the input.
-     
+
      The button does NOT submit the form because:
-     
+
          type="button"
-     
+
      JavaScript will switch the input between:
-     
+
          type="password"
-     
+
      and:
-     
+
          type="text"
      ====================================================== -->
 
@@ -311,16 +311,16 @@
         <!-- ==================================================
              SHOW / HIDE PASSWORD BUTTON
              ==================================================
-             
+
              This button is controlled by adminLoginPage.js.
-             
+
              Initial state:
-             
+
                  password hidden
                  eye icon shown
-             
+
              After click:
-             
+
                  password visible
                  crossed-eye icon shown
              ================================================== -->
@@ -388,7 +388,7 @@
 
             <!-- ==============================================
                  CROSSED EYE ICON - PASSWORD CURRENTLY VISIBLE
-                 
+
                  Hidden initially.
                  ============================================== -->
 
@@ -454,7 +454,7 @@
                 <button
                     id="login-submit"
                     type="submit"
-                    class="
+                    class="button button-primary
                         w-full
                         bg-navy-900
                         hover:bg-navy-800
@@ -520,9 +520,7 @@
                 leading-relaxed
             "
         >
-            Authentication is handled securely through Supabase.
-            Administrator permissions are enforced by database
-            access policies.
+            For security, this page is only accessible to authorized administrators. If you are not an administrator, please return to the public website.
         </p>
 
     </main>
@@ -532,9 +530,9 @@
     <!-- ======================================================
          LOGIN PAGE CONTROLLER
          ======================================================
-         
+
          IMPORTANT:
-         
+
          type="module" is required because adminLoginPage.js
          imports authService.js.
          ====================================================== -->

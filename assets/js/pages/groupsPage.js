@@ -394,6 +394,7 @@ function renderFilterButtons() {
 
       attrs: {
         type: "button",
+          "aria-pressed": String(activeCategory === "all"),
       },
 
       /**
@@ -444,10 +445,11 @@ function renderFilterButtons() {
          *
          * 📊 Presentations
          */
-        text: `${category.icon} ${category.name}`,
+        text: `${category.name}`,
 
         attrs: {
           type: "button",
+          "aria-pressed": String(activeCategory === category.name),
         },
 
         on: {
@@ -1103,12 +1105,9 @@ async function refreshPageData() {
   renderProjects();
 
   /**
-   * Footer group links are now generated from the same
-   * database groups.
+   * Render shared navigation and administrator access.
    */
   renderFooter(
-    groups,
-
     {
       admin,
 
@@ -1135,16 +1134,8 @@ async function init() {
    * --------------------------------------------------------
    *
    * Highlight "Groups".
-   *
-   * Gallery points to this page's project section.
    */
-  renderNavbar(
-    "groups",
-
-    {
-      galleryHref: "#projects",
-    },
-  );
+  renderNavbar("groups");
 
   /**
    * Enable standard modal behaviour:
@@ -1226,7 +1217,7 @@ async function init() {
     /**
      * Footer remains usable even if database loading fails.
      */
-    renderFooter([]);
+    renderFooter();
   }
 }
 

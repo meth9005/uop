@@ -152,7 +152,7 @@ The main landing page of the student showcase.
 - Student group cards
 - Mission
 - Contact information
-- Dynamic footer
+- Responsive shared footer with site navigation and administrator access
 
 ### Dynamic information
 

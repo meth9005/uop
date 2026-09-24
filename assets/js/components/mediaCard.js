@@ -83,10 +83,10 @@ export function createMediaCard(
                 className:
                     `relative group ` +
                     `bg-white ` +
-                    `rounded-xl ` +
+                    `rounded-md ` +
                     `border border-slate-200 ` +
                     `overflow-hidden ` +
-                    `shadow-sm ` +
+                    `shadow-none ` +
                     `${sizeClass}`
             }
         );
@@ -148,7 +148,8 @@ export function createMediaCard(
                     'transition',
 
                 attrs: {
-
+                    loading: 'lazy',
+                    decoding: 'async',
                     alt:
                         media.title ||
                         'Group gallery image'

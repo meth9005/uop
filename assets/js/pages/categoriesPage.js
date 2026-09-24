@@ -137,8 +137,6 @@ import {
 
 import {
 
-    getGroups,
-
     getAllProjects
 
 } from '../services/dataService.js';
@@ -168,12 +166,6 @@ import {
  */
 
 const state = {
-
-    /**
-     * Groups used mainly by the shared footer.
-     */
-    groups: [],
-
 
     /**
      * All projects currently visible through Supabase RLS.
@@ -443,14 +435,7 @@ function renderCategoryTabs() {
 
                     [
 
-                        el(
-                            'span',
 
-                            {
-                                text:
-                                    category.icon
-                            }
-                        ),
 
                         el(
                             'span',
@@ -503,15 +488,7 @@ function renderCategoryOverview() {
         );
 
 
-    /**
-     * Category icon.
-     */
-    setText(
 
-        '#cat-emoji',
-
-        category.icon
-    );
 
 
     /**
@@ -658,6 +635,7 @@ function renderCategoryOverview() {
  */
 
 function selectCategory(category) {
+    const restoreFocus = document.activeElement?.classList.contains('category-tab');
 
     /**
      * Save new selection.
@@ -670,6 +648,7 @@ function selectCategory(category) {
      * Rebuild UI.
      */
     renderCategoryTabs();
+    if (restoreFocus) document.querySelector('.category-tab[aria-pressed="true"]')?.focus();
 
     renderCategoryOverview();
 
@@ -760,21 +739,9 @@ async function init() {
      * SHARED NAVIGATION
      * --------------------------------------------------------
      *
-     * Categories page keeps the small UTC information bar used
-     * by the original design.
+     * Render the shared site navigation.
      */
-    renderNavbar(
-
-        'categories',
-
-        {
-            galleryHref:
-                'groups.html#projects',
-
-            showTimeBar:
-                true
-        }
-    );
+    renderNavbar('categories');
 
 
     /**
@@ -797,15 +764,11 @@ async function init() {
 
             adminStatus,
 
-            groups,
-
             projects
 
         ] = await Promise.all([
 
             isAdmin(),
-
-            getGroups(),
 
             getAllProjects()
         ]);
@@ -813,10 +776,6 @@ async function init() {
 
         state.admin =
             adminStatus;
-
-
-        state.groups =
-            groups;
 
 
         state.projects =
@@ -855,9 +814,6 @@ async function init() {
          */
 
         renderFooter(
-
-            state.groups,
-
             {
                 admin:
                     state.admin,
@@ -894,7 +850,7 @@ async function init() {
         );
 
 
-        renderFooter([]);
+        renderFooter();
     }
 }
 

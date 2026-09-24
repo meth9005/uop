@@ -34,13 +34,13 @@
     <!-- ======================================================
          SUPABASE JAVASCRIPT LIBRARY
          ======================================================
-         
+
          This loads the official Supabase browser client.
-         
+
          Our own:
-         
+
              assets/js/services/supabase.js
-         
+
          will create the actual shared connection.
          ====================================================== -->
 
@@ -52,7 +52,7 @@
     <!-- ======================================================
          TAILWIND CSS
          ======================================================
-         
+
          Tailwind provides the majority of the portal styling.
          ====================================================== -->
 
@@ -64,14 +64,14 @@
     <!-- ======================================================
          SHARED TAILWIND CONFIGURATION
          ======================================================
-         
+
          Contains:
-         
+
          - navy colours
          - ETU gold
          - Inter
          - Playfair Display
-         
+
          This replaces duplicated Tailwind configuration that
          previously existed inside every HTML page.
          ====================================================== -->
@@ -86,7 +86,7 @@
          ====================================================== -->
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet"
     >
 
@@ -97,15 +97,15 @@
 
     <link
         rel="stylesheet"
-        href="assets/css/app.css"
+        href="assets/css/app.css?v=20260924-crest"
     >
 
+    <link rel="icon" type="image/png" href="assets/images/uoplogo.png">
 </head>
 
 
 
-<body
-    class="
+<body class="portal
         bg-slate-50
         text-slate-800
         font-sans
@@ -117,9 +117,9 @@
     <!-- ======================================================
          SHARED NAVIGATION MOUNT POINT
          ======================================================
-         
+
          navbar.js inserts the navbar here.
-         
+
          There is no duplicated navbar HTML in this page.
          ====================================================== -->
 
@@ -130,13 +130,13 @@
     <!-- ======================================================
          ADMINISTRATOR BANNER MOUNT POINT
          ======================================================
-         
+
          Public visitor:
-         
+
              nothing appears here.
-         
+
          Authorized administrator:
-         
+
              "Administrator Mode" banner appears.
          ====================================================== -->
 
@@ -154,17 +154,14 @@
         <!-- ==================================================
              PAGE HERO
              ==================================================
-             
+
              This is static institutional presentation content.
-             
+
              It is not CMS-managed because administrators only
              manage student showcase data.
              ================================================== -->
 
-        <section
-            class="
-                bg-navy-900
-                text-white
+        <section class="page-intro bg-navy-900 text-white
                 py-14
                 px-6
                 border-b
@@ -230,17 +227,17 @@
         <!-- ==================================================
              STUDENT GROUPS SECTION
              ==================================================
-             
+
              Group cards are NOT written here manually.
-             
+
              groupsPage.js:
-             
+
                  getGroups()
                        ↓
                  createGroupCard()
                        ↓
                  #groups-grid
-             
+
              Therefore adding AB05 in Supabase automatically
              creates an AB05 card here.
              ================================================== -->
@@ -291,9 +288,9 @@
                     <!-- ======================================
                          ADMIN ONLY - ADD GROUP BUTTON
                          ======================================
-                         
+
                          hidden by default.
-                         
+
                          groupsPage.js reveals this only when
                          authService confirms administrator.
                          ====================================== -->
@@ -302,7 +299,7 @@
                         id="add-group-btn"
                         type="button"
                         hidden
-                        class="
+                        class="button button-primary
                             bg-navy-900
                             hover:bg-navy-800
                             text-accent-gold
@@ -311,7 +308,7 @@
                             px-4
                             py-2
                             rounded-lg
-                            shadow-sm
+                            shadow-none
                             transition
                         "
                     >
@@ -325,7 +322,7 @@
                 <!-- ==========================================
                      DYNAMIC GROUP CARD CONTAINER
                      ==========================================
-                     
+
                      This initial loading message disappears
                      after Supabase data arrives.
                      ========================================== -->
@@ -363,15 +360,15 @@
         <!-- ==================================================
              ALL PROJECTS SECTION
              ==================================================
-             
+
              This replaces the old 16 hardcoded project cards.
-             
+
              The data now comes entirely from:
-             
+
                  public.projects
-             
+
              through:
-             
+
                  dataService.getAllProjects()
              ================================================== -->
 
@@ -416,15 +413,15 @@
                 <!-- ==========================================
                      DYNAMIC FILTER BUTTONS
                      ==========================================
-                     
+
                      groupsPage.js generates:
-                     
+
                      All Categories
                      🎭 Group Activities
                      📊 Presentations
                      🎬 Documentaries
                      🎨 Art & Explorer
-                     
+
                      using categories.js.
                      ========================================== -->
 
@@ -445,9 +442,9 @@
                 <!-- ==========================================
                      PROJECT COUNTER
                      ==========================================
-                     
+
                      Examples:
-                     
+
                      0 projects
                      1 project
                      12 projects
@@ -480,7 +477,7 @@
                 <!-- ==========================================
                      DYNAMIC PROJECT GRID
                      ==========================================
-                     
+
                      projectCard.js creates every card.
                      ========================================== -->
 
@@ -519,9 +516,9 @@
     <!-- ======================================================
          SHARED FOOTER MOUNT POINT
          ======================================================
-         
+
          footer.js creates the footer.
-         
+
          Student group links are generated from Supabase rather
          than being manually hardcoded AB01-AB04.
          ====================================================== -->
@@ -533,18 +530,18 @@
     <!-- ======================================================
          CREATE GROUP MODAL
          ======================================================
-         
+
          PUBLIC VISITOR:
-         
+
              cannot open this modal.
-         
+
          ADMINISTRATOR:
-         
+
              Add Student Group button opens it.
-         
-         
+
+
          Data saved:
-         
+
          name
          slug
          tagline
@@ -723,7 +720,7 @@
                 <!-- ==========================================
                      SHORT TAGLINE
                      ==========================================
-                     
+
                      Appears mainly on group cards and page hero.
                      ========================================== -->
 
@@ -753,7 +750,7 @@
                 <!-- ==========================================
                      FULL GROUP DESCRIPTION
                      ==========================================
-                     
+
                      Shown on the individual group page.
                      ========================================== -->
 
@@ -962,7 +959,7 @@
                     <!-- Submit -->
                     <button
                         type="submit"
-                        class="
+                        class="button button-primary
                             px-4
                             py-2
                             rounded-lg
@@ -990,17 +987,17 @@
     <!-- ======================================================
          PAGE CONTROLLER
          ======================================================
-         
+
          type="module" enables ES module imports.
-         
+
          groupsPage.js imports all required services,
          components and utilities.
-         
+
          Therefore we DO NOT load:
-         
+
              supabaseClient.js
              nav.js
-         
+
          on this page anymore.
          ====================================================== -->
 
