@@ -35,7 +35,7 @@
         }
     </script>
     <style>
-        .editor-only { display: none; }
+        .editor-only { display: none !important; }
         body.is-editor-mode .editor-only { display: inline-flex !important; }
         body.is-editor-mode .editor-block { display: block !important; }
     </style>
@@ -103,14 +103,14 @@
             <div class="flex items-center gap-2">
                 <span class="text-sm">🔧</span>
                 <span class="font-medium text-amber-200">Editor Mode Active:</span>
-                <span>You can now add or remove students, add new projects, and edit group info.</span>
+                <span>You can upload photos, add projects with multi-image collections, manage students, and edit group info.</span>
             </div>
             <button onclick="toggleEditorMode()" class="underline hover:text-white font-semibold">Exit Editor</button>
         </div>
     </div>
 
     <!-- HERO / BANNER SECTION -->
-    <section class="bg-navy-900 text-white py-12 px-6 border-b border-navy-800">
+    <section class="bg-navy-900 text-white py-10 px-6 border-b border-navy-800">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
                 <div class="flex items-center space-x-3 text-xs mb-3">
@@ -118,7 +118,7 @@
                     <span class="text-slate-600">|</span>
                     <span id="breadcrumb-group-slug" class="text-accent-gold font-bold uppercase tracking-wider">GROUP AB01</span>
                 </div>
-                <h1 id="hero-group-title" class="text-3xl sm:text-4xl font-serif font-bold max-w-3xl leading-tight">
+                <h1 id="hero-group-title" class="text-2xl sm:text-3xl md:text-4xl font-serif font-bold max-w-3xl leading-tight">
                     Pioneers in collaborative storytelling and visual media
                 </h1>
             </div>
@@ -129,38 +129,63 @@
         </div>
     </section>
 
-    <!-- GROUP OVERVIEW BANNER WITH STATS -->
-    <section class="max-w-7xl mx-auto px-6 -mt-6">
-        <div class="relative rounded-xl overflow-hidden shadow-lg bg-navy-950 border border-slate-700 min-h-[160px] flex items-end p-6 md:p-8">
-            <!-- Background Image Overlay -->
-            <img id="hero-cover-img" src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80" alt="Group Cover" class="absolute inset-0 w-full h-full object-cover opacity-25">
-            <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/60 to-transparent"></div>
-            
-            <div class="relative z-10 w-full flex flex-col md:flex-row justify-between md:items-end gap-4">
-                <div>
-                    <h2 id="hero-banner-name" class="text-2xl font-bold text-white mb-1">Group AB01</h2>
-                    <p id="hero-banner-desc" class="text-xs text-slate-300 max-w-2xl leading-relaxed">Pioneers in collaborative storytelling and visual media</p>
-                </div>
-                <div class="flex items-center space-x-8 text-center text-white border-t md:border-t-0 pt-3 md:pt-0 border-slate-700">
+    <!-- DEDICATED GROUP COHORT PHOTO BANNER (Full Clarity, Relative Flow - Scrolls Away Naturally) -->
+    <section class="max-w-7xl mx-auto px-6 pt-6">
+        <div class="relative w-full rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-slate-900 group">
+            <!-- Full clarity cohort image in normal flow -->
+            <div class="w-full h-64 sm:h-80 md:h-[420px] relative overflow-hidden bg-navy-950">
+                <img id="group-cohort-photo" src="AB01.jpeg" alt="Group Cohort Photo" class="w-full h-full object-cover object-center transition duration-500">
+                <!-- Subtle gradient at bottom for text contrast -->
+                <div class="absolute inset-0 bg-gradient-to-t from-navy-950/85 via-navy-950/25 to-transparent pointer-events-none"></div>
+                
+                <!-- Bottom Caption / Cohort Details Bar -->
+                <div class="absolute bottom-0 inset-x-0 p-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4 text-white">
                     <div>
-                        <div id="stat-projects-count" class="text-2xl font-bold font-serif text-accent-gold">4</div>
-                        <div class="text-[10px] uppercase text-slate-400 tracking-wider font-semibold">Projects</div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span id="cohort-badge" class="bg-accent-gold text-navy-900 text-xs font-extrabold px-3 py-1 rounded shadow">GROUP AB01</span>
+                            <span class="bg-white/20 backdrop-blur-md text-white text-xs px-2.5 py-1 rounded font-medium">Faculty of Engineering · UoP</span>
+                        </div>
+                        <h2 id="cohort-photo-title" class="text-xl sm:text-2xl font-bold font-serif text-white drop-shadow">Group AB01 Cohort Photo</h2>
                     </div>
-                    <div>
-                        <div id="stat-students-count" class="text-2xl font-bold font-serif text-slate-200">1</div>
-                        <div class="text-[10px] uppercase text-slate-400 tracking-wider font-semibold">Students</div>
-                    </div>
-                    <div>
-                        <div id="stat-categories-count" class="text-2xl font-bold font-serif text-slate-200">4</div>
-                        <div class="text-[10px] uppercase text-slate-400 tracking-wider font-semibold">Categories</div>
+                    
+                    <!-- Editor Mode Direct Upload Button on Banner -->
+                    <div class="editor-only hidden items-center gap-2">
+                        <label for="cohort-photo-file-input" class="cursor-pointer inline-flex items-center gap-2 bg-accent-gold hover:bg-accent-goldHover text-navy-950 text-xs font-bold px-4 py-2.5 rounded-lg shadow-lg transition hover:scale-105">
+                            <span>📷</span> Upload Group Photo
+                        </label>
+                        <input type="file" id="cohort-photo-file-input" accept="image/*" class="hidden" onchange="handleDirectCohortPhotoUpload(event)">
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- GROUP STATS & INTRO BAR -->
+    <section class="max-w-7xl mx-auto px-6 pt-6">
+        <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div class="max-w-2xl">
+                <h3 id="hero-banner-name" class="text-xl font-bold text-navy-900 mb-1">Group AB01</h3>
+                <p id="hero-banner-desc" class="text-xs text-slate-600 leading-relaxed">Pioneers in collaborative storytelling and visual media</p>
+            </div>
+            <div class="flex items-center space-x-8 text-center border-t md:border-t-0 pt-4 md:pt-0 border-slate-100 w-full md:w-auto justify-around md:justify-end">
+                <div>
+                    <div id="stat-projects-count" class="text-2xl font-bold font-serif text-accent-gold">4</div>
+                    <div class="text-[10px] uppercase text-slate-400 tracking-wider font-semibold">Projects</div>
+                </div>
+                <div>
+                    <div id="stat-students-count" class="text-2xl font-bold font-serif text-navy-900">1</div>
+                    <div class="text-[10px] uppercase text-slate-400 tracking-wider font-semibold">Students</div>
+                </div>
+                <div>
+                    <div id="stat-categories-count" class="text-2xl font-bold font-serif text-navy-900">4</div>
+                    <div class="text-[10px] uppercase text-slate-400 tracking-wider font-semibold">Categories</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- STUDENT LIST SECTION (ST-LIST) -->
-    <section class="max-w-7xl mx-auto px-6 pt-10 pb-6">
+    <section class="max-w-7xl mx-auto px-6 pt-8 pb-4">
         <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-4 mb-4 border-b border-slate-100 pb-3">
                 <div class="flex items-center gap-3">
@@ -245,14 +270,20 @@
 
     <!-- GALLERY / MEDIA GRID SECTION -->
     <section id="gallery" class="max-w-7xl mx-auto px-6 py-10 border-t border-slate-200 mt-10">
-        <!-- Top Bar: Title & Counter -->
-        <div class="flex items-center justify-between mb-6">
+        <!-- Top Bar: Title, Counter & Upload Button -->
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
             <div>
                 <h3 class="text-lg font-bold text-navy-900">Media Gallery</h3>
                 <p id="gallery-subtitle" class="text-xs text-slate-500">Visual highlights and event moments from this group</p>
             </div>
-            <div class="text-xs text-slate-500 font-medium">
-                Showing <span id="gallery-counter" class="font-bold text-slate-800">8</span> images
+            <div class="flex items-center gap-4">
+                <div class="text-xs text-slate-500 font-medium">
+                    Showing <span id="gallery-counter" class="font-bold text-slate-800">8</span> images
+                </div>
+                <!-- Upload Moments Photo Button (Editor Mode) -->
+                <button onclick="openUploadMediaModal()" class="editor-only hidden items-center gap-1.5 bg-navy-900 hover:bg-navy-800 text-accent-gold text-xs font-bold px-3.5 py-1.5 rounded-lg transition shadow-sm">
+                    <span>📷</span> Upload Photo
+                </button>
             </div>
         </div>
 
@@ -262,7 +293,52 @@
         </div>
     </section>
 
-    <!-- LIGHTBOX MODAL -->
+    <!-- INTERACTIVE MULTI-IMAGE PROJECT GALLERY VIEWER MODAL -->
+    <div id="project-gallery-modal" class="hidden fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex flex-col justify-between p-4 sm:p-6 transition-all duration-300 select-none">
+        <!-- Top Controls Bar -->
+        <div class="flex items-center justify-between text-white max-w-6xl mx-auto w-full pb-3 border-b border-white/10">
+            <div class="flex items-center gap-3">
+                <span id="p-gallery-badge" class="bg-accent-gold text-navy-900 text-xs font-bold px-2.5 py-1 rounded shadow">AB01</span>
+                <div>
+                    <h3 id="p-gallery-title" class="text-sm sm:text-base font-bold text-white truncate max-w-xs sm:max-w-md md:max-w-xl">Project Title</h3>
+                    <p id="p-gallery-category" class="text-[11px] text-slate-300">Group Activities</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <span id="p-gallery-counter" class="text-xs font-mono font-medium text-slate-300 bg-white/10 px-3 py-1 rounded-full">1 of 3</span>
+                <button onclick="closeProjectGallery()" class="text-white/80 hover:text-white text-2xl font-bold p-1 transition" title="Close (Esc)">✕</button>
+            </div>
+        </div>
+
+        <!-- Center Image Stage with Left / Right Arrows -->
+        <div class="relative flex-1 flex items-center justify-center my-4 overflow-hidden max-w-6xl mx-auto w-full">
+            <!-- Prev Button -->
+            <button onclick="navigateProjectGallery(-1)" id="p-gallery-prev" class="absolute left-2 sm:left-4 z-20 w-11 h-11 rounded-full bg-black/60 hover:bg-black/90 border border-white/20 text-white flex items-center justify-center text-xl transition hover:scale-110 shadow-lg cursor-pointer" title="Previous Image (←)">
+                &#10094;
+            </button>
+
+            <!-- Main Display Image -->
+            <div class="w-full h-full flex items-center justify-center p-2">
+                <img id="p-gallery-main-img" src="" alt="Project Image" class="max-h-[60vh] sm:max-h-[70vh] max-w-full object-contain rounded-lg shadow-2xl transition duration-200">
+            </div>
+
+            <!-- Next Button -->
+            <button onclick="navigateProjectGallery(1)" id="p-gallery-next" class="absolute right-2 sm:right-4 z-20 w-11 h-11 rounded-full bg-black/60 hover:bg-black/90 border border-white/20 text-white flex items-center justify-center text-xl transition hover:scale-110 shadow-lg cursor-pointer" title="Next Image (→)">
+                &#10095;
+            </button>
+        </div>
+
+        <!-- Bottom Description & Thumbnails Bar -->
+        <div class="max-w-6xl mx-auto w-full pt-3 border-t border-white/10 flex flex-col items-center gap-3">
+            <p id="p-gallery-desc" class="text-xs text-slate-300 text-center max-w-3xl line-clamp-2"></p>
+            <!-- Thumbnail Row -->
+            <div id="p-gallery-thumbnails" class="flex items-center justify-center gap-2 overflow-x-auto max-w-full py-1">
+                <!-- Dynamically generated thumbnails -->
+            </div>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX MODAL (MEDIA MOMENTS) -->
     <div id="lightbox-modal" class="hidden fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="relative max-w-4xl w-full max-h-[90vh] flex flex-col items-center">
             <button onclick="closeLightbox()" class="absolute -top-10 right-0 text-white/80 hover:text-white text-2xl font-bold p-2 transition" aria-label="Close modal">✕</button>
@@ -324,7 +400,7 @@
         </div>
     </div>
 
-    <!-- MODAL: ADD PROJECT -->
+    <!-- MODAL: ADD PROJECT (With Direct Multi-Image Upload & Optimization) -->
     <div id="modal-add-project" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200">
             <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
@@ -353,10 +429,29 @@
                         <input type="url" id="input-project-youtube" placeholder="https://www.youtube.com/watch?v=..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-navy-900">
                     </div>
                 </div>
+
+                <!-- Direct Image File Upload & Multi-Image Collection -->
                 <div>
-                    <label class="block font-semibold text-slate-700 mb-1">Cover / Thumbnail Image URL</label>
-                    <input type="url" id="input-project-image" placeholder="https://images.unsplash.com/... or image URL" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-navy-900">
+                    <label class="block font-semibold text-slate-700 mb-1">Project Photos (Direct Upload or Multi-Select) *</label>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-3">
+                            <label for="input-project-files" class="cursor-pointer inline-flex items-center gap-2 px-3.5 py-2 border border-slate-300 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-700 font-semibold text-xs transition shadow-sm">
+                                <span>📁</span> Select Local Photos (Multiple)
+                            </label>
+                            <input type="file" id="input-project-files" accept="image/*" multiple class="hidden" onchange="handleProjectFilesSelect(event)">
+                            <span id="project-files-selected-text" class="text-slate-500 text-[11px]">No file chosen</span>
+                        </div>
+
+                        <!-- Staged preview thumbnails row -->
+                        <div id="project-upload-previews" class="flex flex-wrap gap-2 pt-1 hidden"></div>
+
+                        <!-- Alternative/fallback URL input -->
+                        <div>
+                            <input type="text" id="input-project-image" placeholder="Or enter image URL / local asset (e.g. uopefac.jpg)" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-navy-900">
+                        </div>
+                    </div>
                 </div>
+
                 <div>
                     <label class="block font-semibold text-slate-700 mb-1">Description *</label>
                     <textarea id="input-project-desc" rows="3" required placeholder="Describe the project objective, key topics covered, and student contributions..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-navy-900"></textarea>
@@ -369,7 +464,7 @@
         </div>
     </div>
 
-    <!-- MODAL: EDIT GROUP INFO -->
+    <!-- MODAL: EDIT GROUP INFO (With Direct Cover Upload) -->
     <div id="modal-edit-group" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
             <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
@@ -388,12 +483,59 @@
                     <textarea id="input-group-desc" rows="3" placeholder="Overview of the group's themes and focus area..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-navy-900"></textarea>
                 </div>
                 <div>
-                    <label class="block font-semibold text-slate-700 mb-1">Cover Image URL</label>
-                    <input type="url" id="input-group-cover" placeholder="https://images.unsplash.com/..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-navy-900">
+                    <label class="block font-semibold text-slate-700 mb-1">Cohort Photo / Cover Image</label>
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-2">
+                            <label for="input-group-cover-file" class="cursor-pointer inline-flex items-center gap-2 px-3 py-1.5 border border-slate-300 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-700 font-semibold text-xs transition">
+                                <span>📁</span> Pick Image File
+                            </label>
+                            <input type="file" id="input-group-cover-file" accept="image/*" class="hidden" onchange="handleGroupCoverFileSelect(event)">
+                            <span id="group-cover-file-status" class="text-slate-500 text-[11px]">Direct upload supported</span>
+                        </div>
+                        <img id="group-cover-preview" src="" alt="Cover preview" class="w-full h-32 object-cover rounded-lg hidden border border-slate-200">
+                        <input type="text" id="input-group-cover" placeholder="Or enter photo URL (e.g. AB01.jpeg or uopefac.jpg)" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-navy-900">
+                    </div>
                 </div>
                 <div class="pt-2 flex items-center justify-end gap-2 border-t border-slate-100">
                     <button type="button" onclick="closeModal('modal-edit-group')" class="px-4 py-2 rounded-lg text-slate-600 hover:bg-slate-100 font-medium">Cancel</button>
                     <button type="submit" id="btn-save-group" class="px-4 py-2 rounded-lg bg-navy-900 hover:bg-navy-800 text-white font-bold">Save Details</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: UPLOAD MEDIA GALLERY MOMENT -->
+    <div id="modal-upload-media" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
+            <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
+                <h3 class="font-bold text-navy-900 text-base flex items-center gap-2">
+                    <span>📷</span> Upload Photo to Media Gallery
+                </h3>
+                <button onclick="closeModal('modal-upload-media')" class="text-slate-400 hover:text-slate-600 text-lg">✕</button>
+            </div>
+            <form id="form-upload-media" onsubmit="handleSaveMediaMoment(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Select Photo File *</label>
+                    <input type="file" id="input-media-file" accept="image/*" required onchange="handleMediaMomentFileSelect(event)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-slate-600 text-xs">
+                    <img id="media-moment-preview" src="" alt="Preview" class="mt-2 w-full h-40 object-cover rounded-lg hidden border border-slate-200 shadow-sm">
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Activity / Event Category *</label>
+                    <select id="input-media-activity" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-navy-900">
+                        <option value="🎭 Group Activities">🎭 Group Activities</option>
+                        <option value="📊 Presentations">📊 Presentations</option>
+                        <option value="🎬 Documentaries">🎬 Documentaries</option>
+                        <option value="🎨 Art & Explorer">🎨 Art & Explorer</option>
+                        <option value="📸 Group Moments" selected>📸 Group Moments</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold text-slate-700 mb-1">Photo Title / Caption *</label>
+                    <input type="text" id="input-media-title" required placeholder="e.g. Workshop rehearsal moment" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-navy-900">
+                </div>
+                <div class="pt-2 flex items-center justify-end gap-2 border-t border-slate-100">
+                    <button type="button" onclick="closeModal('modal-upload-media')" class="px-4 py-2 rounded-lg text-slate-600 hover:bg-slate-100 font-medium">Cancel</button>
+                    <button type="submit" id="btn-save-media" class="px-4 py-2 rounded-lg bg-navy-900 hover:bg-navy-800 text-white font-bold">Upload Photo</button>
                 </div>
             </form>
         </div>
@@ -450,6 +592,10 @@
         let currentMedia = [];
         let activeGroupSlug = 'ab01';
         let isEditorMode = false;
+
+        // Image upload staging state
+        let stagedProjectImages = [];
+        let stagedMediaMomentDataUrl = '';
 
         // --- EDITOR MODE MANAGEMENT ---
         function initEditorMode() {
@@ -545,30 +691,35 @@
                 document.getElementById('hero-banner-name').textContent = currentGroupData.name;
                 document.getElementById('hero-banner-desc').textContent = currentGroupData.description || currentGroupData.tagline;
                 
-                if (currentGroupData.coverImage) {
-                    document.getElementById('hero-cover-img').src = currentGroupData.coverImage;
-                }
+                // 2. Dedicated Prominent Cohort Photo Banner
+                const cohortPhotoSrc = currentGroupData.coverImage || 'AB01.jpeg';
+                const cohortPhotoEl = document.getElementById('group-cohort-photo');
+                if (cohortPhotoEl) cohortPhotoEl.src = cohortPhotoSrc;
+                const cohortBadge = document.getElementById('cohort-badge');
+                if (cohortBadge) cohortBadge.textContent = `${currentGroupData.name.toUpperCase()} COHORT`;
+                const cohortTitle = document.getElementById('cohort-photo-title');
+                if (cohortTitle) cohortTitle.textContent = `${currentGroupData.name} Cohort Photo`;
 
-                // 2. Statistics
+                // 3. Statistics
                 document.getElementById('stat-projects-count').textContent = currentProjects.length;
                 document.getElementById('stat-students-count').textContent = currentStudents.length;
                 const distinctCategories = new Set(currentProjects.map(p => p.category));
                 document.getElementById('stat-categories-count').textContent = distinctCategories.size || 4;
 
-                // 3. Student Roster Section
+                // 4. Student Roster Section
                 document.getElementById('student-group-badge').textContent = currentGroupData.slug.toUpperCase();
                 document.getElementById('student-group-heading').textContent = `${currentGroupData.name} Student List`;
                 document.getElementById('student-count-badge').textContent = `${currentStudents.length} Student${currentStudents.length !== 1 ? 's' : ''}`;
 
                 renderStudentRoster(currentStudents);
 
-                // 4. Projects Grid
+                // 5. Projects Grid
                 renderProjects(currentProjects);
 
-                // 5. Category Counts on Filter Buttons
+                // 6. Category Counts on Filter Buttons
                 updateFilterBadgeCounts(currentProjects);
 
-                // 6. Media Gallery
+                // 7. Media Gallery
                 renderMediaGallery(currentMedia, currentGroupData);
 
                 applyFilter('all');
@@ -617,8 +768,11 @@
 
             grid.innerHTML = projects.map(item => {
                 const icon = item.icon || (item.category === 'Group Activities' ? '🎭' : item.category === 'Presentations' ? '📊' : item.category === 'Documentaries' ? '🎬' : '🎨');
-                
-                // If YouTube embed URL exists, render interactive player or video preview
+                const images = (Array.isArray(item.images) && item.images.length > 0) ? item.images : (item.imageUrl ? [item.imageUrl] : ['uopefac.jpg']);
+                const primaryImage = images[0];
+                const hasMultiplePhotos = images.length > 1;
+
+                // Media block: YouTube Embed or Clickable Multi-Image Stage
                 const mediaBlock = item.youtubeUrl ? `
                     <div class="relative h-44 w-full bg-black">
                         <iframe 
@@ -635,13 +789,21 @@
                         </div>
                     </div>
                 ` : `
-                    <div class="relative h-44 w-full bg-slate-900">
-                        <img src="${item.imageUrl || 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80'}" alt="${item.title}" class="w-full h-full object-cover opacity-90">
-                        <div class="absolute top-3 left-3 flex gap-1">
+                    <div class="relative h-44 w-full bg-slate-900 cursor-pointer overflow-hidden group/thumb" onclick="openProjectGallery('${item.id}')">
+                        <img src="${primaryImage}" alt="${item.title}" class="w-full h-full object-cover opacity-90 group-hover/thumb:scale-105 group-hover/thumb:opacity-100 transition duration-300">
+                        <div class="absolute top-3 left-3 flex gap-1 z-10">
                             <span class="bg-accent-gold text-navy-900 text-[10px] font-bold px-2 py-0.5 rounded shadow">${groupBadge}</span>
                             <span class="bg-navy-900 text-white text-[10px] px-1.5 py-0.5 rounded shadow">${icon}</span>
                         </div>
+                        ${hasMultiplePhotos ? `
+                            <span class="absolute top-3 right-3 bg-navy-950/85 text-accent-gold text-[10px] font-bold px-2 py-0.5 rounded backdrop-blur-sm shadow flex items-center gap-1 z-10 border border-accent-gold/30">
+                                📷 ${images.length} photos
+                            </span>
+                        ` : ''}
                         ${item.time ? `<div class="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded font-mono">${item.time}</div>` : ''}
+                        <div class="absolute inset-0 bg-navy-950/40 opacity-0 group-hover/thumb:opacity-100 transition-opacity flex items-center justify-center text-white text-xs font-semibold gap-1">
+                            <span>🔍 View Gallery</span>
+                        </div>
                     </div>
                 `;
 
@@ -664,9 +826,9 @@
                                     ▶ Watch on YouTube
                                 </a>
                             ` : `
-                                <span class="text-xs font-semibold text-slate-400 inline-flex items-center gap-1">
-                                    Showcase Article →
-                                </span>
+                                <button onclick="openProjectGallery('${item.id}')" class="text-xs font-semibold text-navy-900 hover:text-accent-gold inline-flex items-center gap-1 transition">
+                                    📷 View Photos (${images.length}) →
+                                </button>
                             `}
                         </div>
                     </div>
@@ -704,7 +866,7 @@
             if (counter) counter.textContent = media.length;
 
             if (!media || media.length === 0) {
-                grid.innerHTML = `<div class="col-span-full py-8 text-center text-slate-400">No photos in this gallery yet.</div>`;
+                grid.innerHTML = `<div class="col-span-full py-8 text-center text-slate-400">No photos in this gallery yet. Click <strong>Upload Photo</strong> in Editor Mode.</div>`;
                 return;
             }
 
@@ -734,6 +896,251 @@
             `).join('');
         }
 
+        // --- INTERACTIVE MULTI-IMAGE PROJECT GALLERY VIEWER ---
+        let currentGalleryProject = null;
+        let currentGalleryImageIndex = 0;
+
+        function openProjectGallery(projectId, initialIndex = 0) {
+            const project = currentProjects.find(p => p.id === projectId);
+            if (!project) return;
+
+            let images = [];
+            if (Array.isArray(project.images) && project.images.length > 0) {
+                images = project.images;
+            } else if (project.imageUrl) {
+                images = [project.imageUrl];
+            } else {
+                images = ['uopefac.jpg'];
+            }
+            project.images = images;
+
+            currentGalleryProject = project;
+            currentGalleryImageIndex = Math.max(0, Math.min(initialIndex, images.length - 1));
+
+            updateProjectGalleryUI();
+
+            const modal = document.getElementById('project-gallery-modal');
+            if (modal) modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProjectGallery() {
+            const modal = document.getElementById('project-gallery-modal');
+            if (modal) modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            currentGalleryProject = null;
+        }
+
+        function navigateProjectGallery(direction) {
+            if (!currentGalleryProject || !currentGalleryProject.images || currentGalleryProject.images.length <= 1) return;
+            const total = currentGalleryProject.images.length;
+            currentGalleryImageIndex = (currentGalleryImageIndex + direction + total) % total;
+            updateProjectGalleryUI();
+        }
+
+        function selectProjectGalleryImage(index) {
+            if (!currentGalleryProject || !currentGalleryProject.images) return;
+            currentGalleryImageIndex = index;
+            updateProjectGalleryUI();
+        }
+
+        function updateProjectGalleryUI() {
+            if (!currentGalleryProject) return;
+            const p = currentGalleryProject;
+            const images = p.images;
+            const currentSrc = images[currentGalleryImageIndex];
+
+            const mainImg = document.getElementById('p-gallery-main-img');
+            const badge = document.getElementById('p-gallery-badge');
+            const title = document.getElementById('p-gallery-title');
+            const category = document.getElementById('p-gallery-category');
+            const counter = document.getElementById('p-gallery-counter');
+            const desc = document.getElementById('p-gallery-desc');
+            const thumbContainer = document.getElementById('p-gallery-thumbnails');
+            const prevBtn = document.getElementById('p-gallery-prev');
+            const nextBtn = document.getElementById('p-gallery-next');
+
+            if (mainImg) mainImg.src = currentSrc;
+            if (badge) badge.textContent = (p.groupSlug || activeGroupSlug).toUpperCase();
+            if (title) title.textContent = p.title;
+            if (category) category.textContent = p.category || '';
+            if (counter) counter.textContent = `${currentGalleryImageIndex + 1} of ${images.length}`;
+            if (desc) desc.textContent = p.description || '';
+
+            if (prevBtn && nextBtn) {
+                if (images.length <= 1) {
+                    prevBtn.style.display = 'none';
+                    nextBtn.style.display = 'none';
+                } else {
+                    prevBtn.style.display = 'flex';
+                    nextBtn.style.display = 'flex';
+                }
+            }
+
+            if (thumbContainer) {
+                if (images.length <= 1) {
+                    thumbContainer.innerHTML = '';
+                } else {
+                    thumbContainer.innerHTML = images.map((imgUrl, idx) => `
+                        <button type="button" onclick="selectProjectGalleryImage(${idx})" class="w-14 h-14 rounded-lg overflow-hidden border-2 transition ${idx === currentGalleryImageIndex ? 'border-accent-gold scale-105 shadow-md ring-2 ring-accent-gold/40' : 'border-white/20 opacity-60 hover:opacity-100'}">
+                            <img src="${imgUrl}" alt="Thumbnail ${idx+1}" class="w-full h-full object-cover">
+                        </button>
+                    `).join('');
+                }
+            }
+        }
+
+        // --- DIRECT FILE UPLOADS & HANDLERS ---
+
+        // 1. Direct Banner Cohort Photo Upload
+        async function handleDirectCohortPhotoUpload(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+
+            try {
+                const optimized = await window.ETUDataService.optimizeImageFile(file, 1600, 0.88);
+                const updated = await window.ETUDataService.updateGroupInfo({
+                    groupId: currentGroupData ? currentGroupData.id : null,
+                    slug: activeGroupSlug,
+                    coverImage: optimized
+                });
+
+                if (updated) {
+                    currentGroupData = updated;
+                    const photoEl = document.getElementById('group-cohort-photo');
+                    if (photoEl) photoEl.src = optimized;
+                }
+            } catch (err) {
+                alert('Could not upload group cohort photo: ' + err.message);
+            } finally {
+                e.target.value = '';
+            }
+        }
+
+        // 2. Edit Group Info Cover Photo File Picker
+        async function handleGroupCoverFileSelect(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            try {
+                const optimized = await window.ETUDataService.optimizeImageFile(file, 1600, 0.88);
+                document.getElementById('input-group-cover').value = optimized;
+                const preview = document.getElementById('group-cover-preview');
+                if (preview) {
+                    preview.src = optimized;
+                    preview.classList.remove('hidden');
+                }
+                const status = document.getElementById('group-cover-file-status');
+                if (status) status.textContent = 'Photo ready for saving';
+            } catch (err) {
+                alert('Could not process photo: ' + err.message);
+            }
+        }
+
+        // 3. Multi-Image Selection in Add Project Modal
+        function handleProjectFilesSelect(e) {
+            const files = e.target.files;
+            if (!files || files.length === 0) return;
+
+            const countEl = document.getElementById('project-files-selected-text');
+            if (countEl) countEl.textContent = `Optimizing ${files.length} photo${files.length > 1 ? 's' : ''}...`;
+
+            window.ETUDataService.optimizeImageFiles(files).then(dataUrls => {
+                stagedProjectImages.push(...dataUrls);
+                renderStagedProjectPreviews();
+            }).catch(err => {
+                alert('Could not optimize selected project photos: ' + err.message);
+            });
+        }
+
+        function removeStagedProjectImage(idx) {
+            stagedProjectImages.splice(idx, 1);
+            renderStagedProjectPreviews();
+        }
+
+        function renderStagedProjectPreviews() {
+            const container = document.getElementById('project-upload-previews');
+            const countEl = document.getElementById('project-files-selected-text');
+            if (!container) return;
+
+            if (stagedProjectImages.length === 0) {
+                container.classList.add('hidden');
+                container.innerHTML = '';
+                if (countEl) countEl.textContent = 'No file chosen (Multi-select supported)';
+                return;
+            }
+
+            container.classList.remove('hidden');
+            if (countEl) countEl.textContent = `${stagedProjectImages.length} photo${stagedProjectImages.length > 1 ? 's' : ''} staged for project`;
+
+            container.innerHTML = stagedProjectImages.map((src, i) => `
+                <div class="relative w-16 h-16 rounded-lg overflow-hidden border border-slate-300 shadow-sm group">
+                    <img src="${src}" alt="Preview" class="w-full h-full object-cover">
+                    <button type="button" onclick="removeStagedProjectImage(${i})" class="absolute top-0.5 right-0.5 bg-rose-600 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] hover:bg-rose-700 shadow" title="Remove photo">✕</button>
+                </div>
+            `).join('');
+        }
+
+        // 4. Media Moments Photo File Picker
+        async function handleMediaMomentFileSelect(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+
+            try {
+                const optimized = await window.ETUDataService.optimizeImageFile(file, 1280, 0.85);
+                stagedMediaMomentDataUrl = optimized;
+                const preview = document.getElementById('media-moment-preview');
+                if (preview) {
+                    preview.src = optimized;
+                    preview.classList.remove('hidden');
+                }
+            } catch (err) {
+                alert('Could not process photo: ' + err.message);
+            }
+        }
+
+        function openUploadMediaModal() {
+            stagedMediaMomentDataUrl = '';
+            document.getElementById('form-upload-media').reset();
+            const preview = document.getElementById('media-moment-preview');
+            if (preview) preview.classList.add('hidden');
+            document.getElementById('modal-upload-media').classList.remove('hidden');
+        }
+
+        async function handleSaveMediaMoment(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-save-media');
+            btn.disabled = true;
+            btn.textContent = 'Uploading...';
+
+            const activity = document.getElementById('input-media-activity').value;
+            const title = document.getElementById('input-media-title').value;
+
+            if (!stagedMediaMomentDataUrl) {
+                alert('Please select an image file first.');
+                btn.disabled = false;
+                btn.textContent = 'Upload Photo';
+                return;
+            }
+
+            try {
+                const newMedia = window.ETUDataService.addGroupMedia(activeGroupSlug, {
+                    url: stagedMediaMomentDataUrl,
+                    title,
+                    activity,
+                    badge: activeGroupSlug.toUpperCase()
+                });
+
+                currentMedia.unshift(newMedia);
+                renderMediaGallery(currentMedia, currentGroupData);
+                closeModal('modal-upload-media');
+            } catch (err) {
+                alert('Could not save media moment: ' + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Upload Photo';
+            }
+        }
+
         // --- CRUD ACTIONS ---
         function openAddStudentModal() {
             document.getElementById('form-add-student').reset();
@@ -741,6 +1148,8 @@
         }
 
         function openAddProjectModal() {
+            stagedProjectImages = [];
+            renderStagedProjectPreviews();
             document.getElementById('form-add-project').reset();
             document.getElementById('modal-add-project').classList.remove('hidden');
         }
@@ -750,6 +1159,11 @@
             document.getElementById('input-group-tagline').value = currentGroupData.tagline || '';
             document.getElementById('input-group-desc').value = currentGroupData.description || '';
             document.getElementById('input-group-cover').value = currentGroupData.coverImage || '';
+            const preview = document.getElementById('group-cover-preview');
+            if (preview && currentGroupData.coverImage) {
+                preview.src = currentGroupData.coverImage;
+                preview.classList.remove('hidden');
+            }
             document.getElementById('modal-edit-group').classList.remove('hidden');
         }
 
@@ -814,8 +1228,17 @@
             const title = document.getElementById('input-project-title').value;
             const category = document.getElementById('input-project-category').value;
             const youtubeUrl = document.getElementById('input-project-youtube').value;
-            const fileUrl = document.getElementById('input-project-image').value;
+            const manualUrl = document.getElementById('input-project-image').value;
             const description = document.getElementById('input-project-desc').value;
+
+            // Combine staged uploaded images and any URL input
+            let projectImages = [...stagedProjectImages];
+            if (manualUrl && manualUrl.trim()) {
+                projectImages.push(manualUrl.trim());
+            }
+            if (projectImages.length === 0) {
+                projectImages = ['uopefac.jpg'];
+            }
 
             try {
                 const newProj = await window.ETUDataService.addProject({
@@ -823,7 +1246,8 @@
                     slug: activeGroupSlug,
                     title,
                     category,
-                    fileUrl,
+                    fileUrl: projectImages[0],
+                    images: projectImages,
                     youtubeUrl,
                     description
                 });
@@ -833,6 +1257,8 @@
                 updateFilterBadgeCounts(currentProjects);
                 document.getElementById('stat-projects-count').textContent = currentProjects.length;
                 applyFilter('all');
+                stagedProjectImages = [];
+                renderStagedProjectPreviews();
                 closeModal('modal-add-project');
             } catch (err) {
                 alert('Could not save project: ' + err.message);
@@ -879,7 +1305,10 @@
                     currentGroupData = updated;
                     document.getElementById('hero-group-title').textContent = updated.tagline;
                     document.getElementById('hero-banner-desc').textContent = updated.description;
-                    if (updated.coverImage) document.getElementById('hero-cover-img').src = updated.coverImage;
+                    if (updated.coverImage) {
+                        const cohortPhotoEl = document.getElementById('group-cohort-photo');
+                        if (cohortPhotoEl) cohortPhotoEl.src = updated.coverImage;
+                    }
                 }
                 closeModal('modal-edit-group');
             } catch (err) {
@@ -890,7 +1319,7 @@
             }
         }
 
-        // --- LIGHTBOX MODAL ---
+        // --- LIGHTBOX MODAL (MEDIA MOMENTS) ---
         function openLightbox(fullSrc, groupName, activityType, captionText) {
             const modal = document.getElementById('lightbox-modal');
             const modalImg = document.getElementById('lightbox-img');
@@ -918,9 +1347,23 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeLightbox();
+                closeProjectGallery();
                 closeModal('modal-add-student');
                 closeModal('modal-add-project');
                 closeModal('modal-edit-group');
+                closeModal('modal-upload-media');
+            }
+            if (e.key === 'ArrowLeft') {
+                const pModal = document.getElementById('project-gallery-modal');
+                if (pModal && !pModal.classList.contains('hidden')) {
+                    navigateProjectGallery(-1);
+                }
+            }
+            if (e.key === 'ArrowRight') {
+                const pModal = document.getElementById('project-gallery-modal');
+                if (pModal && !pModal.classList.contains('hidden')) {
+                    navigateProjectGallery(1);
+                }
             }
         });
     

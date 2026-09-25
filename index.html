@@ -184,7 +184,7 @@
             </div>
 
             <div class="relative rounded-2xl overflow-hidden shadow-lg border border-slate-200">
-                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1000&q=80" alt="Students Working" class="w-full h-96 object-cover">
+                <img src="uopefac.jpg" alt="Faculty of Engineering Peradeniya" class="w-full h-96 object-cover">
                 <div class="absolute bottom-4 left-4 bg-accent-gold text-navy-900 p-4 rounded-xl max-w-xs shadow-md">
                     <div class="font-bold text-lg">2024</div>
                     <div class="text-xs font-medium">Latest student cohort showcase</div>
@@ -209,15 +209,15 @@
                 <!-- Group AB01 -->
                 <a href="group.html?group=ab01" class="group block bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
                     <div class="relative h-44">
-                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                        <span class="absolute top-3 left-3 bg-accent-gold text-navy-900 text-xs font-bold px-2.5 py-1 rounded">AB01</span>
+                        <img src="AB01.jpeg" alt="Group AB01" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                        <span class="absolute top-3 left-3 bg-accent-gold text-navy-900 text-xs font-bold px-2.5 py-1 rounded shadow">AB01</span>
                     </div>
                     <div class="p-5">
                         <h3 class="font-bold text-navy-900 text-lg mb-2 group-hover:text-accent-gold transition">Group AB01</h3>
                         <p class="text-xs text-slate-500 mb-4 line-clamp-2">Pioneers in collaborative storytelling and visual media.</p>
                         <div class="text-xs text-slate-400 flex justify-between pt-3 border-t border-slate-100">
                             <span>4 projects</span>
-                            <span>5 students</span>
+                            <span>1 student</span>
                         </div>
                     </div>
                 </a>
@@ -225,8 +225,8 @@
                 <!-- Group AB02 -->
                 <a href="group.html?group=ab02" class="group block bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
                     <div class="relative h-44">
-                        <img src="https://images.unsplash.com/photo-1531545514256-b1400bc00f31?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                        <span class="absolute top-3 left-3 bg-accent-gold text-navy-900 text-xs font-bold px-2.5 py-1 rounded">AB02</span>
+                        <img src="uopefac.jpg" alt="Group AB02" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                        <span class="absolute top-3 left-3 bg-accent-gold text-navy-900 text-xs font-bold px-2.5 py-1 rounded shadow">AB02</span>
                     </div>
                     <div class="p-5">
                         <h3 class="font-bold text-navy-900 text-lg mb-2 group-hover:text-accent-gold transition">Group AB02</h3>
@@ -241,8 +241,8 @@
                 <!-- Group AB03 -->
                 <a href="group.html?group=ab03" class="group block bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
                     <div class="relative h-44">
-                        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                        <span class="absolute top-3 left-3 bg-accent-gold text-navy-900 text-xs font-bold px-2.5 py-1 rounded">AB03</span>
+                        <img src="uope25.jpg" alt="Group AB03" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                        <span class="absolute top-3 left-3 bg-accent-gold text-navy-900 text-xs font-bold px-2.5 py-1 rounded shadow">AB03</span>
                     </div>
                     <div class="p-5">
                         <h3 class="font-bold text-navy-900 text-lg mb-2 group-hover:text-accent-gold transition">Group AB03</h3>
@@ -257,8 +257,8 @@
                 <!-- Group AB04 -->
                 <a href="group.html?group=ab04" class="group block bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition">
                     <div class="relative h-44">
-                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                        <span class="absolute top-3 left-3 bg-accent-gold text-navy-900 text-xs font-bold px-2.5 py-1 rounded">AB04</span>
+                        <img src="uopefac.jpg" alt="Group AB04" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                        <span class="absolute top-3 left-3 bg-accent-gold text-navy-900 text-xs font-bold px-2.5 py-1 rounded shadow">AB04</span>
                     </div>
                     <div class="p-5">
                         <h3 class="font-bold text-navy-900 text-lg mb-2 group-hover:text-accent-gold transition">Group AB04</h3>
@@ -307,7 +307,7 @@
 
         container.innerHTML = '';
         projects.forEach(project => {
-          const imageUrl = project.imageUrl || project.image_url || 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=600&q=80';
+          const imageUrl = project.imageUrl || project.image_url || 'uopefac.jpg';
           const groupName = project.groupName || (project.groups ? project.groups.name : 'Group');
           const groupSlug = project.groupSlug || (project.groups ? project.groups.slug : 'ab01');
 
