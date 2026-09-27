@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="theme-color" content="#4b1028">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Project | English Teaching Unit</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="assets/js/config/tailwind.js"></script>
+
+    <link
+        rel="stylesheet"
+        href="assets/css/app.css?v=20260927-antigravity"
+    >
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="assets/images/uoplogo.png"
+    >
+</head>
+
+<body class="portal">
+
+    <!-- NAVBAR -->
+    <div id="site-header"></div>
+    <div id="admin-banner"></div>
+
+
+    <main class="project-view-page">
+
+        <!-- PROJECT HEADER -->
+        <section class="project-view-header">
+
+            <div class="project-view-container">
+
+                <a
+                    href="projects.html"
+                    class="project-view-back"
+                >
+                    ← Back to projects
+                </a>
+
+
+                <p
+                    id="project-view-category"
+                    class="eyebrow"
+                >
+                    Student project
+                </p>
+
+
+                <h1 id="project-view-title">
+                    Loading project...
+                </h1>
+
+
+                <a
+                    id="project-view-group"
+                    class="project-view-group"
+                    href="#"
+                    hidden
+                ></a>
+
+                <div
+    id="project-view-admin-actions"
+    class="project-view-admin-actions"
+    hidden
+>
+    <span class="project-view-admin-label">
+        Admin
+    </span>
+
+    <button
+        id="project-view-edit-btn"
+        class="project-view-admin-btn"
+        type="button"
+    >
+        Edit project
+    </button>
+
+    <button
+        id="project-view-delete-btn"
+        class="project-view-admin-btn project-view-admin-delete"
+        type="button"
+    >
+        Delete
+    </button>
+</div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROJECT IMAGE -->
+        <section class="project-view-media-section">
+
+            <div class="project-view-container">
+
+                <img
+                    id="project-view-image"
+                    class="project-view-image"
+                    src="assets/images/uopefac.jpg"
+                    alt="Student project"
+                >
+
+            </div>
+
+        </section>
+
+
+        <!-- PROJECT DETAILS -->
+        <section class="project-view-content-section">
+
+            <div class="project-view-container project-view-content-grid">
+
+
+                <div>
+
+                    <p class="eyebrow">
+                        About the project
+                    </p>
+
+                    <h2>
+                        Project overview
+                    </h2>
+
+
+                    <p
+                        id="project-view-description"
+                        class="project-view-description"
+                    >
+                        Loading project information...
+                    </p>
+
+                </div>
+
+
+                <aside class="project-view-meta">
+
+                    <div>
+
+                        <span>
+                            Category
+                        </span>
+
+                        <strong id="project-view-meta-category">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Group
+                        </span>
+
+                        <strong id="project-view-meta-group">
+                            —
+                        </strong>
+
+                    </div>
+
+
+                    <div
+                        id="project-view-duration-row"
+                        hidden
+                    >
+
+                        <span>
+                            Duration
+                        </span>
+
+                        <strong id="project-view-duration">
+                            —
+                        </strong>
+
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </section>
+
+
+        <!-- VIDEO -->
+        <section
+            id="project-view-video-section"
+            class="project-view-video-section"
+            hidden
+        >
+
+            <div class="project-view-container">
+
+                <p class="eyebrow">
+                    Watch
+                </p>
+
+                <h2>
+                    Project video
+                </h2>
+
+
+                <div class="project-view-video">
+
+                    <iframe
+                        id="project-view-video"
+                        src=""
+                        title="Project video"
+                        allowfullscreen
+                    ></iframe>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- ======================================================
+     ADMIN - EDIT PROJECT MODAL
+     ====================================================== -->
+
+<div
+    id="project-modal"
+    class="app-modal"
+    hidden
+>
+
+    <div class="app-modal-panel p-6">
+
+        <!-- Header -->
+        <div
+            class="
+                flex
+                items-center
+                justify-between
+                pb-4
+                mb-5
+                border-b
+                border-slate-100
+            "
+        >
+
+            <div>
+
+                <p
+                    class="
+                        text-[10px]
+                        font-bold
+                        uppercase
+                        tracking-wider
+                        text-accent-gold
+                    "
+                >
+                    Project Showcase
+                </p>
+
+                <h2
+                    id="project-modal-title"
+                    class="
+                        text-lg
+                        font-serif
+                        font-bold
+                        text-navy-900
+                    "
+                >
+                    Edit Project
+                </h2>
+
+            </div>
+
+
+            <button
+                type="button"
+                data-modal-close="project-modal"
+                class="
+                    text-xl
+                    text-slate-400
+                    hover:text-slate-700
+                "
+                aria-label="Close"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- Form -->
+        <form
+            id="project-form"
+            class="space-y-4"
+        >
+
+            <!-- Project ID -->
+            <input
+                id="project-id"
+                type="hidden"
+            >
+
+
+            <!-- Title -->
+            <div>
+
+                <label
+                    class="form-label"
+                    for="project-title"
+                >
+                    Project Title *
+                </label>
+
+                <input
+                    id="project-title"
+                    class="form-control"
+                    type="text"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Category -->
+            <div>
+
+                <label
+                    class="form-label"
+                    for="project-category"
+                >
+                    Category *
+                </label>
+
+                <select
+                    id="project-category"
+                    class="form-control"
+                    required
+                ></select>
+
+            </div>
+
+
+            <!-- Description -->
+            <div>
+
+                <label
+                    class="form-label"
+                    for="project-description"
+                >
+                    Description
+                </label>
+
+                <textarea
+                    id="project-description"
+                    class="form-control"
+                    rows="5"
+                    placeholder="Describe the project and student work"
+                ></textarea>
+
+            </div>
+
+
+            <!-- Current image -->
+            <div>
+
+                <label class="form-label">
+                    Project Image
+                </label>
+
+
+                <div
+                    id="current-project-image-wrap"
+                    hidden
+                    class="
+                        mb-3
+                        rounded-lg
+                        border
+                        border-slate-200
+                        bg-slate-50
+                        p-3
+                    "
+                >
+
+                    <div
+                        class="
+                            text-[10px]
+                            font-semibold
+                            uppercase
+                            tracking-wider
+                            text-slate-400
+                            mb-2
+                        "
+                    >
+                        Current Image
+                    </div>
+
+
+                    <img
+                        id="current-project-image-preview"
+                        src=""
+                        alt="Current project image"
+                        class="
+                            w-full
+                            max-w-sm
+                            h-auto
+                            object-contain
+                            rounded-lg
+                            border
+                            border-slate-200
+                        "
+                    >
+
+
+                    <p
+                        class="
+                            mt-2
+                            text-[10px]
+                            text-slate-500
+                        "
+                    >
+                        Leave the image picker unchanged
+                        to keep the current image.
+                    </p>
+
+                </div>
+
+
+                <!-- imagePicker.js renders here -->
+                <div id="project-image-picker"></div>
+
+            </div>
+
+
+            <!-- YouTube / Duration -->
+            <div
+                class="
+                    grid
+                    grid-cols-1
+                    sm:grid-cols-2
+                    gap-4
+                "
+            >
+
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="project-youtube"
+                    >
+                        YouTube URL
+                    </label>
+
+                    <input
+                        id="project-youtube"
+                        class="form-control"
+                        type="url"
+                        placeholder="https://www.youtube.com/watch?v=..."
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="project-duration"
+                    >
+                        Duration Label
+                    </label>
+
+                    <input
+                        id="project-duration"
+                        class="form-control"
+                        type="text"
+                        placeholder="08:20"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- Sort / Featured / Published -->
+            <div
+                class="
+                    grid
+                    grid-cols-1
+                    sm:grid-cols-3
+                    gap-4
+                    items-end
+                "
+            >
+
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="project-sort"
+                    >
+                        Display Order
+                    </label>
+
+                    <input
+                        id="project-sort"
+                        class="form-control"
+                        type="number"
+                        min="0"
+                    >
+
+                </div>
+
+
+                <label
+                    class="
+                        flex
+                        items-center
+                        gap-2
+                        text-xs
+                        font-semibold
+                        text-slate-700
+                        pb-2
+                    "
+                >
+
+                    <input
+                        id="project-featured"
+                        type="checkbox"
+                    >
+
+                    Featured
+
+                </label>
+
+
+                <label
+                    class="
+                        flex
+                        items-center
+                        gap-2
+                        text-xs
+                        font-semibold
+                        text-slate-700
+                        pb-2
+                    "
+                >
+
+                    <input
+                        id="project-published"
+                        type="checkbox"
+                    >
+
+                    Published
+
+                </label>
+
+            </div>
+
+
+            <!-- Actions -->
+            <div
+                class="
+                    flex
+                    justify-end
+                    gap-2
+                    pt-4
+                    border-t
+                    border-slate-100
+                "
+            >
+
+                <button
+                    type="button"
+                    data-modal-close="project-modal"
+                    class="
+                        px-4
+                        py-2
+                        rounded-lg
+                        text-sm
+                        text-slate-600
+                        hover:bg-slate-100
+                    "
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="
+                        button
+                        button-primary
+                        px-4
+                        py-2
+                        rounded-lg
+                        bg-navy-900
+                        text-white
+                        text-sm
+                        font-semibold
+                    "
+                >
+                    Save Project
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+    <!-- FOOTER -->
+    <div id="site-footer"></div>
+
+
+    <!-- IMPORTANT -->
+    <script
+        type="module"
+        src="assets/js/pages/projectPage.js"
+    ></script>
+
+</body>
+
+</html>
