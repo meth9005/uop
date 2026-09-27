@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <!-- ======================================================
+         BASIC DOCUMENT INFORMATION
+         ====================================================== -->
+
+    <meta charset="UTF-8">
+
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+
+    <meta
+        name="description"
+        content="
+            Explore student work by category from the English
+            Teaching Unit, Faculty of Engineering,
+            University of Peradeniya.
+        "
+    >
+
+
+    <title>
+        Explore by Category |
+        English Teaching Unit - UoP
+    </title>
+
+
+
+    <!-- ======================================================
+         SUPABASE SDK
+         ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+
+    <!-- ======================================================
+         TAILWIND
+         ====================================================== -->
+
+    <script
+        src="https://cdn.tailwindcss.com"
+    ></script>
+
+
+
+    <!-- ======================================================
+         SHARED PORTAL THEME
+         ====================================================== -->
+
+    <script
+        src="assets/js/config/tailwind.js"
+    ></script>
+
+
+
+    <!-- ======================================================
+         FONTS
+         ====================================================== -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+
+    <!-- ======================================================
+         SHARED CSS
+         ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="assets/css/app.css?v=20260924-crest"
+    >
+
+    <link rel="icon" type="image/png" href="assets/images/uoplogo.png">
+</head>
+
+
+
+<body class="portal
+        bg-slate-50
+        text-slate-800
+        font-sans
+        antialiased
+    "
+>
+
+
+    <!-- ======================================================
+         SHARED NAVIGATION
+         ======================================================
+
+         navbar.js also inserts the original small UTC bar on
+         this page because showTimeBar is enabled.
+         ====================================================== -->
+
+    <div id="site-header"></div>
+
+
+
+    <!-- ======================================================
+         ADMIN BANNER
+         ====================================================== -->
+
+    <div id="admin-banner"></div>
+
+
+
+    <main>
+
+
+        <!-- ==================================================
+             PAGE HERO
+             ==================================================
+
+             This preserves the institutional category
+             introduction from the original page.
+             ================================================== -->
+
+        <section class="page-intro bg-navy-900 text-white
+                py-14
+                px-6
+                border-b
+                border-navy-800
+            "
+        >
+
+            <div
+                class="
+                    max-w-7xl
+                    mx-auto
+                "
+            >
+
+                <span
+                    class="
+                        text-xs
+                        font-bold
+                        uppercase
+                        tracking-wider
+                        text-accent-gold
+                        mb-2
+                        block
+                    "
+                >
+                    CONTENT CATEGORIES
+                </span>
+
+
+                <h1
+                    class="
+                        text-3xl
+                        sm:text-4xl
+                        font-serif
+                        font-bold
+                        mb-4
+                    "
+                >
+                    Explore by Category
+                </h1>
+
+
+                <p
+                    class="
+                        text-slate-300
+                        max-w-2xl
+                        text-sm
+                        sm:text-base
+                        leading-relaxed
+                    "
+                >
+                    Student work organized by content type —
+                    from group activities and presentations to
+                    documentaries and visual art.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             CATEGORY TABS
+             ==================================================
+
+             The old page manually contained four buttons.
+
+             The new page generates them from:
+
+                 categories.js
+
+             so category information has one source of truth.
+             ================================================== -->
+
+        <div
+            class="
+                bg-white
+                border-b
+                border-slate-200
+                sticky
+                top-20
+                z-40
+            "
+        >
+
+            <div
+                id="category-tabs"
+                class="
+                    max-w-7xl
+                    mx-auto
+                    px-6
+                    flex
+                    space-x-8
+                    text-sm
+                    font-medium
+                    overflow-x-auto
+                "
+            >
+
+                <!-- JavaScript creates category buttons here -->
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ==================================================
+             CATEGORY OVERVIEW
+             ==================================================
+
+             Selected category controls:
+
+             icon
+             title
+             description
+             counts
+             image
+             explore link
+             ================================================== -->
+
+        <section
+            class="
+                py-12
+                px-6
+            "
+        >
+
+            <div
+                class="
+                    max-w-7xl
+                    mx-auto
+                    grid
+                    grid-cols-1
+                    lg:grid-cols-12
+                    gap-10
+                    items-center
+                "
+            >
+
+
+                <!-- ==========================================
+                     CATEGORY INFORMATION
+                     ========================================== -->
+
+                <div
+                    class="
+                        lg:col-span-5
+                    "
+                >
+
+
+                    <!-- Category icon -->
+
+
+
+
+                    <!-- Category name -->
+                    <h2
+                        id="cat-title"
+                        class="
+                            text-2xl
+                            sm:text-3xl
+                            font-serif
+                            font-bold
+                            text-navy-900
+                            mb-3
+                        "
+                    >
+                        Group Activities
+                    </h2>
+
+
+
+                    <!-- Category description -->
+                    <p
+                        id="cat-desc"
+                        class="
+                            text-sm
+                            text-slate-600
+                            leading-relaxed
+                            mb-6
+                        "
+                    >
+                        Loading category information...
+                    </p>
+
+
+
+                    <!-- ======================================
+                         LIVE CATEGORY STATISTICS
+                         ======================================
+
+                         These are calculated from Supabase.
+
+                         They are no longer hardcoded as:
+
+                         4 Projects
+                         4 Groups
+                         1 Video
+                         ====================================== -->
+
+                    <div
+                        class="
+                            flex
+                            flex-wrap
+                            gap-3
+                            mb-6
+                        "
+                    >
+
+
+                        <!-- Project count -->
+                        <span
+                            id="cat-projects"
+                            class="
+                                bg-slate-100
+                                text-slate-700
+                                text-xs
+                                px-3
+                                py-1.5
+                                rounded-md
+                                font-medium
+                            "
+                        >
+                            0 Projects
+                        </span>
+
+
+
+                        <!-- Group count -->
+                        <span
+                            id="cat-groups"
+                            class="
+                                bg-slate-100
+                                text-slate-700
+                                text-xs
+                                px-3
+                                py-1.5
+                                rounded-md
+                                font-medium
+                            "
+                        >
+                            0 Groups
+                        </span>
+
+
+
+                        <!-- Video count -->
+                        <span
+                            id="cat-videos"
+                            class="
+                                bg-slate-100
+                                text-slate-700
+                                text-xs
+                                px-3
+                                py-1.5
+                                rounded-md
+                                font-medium
+                            "
+                        >
+                            0 Videos
+                        </span>
+
+                    </div>
+
+
+
+                    <!-- ======================================
+                         OPEN FILTERED PROJECT VIEW
+                         ====================================== -->
+
+                    <a
+                        id="cat-explore-btn"
+                        href="groups.html"
+                        class="button button-primary
+                            inline-flex
+                            items-center
+                            gap-2
+                            bg-navy-900
+                            text-white
+                            font-semibold
+                            text-xs
+                            px-5
+                            py-2.5
+                            rounded-lg
+                            hover:bg-accent-gold
+                            hover:text-navy-900
+                            transition
+                        "
+                    >
+                        Explore Projects →
+                    </a>
+
+                </div>
+
+
+
+                <!-- ==========================================
+                     CATEGORY IMAGE
+                     ========================================== -->
+
+                <div
+                    class="
+                        lg:col-span-7
+                    "
+                >
+
+                    <img
+                        id="cat-image"
+                        src="assets/images/uopefac.jpg"
+                        alt="Student project category"
+                        class="
+                            w-full
+                            h-72
+                            sm:h-80
+                            object-cover
+                            rounded-md
+                            border
+                            border-slate-200
+                            shadow-none
+                            transition-all
+                            duration-300
+                        "
+                    >
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             CATEGORY EXPLANATION
+             ==================================================
+
+             Small static explanation makes it clear that the
+             category counts are based on current showcase work.
+             ================================================== -->
+
+        <section
+            class="
+                px-6
+                pb-16
+            "
+        >
+
+            <div
+                class="
+                    max-w-7xl
+                    mx-auto
+                    border-t
+                    border-slate-200
+                    pt-8
+                "
+            >
+
+                <div
+                    class="
+                        max-w-3xl
+                    "
+                >
+
+                    <h2
+                        class="
+                            text-lg
+                            font-bold
+                            text-navy-900
+                            mb-2
+                        "
+                    >
+                        Browse Current Student Work
+                    </h2>
+
+
+                    <p
+                        class="
+                            text-sm
+                            text-slate-500
+                            leading-relaxed
+                        "
+                    >
+                        Project, participating-group and video
+                        totals are calculated from the current
+                        student showcase. Select a category above,
+                        then use the Explore button to view the
+                        matching projects across all student
+                        groups.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ======================================================
+         SHARED FOOTER
+         ======================================================
+
+         Current student groups are loaded from Supabase.
+         ====================================================== -->
+
+    <div id="site-footer"></div>
+
+
+
+    <!-- ======================================================
+         CATEGORIES PAGE CONTROLLER
+         ======================================================
+
+         The old inline category JavaScript is no longer needed.
+
+         Do NOT load:
+
+         supabaseClient.js
+         nav.js
+         ====================================================== -->
+
+    <script
+        type="module"
+        src="assets/js/pages/categoriesPage.js"
+    ></script>
+
+
+</body>
+
+</html>

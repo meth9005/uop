@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <!-- ======================================================
+         BASIC DOCUMENT INFORMATION
+         ====================================================== -->
+
+    <meta charset="UTF-8">
+
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+
+    <meta
+        name="description"
+        content="
+            English Teaching Unit student showcase,
+            Faculty of Engineering,
+            University of Peradeniya.
+        "
+    >
+
+
+    <title>
+        English Teaching Unit |
+        Faculty of Engineering - UoP
+    </title>
+
+
+
+    <!-- ======================================================
+         SUPABASE JAVASCRIPT SDK
+         ======================================================
+
+         services/supabase.js uses the global Supabase client
+         provided by this library.
+         ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+
+    <!-- ======================================================
+         TAILWIND CSS
+         ====================================================== -->
+
+    <script
+        src="https://cdn.tailwindcss.com"
+    ></script>
+
+
+
+    <!-- ======================================================
+         SHARED PORTAL TAILWIND CONFIG
+         ====================================================== -->
+
+    <script
+        src="assets/js/config/tailwind.js"
+    ></script>
+
+
+
+    <!-- ======================================================
+         PORTAL FONTS
+         ====================================================== -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+
+    <!-- ======================================================
+         SHARED CUSTOM CSS
+         ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="assets/css/app.css?v=20260924-crest"
+    >
+
+    <link rel="icon" type="image/png" href="assets/images/uoplogo.png">
+</head>
+
+
+
+<body class="portal
+        bg-slate-50
+        text-slate-800
+        font-sans
+        antialiased
+    "
+>
+
+
+    <!-- ======================================================
+         SHARED NAVIGATION
+         ====================================================== -->
+
+    <div id="site-header"></div>
+
+
+
+    <!-- ======================================================
+         ADMINISTRATOR MODE BANNER
+         ======================================================
+
+         Public visitor:
+
+             empty
+
+         Administrator:
+
+             Administrator Mode + Sign Out
+         ====================================================== -->
+
+    <div id="admin-banner"></div>
+
+
+
+    <main class="home-page">
+        <section id="home" class="home-intro">
+            <div class="home-intro-inner">
+                <div class="home-intro-copy">
+                    <p class="eyebrow">Faculty of Engineering / University of Peradeniya</p>
+                    <h1>English Teaching Unit</h1>
+                    <p class="intro-description">Developing language and communication skills through student projects, collaboration and creative work.</p>
+                    <div class="intro-actions">
+                        <a href="#work" class="button button-primary">View student work</a>
+                        <a href="about.html" class="text-link">About the unit <span aria-hidden="true">&rarr;</span></a>
+                    </div>
+                </div>
+                <figure class="home-photograph">
+                    <img src="assets/images/uopefac.jpg" alt="Faculty of Engineering campus, University of Peradeniya" width="1200" height="800" fetchpriority="high">
+                    <figcaption>Faculty of Engineering, Peradeniya</figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <section class="home-statistics" aria-label="Showcase at a glance">
+            <dl class="home-container">
+                <div><dt>Student groups</dt><dd id="stat-groups">&mdash;</dd></div>
+                <div><dt>Published projects</dt><dd id="stat-projects">&mdash;</dd></div>
+                <div><dt>Categories</dt><dd id="stat-categories">&mdash;</dd></div>
+                <div><dt>Students</dt><dd id="stat-students">&mdash;</dd></div>
+            </dl>
+        </section>
+
+        <section id="work" class="home-section">
+            <div class="home-container">
+                <div class="section-heading">
+                    <div><h2>Student work</h2><p>Recent projects from our student community.</p></div>
+                    <a href="groups.html#projects" class="text-link">All projects <span aria-hidden="true">&rarr;</span></a>
+                </div>
+                <div id="latest-projects-container" class="home-project-grid" aria-live="polite">
+                    <p class="home-loading">Loading student work...</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="groups" class="home-section">
+            <div class="home-container">
+                <div class="section-heading">
+                    <div><h2>Meet the groups</h2><p>The people behind the projects.</p></div>
+                    <a href="groups.html" class="text-link">All groups <span aria-hidden="true">&rarr;</span></a>
+                </div>
+                <div id="home-groups-grid" class="home-group-grid" aria-live="polite">
+                    <p class="home-loading">Loading student groups...</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="home-section home-about">
+            <div class="home-container home-about-grid">
+                <div><p class="eyebrow">Learning through language</p><h2>Communication for engineering and beyond.</h2></div>
+                <div class="home-prose">
+                    <p>The English Teaching Unit helps engineering students build the language skills they need for university and professional life, from academic reading and technical writing to presentations and everyday communication.</p>
+                    <p>This showcase brings together documentaries, presentations, group activities and visual art created through that learning.</p>
+                    <a href="about.html" class="text-link">Learn about our programme <span aria-hidden="true">&rarr;</span></a>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="home-section home-contact">
+            <div class="home-container home-contact-grid">
+                <div><h2>Get in touch</h2><p>Questions about the programme or student work?</p></div>
+                <div><h3>Email</h3><a href="mailto:etu@eng.pdn.ac.lk">etu@eng.pdn.ac.lk</a></div>
+                <div><h3>Visit</h3><address>Faculty of Engineering<br>University of Peradeniya<br>Peradeniya 20400, Sri Lanka</address></div>
+            </div>
+        </section>
+    </main>
+
+
+
+    <!-- ======================================================
+         SHARED FOOTER
+         ======================================================
+
+         footer.js inserts:
+
+         - institutional footer
+         - current database groups
+         - Admin Login / Sign Out
+         ====================================================== -->
+
+    <div id="site-footer"></div>
+
+
+
+    <!-- ======================================================
+         HOMEPAGE CONTROLLER
+         ======================================================
+
+         Do NOT load:
+
+         supabaseClient.js
+         nav.js
+
+         on this page anymore.
+         ====================================================== -->
+
+    <script
+        type="module"
+        src="assets/js/pages/homePage.js"
+    ></script>
+
+
+</body>
+
+</html>

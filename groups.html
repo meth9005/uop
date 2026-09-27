@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <!-- ======================================================
+         BASIC PAGE INFORMATION
+         ====================================================== -->
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="
+            Browse student groups and published projects from
+            the English Teaching Unit, Faculty of Engineering,
+            University of Peradeniya.
+        "
+    >
+
+
+    <title>
+        Browse Student Groups |
+        English Teaching Unit - UoP
+    </title>
+
+
+    <!-- ======================================================
+         SUPABASE JAVASCRIPT LIBRARY
+         ======================================================
+
+         This loads the official Supabase browser client.
+
+         Our own:
+
+             assets/js/services/supabase.js
+
+         will create the actual shared connection.
+         ====================================================== -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+    <!-- ======================================================
+         TAILWIND CSS
+         ======================================================
+
+         Tailwind provides the majority of the portal styling.
+         ====================================================== -->
+
+    <script
+        src="https://cdn.tailwindcss.com"
+    ></script>
+
+
+    <!-- ======================================================
+         SHARED TAILWIND CONFIGURATION
+         ======================================================
+
+         Contains:
+
+         - navy colours
+         - ETU gold
+         - Inter
+         - Playfair Display
+
+         This replaces duplicated Tailwind configuration that
+         previously existed inside every HTML page.
+         ====================================================== -->
+
+    <script
+        src="assets/js/config/tailwind.js"
+    ></script>
+
+
+    <!-- ======================================================
+         GOOGLE FONTS
+         ====================================================== -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ======================================================
+         SHARED CUSTOM CSS
+         ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="assets/css/app.css?v=20260924-crest"
+    >
+
+    <link rel="icon" type="image/png" href="assets/images/uoplogo.png">
+</head>
+
+
+
+<body class="portal
+        bg-slate-50
+        text-slate-800
+        font-sans
+        antialiased
+    "
+>
+
+
+    <!-- ======================================================
+         SHARED NAVIGATION MOUNT POINT
+         ======================================================
+
+         navbar.js inserts the navbar here.
+
+         There is no duplicated navbar HTML in this page.
+         ====================================================== -->
+
+    <div id="site-header"></div>
+
+
+
+    <!-- ======================================================
+         ADMINISTRATOR BANNER MOUNT POINT
+         ======================================================
+
+         Public visitor:
+
+             nothing appears here.
+
+         Authorized administrator:
+
+             "Administrator Mode" banner appears.
+         ====================================================== -->
+
+    <div id="admin-banner"></div>
+
+
+
+    <!-- ======================================================
+         MAIN PAGE CONTENT
+         ====================================================== -->
+
+    <main>
+
+
+        <!-- ==================================================
+             PAGE HERO
+             ==================================================
+
+             This is static institutional presentation content.
+
+             It is not CMS-managed because administrators only
+             manage student showcase data.
+             ================================================== -->
+
+        <section class="page-intro bg-navy-900 text-white
+                py-14
+                px-6
+                border-b
+                border-navy-800
+            "
+        >
+
+            <div
+                class="
+                    max-w-7xl
+                    mx-auto
+                "
+            >
+
+                <span
+                    class="
+                        text-xs
+                        font-bold
+                        uppercase
+                        tracking-wider
+                        text-accent-gold
+                        mb-2
+                        block
+                    "
+                >
+                    STUDENT GROUPS
+                </span>
+
+
+                <h1
+                    class="
+                        text-3xl
+                        sm:text-4xl
+                        font-serif
+                        font-bold
+                        mb-4
+                    "
+                >
+                    Browse by Group
+                </h1>
+
+
+                <p
+                    class="
+                        text-slate-300
+                        max-w-2xl
+                        text-sm
+                        sm:text-base
+                        leading-relaxed
+                    "
+                >
+                    Select a student group to explore its members,
+                    projects, and gallery, or browse published work
+                    across all groups.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             STUDENT GROUPS SECTION
+             ==================================================
+
+             Group cards are NOT written here manually.
+
+             groupsPage.js:
+
+                 getGroups()
+                       ↓
+                 createGroupCard()
+                       ↓
+                 #groups-grid
+
+             Therefore adding AB05 in Supabase automatically
+             creates an AB05 card here.
+             ================================================== -->
+
+        <section
+            class="
+                py-12
+                px-6
+            "
+        >
+
+            <div
+                class="
+                    max-w-7xl
+                    mx-auto
+                "
+            >
+
+
+                <!-- ==========================================
+                     SECTION HEADER
+                     ========================================== -->
+
+                <div
+                    class="
+                        flex
+                        flex-wrap
+                        items-center
+                        justify-between
+                        gap-4
+                        mb-6
+                    "
+                >
+
+                    <span
+                        class="
+                            text-xs
+                            font-bold
+                            uppercase
+                            tracking-wider
+                            text-slate-400
+                        "
+                    >
+                        SELECT A GROUP
+                    </span>
+
+
+                    <!-- ======================================
+                         ADMIN ONLY - ADD GROUP BUTTON
+                         ======================================
+
+                         hidden by default.
+
+                         groupsPage.js reveals this only when
+                         authService confirms administrator.
+                         ====================================== -->
+
+                    <button
+                        id="add-group-btn"
+                        type="button"
+                        hidden
+                        class="button button-primary
+                            bg-navy-900
+                            hover:bg-navy-800
+                            text-accent-gold
+                            text-xs
+                            font-bold
+                            px-4
+                            py-2
+                            rounded-lg
+                            shadow-none
+                            transition
+                        "
+                    >
+                        + Add Student Group
+                    </button>
+
+                </div>
+
+
+
+                <!-- ==========================================
+                     DYNAMIC GROUP CARD CONTAINER
+                     ==========================================
+
+                     This initial loading message disappears
+                     after Supabase data arrives.
+                     ========================================== -->
+
+                <div
+                    id="groups-grid"
+                    class="
+                        grid
+                        grid-cols-1
+                        sm:grid-cols-2
+                        lg:grid-cols-4
+                        gap-6
+                    "
+                >
+
+                    <div
+                        class="
+                            col-span-full
+                            py-10
+                            text-center
+                            text-slate-400
+                        "
+                    >
+                        Loading student groups...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             ALL PROJECTS SECTION
+             ==================================================
+
+             This replaces the old 16 hardcoded project cards.
+
+             The data now comes entirely from:
+
+                 public.projects
+
+             through:
+
+                 dataService.getAllProjects()
+             ================================================== -->
+
+        <section
+            id="projects"
+            class="
+                py-10
+                px-6
+                border-t
+                border-slate-200
+            "
+        >
+
+            <div
+                class="
+                    max-w-7xl
+                    mx-auto
+                "
+            >
+
+
+                <!-- ==========================================
+                     PROJECT FILTER HEADING
+                     ========================================== -->
+
+                <span
+                    class="
+                        text-xs
+                        font-bold
+                        uppercase
+                        tracking-wider
+                        text-slate-400
+                        mb-4
+                        block
+                    "
+                >
+                    BROWSE ALL WORK BY CATEGORY
+                </span>
+
+
+
+                <!-- ==========================================
+                     DYNAMIC FILTER BUTTONS
+                     ==========================================
+
+                     groupsPage.js generates:
+
+                     All Categories
+                     🎭 Group Activities
+                     📊 Presentations
+                     🎬 Documentaries
+                     🎨 Art & Explorer
+
+                     using categories.js.
+                     ========================================== -->
+
+                <div
+                    id="project-filters"
+                    class="
+                        flex
+                        flex-wrap
+                        items-center
+                        gap-3
+                        mb-6
+                    "
+                >
+                </div>
+
+
+
+                <!-- ==========================================
+                     PROJECT COUNTER
+                     ==========================================
+
+                     Examples:
+
+                     0 projects
+                     1 project
+                     12 projects
+                     ========================================== -->
+
+                <div
+                    class="
+                        flex
+                        items-center
+                        justify-between
+                        mb-6
+                    "
+                >
+
+                    <div
+                        id="project-count"
+                        class="
+                            text-xs
+                            font-semibold
+                            text-slate-500
+                        "
+                    >
+                        0 projects
+                    </div>
+
+                </div>
+
+
+
+                <!-- ==========================================
+                     DYNAMIC PROJECT GRID
+                     ==========================================
+
+                     projectCard.js creates every card.
+                     ========================================== -->
+
+                <div
+                    id="projects-grid"
+                    class="
+                        grid
+                        grid-cols-1
+                        sm:grid-cols-2
+                        lg:grid-cols-4
+                        gap-6
+                    "
+                >
+
+                    <div
+                        class="
+                            col-span-full
+                            py-10
+                            text-center
+                            text-slate-400
+                        "
+                    >
+                        Loading projects...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ======================================================
+         SHARED FOOTER MOUNT POINT
+         ======================================================
+
+         footer.js creates the footer.
+
+         Student group links are generated from Supabase rather
+         than being manually hardcoded AB01-AB04.
+         ====================================================== -->
+
+    <div id="site-footer"></div>
+
+
+
+    <!-- ======================================================
+         CREATE GROUP MODAL
+         ======================================================
+
+         PUBLIC VISITOR:
+
+             cannot open this modal.
+
+         ADMINISTRATOR:
+
+             Add Student Group button opens it.
+
+
+         Data saved:
+
+         name
+         slug
+         tagline
+         description
+         cover_image
+         card_image
+         sort_order
+         is_published
+         ====================================================== -->
+
+    <div
+        id="group-modal"
+        class="app-modal"
+        hidden
+    >
+
+
+        <!-- Modal white panel -->
+        <div
+            class="
+                app-modal-panel
+                p-6
+            "
+        >
+
+
+            <!-- ==============================================
+                 MODAL HEADER
+                 ============================================== -->
+
+            <div
+                class="
+                    flex
+                    items-center
+                    justify-between
+                    gap-4
+                    pb-4
+                    mb-5
+                    border-b
+                    border-slate-100
+                "
+            >
+
+                <div>
+
+                    <p
+                        class="
+                            text-[10px]
+                            font-bold
+                            uppercase
+                            tracking-wider
+                            text-accent-gold
+                        "
+                    >
+                        Administrator
+                    </p>
+
+
+                    <h2
+                        class="
+                            text-lg
+                            font-serif
+                            font-bold
+                            text-navy-900
+                        "
+                    >
+                        Create Student Group
+                    </h2>
+
+                </div>
+
+
+                <!--
+                    modal.js automatically recognizes
+                    data-modal-close.
+                -->
+                <button
+                    type="button"
+                    data-modal-close="group-modal"
+                    class="
+                        text-slate-400
+                        hover:text-slate-700
+                        text-xl
+                    "
+                    aria-label="Close create group form"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+
+            <!-- ==============================================
+                 CREATE GROUP FORM
+                 ============================================== -->
+
+            <form
+                id="group-form"
+                class="space-y-4"
+            >
+
+
+                <!-- ==========================================
+                     GROUP NAME + SLUG
+                     ========================================== -->
+
+                <div
+                    class="
+                        grid
+                        grid-cols-1
+                        sm:grid-cols-2
+                        gap-4
+                    "
+                >
+
+
+                    <!-- Group display name -->
+                    <div>
+
+                        <label
+                            class="form-label"
+                            for="group-name"
+                        >
+                            Group Name *
+                        </label>
+
+
+                        <input
+                            id="group-name"
+                            class="form-control"
+                            type="text"
+                            placeholder="Group AB05"
+                            required
+                        >
+
+                    </div>
+
+
+
+                    <!--
+                        URL identifier.
+
+                        Example:
+
+                        ab05
+
+                        generates:
+
+                        group.html?group=ab05
+                    -->
+                    <div>
+
+                        <label
+                            class="form-label"
+                            for="group-slug"
+                        >
+                            Slug *
+                        </label>
+
+
+                        <input
+                            id="group-slug"
+                            class="form-control"
+                            type="text"
+                            placeholder="ab05"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ==========================================
+                     SHORT TAGLINE
+                     ==========================================
+
+                     Appears mainly on group cards and page hero.
+                     ========================================== -->
+
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="group-tagline"
+                    >
+                        Tagline
+                    </label>
+
+
+                    <input
+                        id="group-tagline"
+                        class="form-control"
+                        type="text"
+                        placeholder="
+                            Short description shown on group cards
+                        "
+                    >
+
+                </div>
+
+
+
+                <!-- ==========================================
+                     FULL GROUP DESCRIPTION
+                     ==========================================
+
+                     Shown on the individual group page.
+                     ========================================== -->
+
+                <div>
+
+                    <label
+                        class="form-label"
+                        for="group-description"
+                    >
+                        Description
+                    </label>
+
+
+                    <textarea
+                        id="group-description"
+                        class="form-control"
+                        rows="4"
+                        placeholder="Full group overview"
+                    ></textarea>
+
+                </div>
+
+
+
+                <!-- ==============================================
+     GROUP IMAGES
+     ==============================================
+
+     Both fields allow:
+
+     - drag & drop upload
+     - file browser upload
+     - external image URL
+
+     File restrictions are controlled by imagePicker.js.
+
+     Group Cover:
+         recommended 1600 × 700 px
+
+     Group Card:
+         recommended 1200 × 750 px
+
+     Each field accepts ONE image only.
+     ============================================== -->
+
+<div
+    class="
+        grid
+        grid-cols-1
+        gap-6
+    "
+>
+
+
+    <!-- ==========================================
+         GROUP COVER IMAGE
+         ========================================== -->
+
+    <div>
+
+        <label
+            class="form-label"
+        >
+            Group Cover Image
+        </label>
+
+
+        <!--
+            imagePicker.js will build the complete uploader
+            inside this element.
+        -->
+        <div id="group-cover-picker"></div>
+
+    </div>
+
+
+
+    <!-- ==========================================
+         GROUP CARD IMAGE
+         ========================================== -->
+
+    <div>
+
+        <label
+            class="form-label"
+        >
+            Group Card Image
+        </label>
+
+
+        <div id="group-card-picker"></div>
+
+    </div>
+
+</div>
+
+
+
+                <!-- ==========================================
+                     ORDER + PUBLISH STATE
+                     ========================================== -->
+
+                <div
+                    class="
+                        grid
+                        grid-cols-1
+                        sm:grid-cols-2
+                        gap-4
+                        items-end
+                    "
+                >
+
+
+                    <!-- Controls group card ordering -->
+                    <div>
+
+                        <label
+                            class="form-label"
+                            for="group-sort-order"
+                        >
+                            Display Order
+                        </label>
+
+
+                        <input
+                            id="group-sort-order"
+                            class="form-control"
+                            type="number"
+                            min="0"
+                            value="0"
+                        >
+
+                    </div>
+
+
+
+                    <!--
+                        Checked:
+                            public can see group.
+
+                        Unchecked:
+                            administrator-only draft.
+                    -->
+                    <label
+                        class="
+                            flex
+                            items-center
+                            gap-2
+                            text-xs
+                            font-semibold
+                            text-slate-700
+                            pb-2
+                        "
+                    >
+
+                        <input
+                            id="group-published"
+                            type="checkbox"
+                            class="rounded"
+                            checked
+                        >
+
+                        Published
+
+                    </label>
+
+                </div>
+
+
+
+                <!-- ==========================================
+                     FORM ACTION BUTTONS
+                     ========================================== -->
+
+                <div
+                    class="
+                        flex
+                        justify-end
+                        gap-2
+                        pt-4
+                        border-t
+                        border-slate-100
+                    "
+                >
+
+
+                    <!-- Cancel -->
+                    <button
+                        type="button"
+                        data-modal-close="group-modal"
+                        class="
+                            px-4
+                            py-2
+                            rounded-lg
+                            text-sm
+                            text-slate-600
+                            hover:bg-slate-100
+                            transition
+                        "
+                    >
+                        Cancel
+                    </button>
+
+
+
+                    <!-- Submit -->
+                    <button
+                        type="submit"
+                        class="button button-primary
+                            px-4
+                            py-2
+                            rounded-lg
+                            bg-navy-900
+                            text-white
+                            text-sm
+                            font-semibold
+                            hover:bg-navy-800
+                            transition
+                        "
+                    >
+                        Create Group
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ======================================================
+         PAGE CONTROLLER
+         ======================================================
+
+         type="module" enables ES module imports.
+
+         groupsPage.js imports all required services,
+         components and utilities.
+
+         Therefore we DO NOT load:
+
+             supabaseClient.js
+             nav.js
+
+         on this page anymore.
+         ====================================================== -->
+
+    <script
+        type="module"
+        src="assets/js/pages/groupsPage.js"
+    ></script>
+
+
+</body>
+
+</html>
