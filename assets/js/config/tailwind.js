@@ -2,12 +2,19 @@ tailwind.config = {
     theme: {
         extend: {
             colors: {
-                navy: { 800: '#34453f', 900: '#23352e', 950: '#182720' },
-                accent: { gold: '#8a682c', goldHover: '#705322' }
+                navy: {
+                    800: '#681b3a',
+                    900: '#4b1028',
+                    950: '#2f0818'
+                },
+                accent: {
+                    gold: '#b89455',
+                    goldHover: '#9f7b42'
+                }
             },
             fontFamily: {
-                sans: ['Inter', 'Arial', 'sans-serif'],
-                serif: ['Inter', 'Arial', 'sans-serif']
+                sans: ['Manrope', 'Arial', 'sans-serif'],
+                serif: ['Manrope', 'Arial', 'sans-serif']
             }
         }
     }

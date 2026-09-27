@@ -77,13 +77,13 @@ export function groupCode(groupOrSlug) {
  *
  * Example:
  *
- * Presentations → 📊
+ * Presentations → presentation
  */
 export function categoryIcon(categoryName) {
 
     return (
         getCategoryByName(categoryName)?.icon ||
-        '📁'
+        'folder'
     );
 }
 

@@ -75,6 +75,8 @@
  */
 import { CATEGORIES } from "../config/categories.js";
 
+import { createIcon } from "../utils/icons.js";
+
 /**
  * Recommended dimensions for group images.
  */
@@ -352,113 +354,31 @@ function renderGroups() {
  */
 function renderFilterButtons() {
   const container = clear("#project-filters");
+  if (!container) return;
 
-  if (!container) {
-    return;
-  }
-
-  /**
-   * --------------------------------------------------------
-   * ALL CATEGORIES BUTTON
-   * --------------------------------------------------------
-   */
-
-  const allButton = el(
-    "button",
-
-    {
-      /**
-       * Active button uses navy background.
-       *
-       * Inactive button uses light grey.
-       */
-      className:
-        activeCategory === "all"
-          ? "bg-navy-900 " +
-            "text-white " +
-            "text-xs " +
-            "font-semibold " +
-            "px-4 py-2 " +
-            "rounded-full " +
-            "shadow-sm"
-          : "bg-slate-200 " +
-            "text-slate-700 " +
-            "text-xs " +
-            "font-medium " +
-            "px-4 py-2 " +
-            "rounded-full " +
-            "hover:bg-slate-300 " +
-            "transition",
-
-      text: "All Categories",
-
+  const makeButton = (label, iconName, value) => {
+    const active = activeCategory === value;
+    const button = el("button", {
+      className: active ? "filter-chip is-active" : "filter-chip",
       attrs: {
         type: "button",
-          "aria-pressed": String(activeCategory === "all"),
+        "aria-pressed": String(active),
       },
+      on: { click: () => applyFilter(value) },
+    });
 
-      /**
-       * Clicking shows every project.
-       */
-      on: {
-        click: () => applyFilter("all"),
-      },
-    },
-  );
-
-  container.append(allButton);
-
-  /**
-   * --------------------------------------------------------
-   * OFFICIAL CATEGORY BUTTONS
-   * --------------------------------------------------------
-   *
-   * Categories come from:
-   *
-   * assets/js/config/categories.js
-   */
-  CATEGORIES.forEach((category) => {
-    const button = el(
-      "button",
-
-      {
-        className:
-          activeCategory === category.name
-            ? "bg-navy-900 " +
-              "text-white " +
-              "text-xs " +
-              "font-semibold " +
-              "px-4 py-2 " +
-              "rounded-full " +
-              "shadow-sm"
-            : "bg-slate-200 " +
-              "text-slate-700 " +
-              "text-xs " +
-              "font-medium " +
-              "px-4 py-2 " +
-              "rounded-full " +
-              "hover:bg-slate-300 " +
-              "transition",
-
-        /**
-         * Example:
-         *
-         * 📊 Presentations
-         */
-        text: `${category.name}`,
-
-        attrs: {
-          type: "button",
-          "aria-pressed": String(activeCategory === category.name),
-        },
-
-        on: {
-          click: () => applyFilter(category.name),
-        },
-      },
+    button.append(
+      createIcon(iconName, { size: 16 }),
+      el("span", { text: label }),
     );
 
-    container.append(button);
+    return button;
+  };
+
+  container.append(makeButton("All categories", "grid", "all"));
+
+  CATEGORIES.forEach((category) => {
+    container.append(makeButton(category.name, category.icon, category.name));
   });
 }
 
