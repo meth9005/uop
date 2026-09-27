@@ -1,0 +1,43 @@
+UOP / ENGLISH TEACHING UNIT — UI REVAMP
+========================================
+
+DESIGN DIRECTION
+- Motion-led, spacious product/editorial UI inspired by the design principles of Google Antigravity.
+- Adapted to the University of Peradeniya identity rather than copying Google branding/assets.
+- Main institutional palette remains maroon, supported by warm paper/cream, white, charcoal and restrained gold.
+
+MAJOR UI CHANGES
+- Navigation realigned and simplified.
+- Removed navigation emojis/icons and unnecessary active underline strokes.
+- Unified maroon palette across the navigation and primary controls.
+- New Manrope typography and stronger text hierarchy.
+- New large-format homepage hero with floating information surfaces.
+- Cleaner, softer card system with large radii and controlled elevation.
+- Custom primary/secondary/quiet buttons.
+- Scroll-reveal and staggered content motion.
+- Pointer-responsive hero/card effects on desktop.
+- Native browser scrolling retained (no scroll-jacking).
+- Custom loading states.
+- Redesigned page intros, category/group/project presentation, forms, modals, admin banner and footer.
+- Reduced-motion accessibility support.
+- Responsive layouts for desktop, tablet and mobile.
+
+FUNCTIONALITY PRESERVED
+- Existing Supabase connection/services.
+- Existing data schema and database content.
+- Existing group/project/member/media data flows.
+- Existing admin authentication and CRUD workflows.
+- Existing routes/page names.
+
+TESTS RUN
+- JavaScript syntax checked for every assets/js/*.js file.
+- Relative JavaScript imports verified to resolve.
+- All six HTML entry pages verified to reference the shared stylesheet.
+
+HOW TO USE
+1. Back up or commit your current project first.
+2. Extract this ZIP.
+3. Copy the extracted files over your current project files.
+4. If your current project is a Git repository, keep your existing .git folder; this ZIP intentionally does not include .git.
+5. Start your normal local server / Vercel workflow.
+6. Hard refresh the browser (Ctrl+Shift+R / Cmd+Shift+R).

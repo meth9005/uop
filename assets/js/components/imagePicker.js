@@ -29,6 +29,7 @@
  */
 
 import { el, clear } from "../utils/dom.js";
+import { iconMarkup } from "../utils/icons.js";
 
 import { validateImageFile } from "../services/storageService.js";
 
@@ -199,13 +200,8 @@ export function createImagePicker(options = {}) {
                     "
                 >
 
-                    <div
-                        class="
-                            text-3xl
-                            mb-2
-                        "
-                    >
-                        🖼️
+                    <div class="image-picker-icon" aria-hidden="true">
+                        ${iconMarkup("image", { size: 28 })}
                     </div>
 
 

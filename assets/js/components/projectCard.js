@@ -78,16 +78,7 @@ export function createProjectCard(
             'article',
 
             {
-                className:
-                    'showcase-card bg-white ' +
-                    'border border-slate-200 ' +
-                    'rounded-md ' +
-                    'overflow-hidden ' +
-                    'shadow-none ' +
-                    ' ' +
-                    'transition ' +
-                    'flex flex-col ' +
-                    'justify-between'
+                className: 'etu-card project-card reveal'
             }
         );
 
@@ -103,10 +94,7 @@ export function createProjectCard(
             'div',
 
             {
-                className:
-                    'relative h-44 ' +
-                    'bg-slate-100 ' +
-                    'overflow-hidden'
+                className: 'project-card-media'
             }
         );
 
@@ -116,9 +104,6 @@ export function createProjectCard(
             'img',
 
             {
-                className:
-                    'w-full h-full object-cover',
-
                 attrs: {
                     loading: 'lazy',
                     decoding: 'async',
@@ -179,14 +164,7 @@ export function createProjectCard(
                 'a',
 
                 {
-                    className:
-                        'absolute top-3 left-3 ' +
-                        'bg-accent-gold ' +
-                        'text-navy-900 ' +
-                        'text-[10px] font-bold ' +
-                        'px-2 py-0.5 ' +
-                        'rounded shadow ' +
-                        'hover:bg-white transition',
+                    className: 'project-badge',
 
                     text:
                         groupCode(group),
@@ -220,12 +198,7 @@ export function createProjectCard(
                 'span',
 
                 {
-                    className:
-                        'absolute bottom-2 right-2 ' +
-                        'bg-black/70 ' +
-                        'text-white text-[10px] ' +
-                        'px-1.5 py-0.5 ' +
-                        'rounded font-mono',
+                    className: 'project-card-duration',
 
                     text:
                         project.duration_label
@@ -249,11 +222,7 @@ export function createProjectCard(
                 'span',
 
                 {
-                    className:
-                        'absolute bottom-2 left-2 ' +
-                        'bg-slate-950 text-white ' +
-                        'text-[10px] font-bold ' +
-                        'px-2 py-1 rounded',
+                    className: 'project-badge project-badge-draft',
 
                     text:
                         'DRAFT'
@@ -274,8 +243,7 @@ export function createProjectCard(
             'div',
 
             {
-                className:
-                    'p-5'
+                className: 'project-card-body'
             },
 
             [
@@ -287,13 +255,7 @@ export function createProjectCard(
                     'span',
 
                     {
-                        className:
-                            'text-[10px] ' +
-                            'text-blue-600 ' +
-                            'font-semibold ' +
-                            'uppercase ' +
-                            'tracking-wider ' +
-                            'mb-1 block',
+                        className: 'project-badge project-badge-category',
 
                         text:
                             project.category ||
@@ -309,12 +271,7 @@ export function createProjectCard(
                     'h3',
 
                     {
-                        className:
-                            'font-bold ' +
-                            'text-navy-900 ' +
-                            'text-sm ' +
-                            'mb-2 ' +
-                            'leading-snug',
+                        className: 'project-card-title',
 
                         text:
                             project.title
@@ -329,13 +286,7 @@ export function createProjectCard(
                     'p',
 
                     {
-                        className:
-                            'text-xs ' +
-                            'text-slate-500 ' +
-                            'mb-3 ' +
-                            'line-clamp-3 ' +
-                            'leading-relaxed ' +
-                            'min-h-12',
+                        className: 'project-card-desc',
 
                         text:
                             project.description ||
@@ -357,14 +308,7 @@ export function createProjectCard(
                 'span',
 
                 {
-                    className:
-                        'inline-flex ' +
-                        'text-[10px] ' +
-                        'font-semibold ' +
-                        'bg-amber-50 ' +
-                        'text-amber-700 ' +
-                        'border border-amber-200 ' +
-                        'px-2 py-1 rounded',
+                    className: 'project-badge project-badge-featured',
 
                     text:
                         'Featured'
@@ -385,13 +329,7 @@ export function createProjectCard(
             'div',
 
             {
-                className:
-                    'px-5 py-4 ' +
-                    'border-t border-slate-100 ' +
-                    'flex flex-wrap ' +
-                    'items-center ' +
-                    'justify-between ' +
-                    'gap-2'
+                className: 'project-card-footer'
             }
         );
 
@@ -407,13 +345,10 @@ export function createProjectCard(
                 'a',
 
                 {
-                    className:
-                        'text-xs font-bold ' +
-                        'text-accent-gold ' +
-                        'hover:underline',
+                    className: 'project-group-link',
 
                     text:
-                        `View in ${groupCode(group)} →`,
+                        `View in ${groupCode(group)}`,
 
                     attrs: {
 
@@ -450,13 +385,10 @@ export function createProjectCard(
                 'a',
 
                 {
-                    className:
-                        'text-xs font-semibold ' +
-                        'text-navy-900 ' +
-                        'hover:text-accent-gold',
+                    className: 'project-view-link',
 
                     text:
-                        'Watch video ↗',
+                        'Watch video',
 
                     attrs: {
 
@@ -488,9 +420,7 @@ export function createProjectCard(
                 'div',
 
                 {
-                    className:
-                        'w-full flex ' +
-                        'justify-end gap-2 pt-2'
+                    className: 'project-card-actions'
                 }
             );
 
@@ -506,13 +436,7 @@ export function createProjectCard(
                     'button',
 
                     {
-                        className:
-                            'text-[11px] ' +
-                            'font-semibold ' +
-                            'px-3 py-1.5 ' +
-                            'rounded ' +
-                            'border border-slate-300 ' +
-                            'hover:bg-slate-50',
+                        className: 'btn btn-ghost',
 
                         text:
                             'Edit',
@@ -548,14 +472,7 @@ export function createProjectCard(
                     'button',
 
                     {
-                        className:
-                            'text-[11px] ' +
-                            'font-semibold ' +
-                            'px-3 py-1.5 ' +
-                            'rounded ' +
-                            'border border-red-200 ' +
-                            'text-red-700 ' +
-                            'hover:bg-red-50',
+                        className: 'btn btn-danger',
 
                         text:
                             'Delete',

@@ -113,6 +113,8 @@ import {
 
 } from '../utils/dom.js';
 
+import { createIcon } from '../utils/icons.js';
+
 
 
 /**
@@ -357,106 +359,30 @@ function getCategoryStatistics(category) {
  * This prevents category names from being duplicated in HTML.
  */
 function renderCategoryTabs() {
+    const container = clear('#category-tabs');
+    if (!container) return;
 
-    const container =
-        clear(
-            '#category-tabs'
+    CATEGORIES.forEach(category => {
+        const active = state.activeCategory?.key === category.key;
+        const button = el('button', {
+            className: active ? 'category-tab is-active' : 'category-tab',
+            attrs: {
+                type: 'button',
+                'aria-pressed': String(active)
+            },
+            on: {
+                click: () => selectCategory(category)
+            }
+        });
+
+        button.append(
+            createIcon(category.icon, { size: 17 }),
+            el('span', { text: category.name })
         );
 
-
-    if (!container) {
-
-        return;
-    }
-
-
-    CATEGORIES.forEach(
-
-        category => {
-
-            const active =
-                state.activeCategory?.key ===
-                category.key;
-
-
-            const button =
-                el(
-                    'button',
-
-                    {
-                        className:
-
-                            active
-
-                                ? (
-                                    'category-tab ' +
-                                    'py-4 ' +
-                                    'border-b-2 ' +
-                                    'border-accent-gold ' +
-                                    'text-navy-900 ' +
-                                    'font-semibold ' +
-                                    'flex items-center gap-2 ' +
-                                    'whitespace-nowrap ' +
-                                    'transition'
-                                )
-
-                                : (
-                                    'category-tab ' +
-                                    'py-4 ' +
-                                    'border-b-2 ' +
-                                    'border-transparent ' +
-                                    'text-slate-500 ' +
-                                    'hover:text-navy-900 ' +
-                                    'flex items-center gap-2 ' +
-                                    'whitespace-nowrap ' +
-                                    'transition'
-                                ),
-
-
-                        attrs: {
-
-                            type:
-                                'button',
-
-                            'aria-pressed':
-                                String(active)
-                        },
-
-
-                        on: {
-
-                            click:
-                                () =>
-                                    selectCategory(
-                                        category
-                                    )
-                        }
-                    },
-
-                    [
-
-
-
-                        el(
-                            'span',
-
-                            {
-                                text:
-                                    category.name
-                            }
-                        )
-                    ]
-                );
-
-
-            container.append(
-                button
-            );
-        }
-    );
+        container.append(button);
+    });
 }
-
-
 
 /**
  * ============================================================

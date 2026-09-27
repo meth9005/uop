@@ -67,7 +67,7 @@ export function showToast(
 
 
         container.className =
-            'toast-container';
+            'etu-toast-container';
 
 
         document.body.append(
@@ -89,12 +89,12 @@ export function showToast(
      * Select success/error appearance.
      */
     toast.className =
-        `app-toast ${
+        `etu-toast ${
             type === 'error'
 
-                ? 'app-toast-error'
+                ? 'etu-toast-error'
 
-                : 'app-toast-success'
+                : 'etu-toast-success'
         }`;
 
 
@@ -118,7 +118,7 @@ export function showToast(
         () => {
 
             toast.classList.add(
-                'app-toast-hide'
+                'etu-toast-hide'
             );
 
 

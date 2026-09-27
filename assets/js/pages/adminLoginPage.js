@@ -28,6 +28,7 @@
  */
 
 import { login, isAdmin } from "../services/authService.js";
+import { initSiteAnimations } from "../utils/animations.js";
 
 /**
  * ============================================================
@@ -36,6 +37,7 @@ import { login, isAdmin } from "../services/authService.js";
  */
 
 async function init() {
+  initSiteAnimations();
   /**
    * Find required HTML elements.
    */

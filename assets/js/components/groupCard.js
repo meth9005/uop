@@ -71,15 +71,7 @@ export function createGroupCard(
             'a',
 
             {
-                className:
-                    'showcase-card group block ' +
-                    'bg-white ' +
-                    'rounded-md ' +
-                    'border border-slate-200 ' +
-                    'overflow-hidden ' +
-                    'shadow-none ' +
-                    ' ' +
-                    'transition',
+                className: 'etu-card group-card reveal',
 
                 attrs: {
 
@@ -107,10 +99,7 @@ export function createGroupCard(
             'div',
 
             {
-                className:
-                    'relative h-44 ' +
-                    'overflow-hidden ' +
-                    'bg-slate-100'
+                className: 'group-card-image'
             }
         );
 
@@ -120,12 +109,6 @@ export function createGroupCard(
             'img',
 
             {
-                className:
-                    'w-full h-full ' +
-                    'object-cover ' +
-                    '' +
-                    'transition duration-300',
-
                 attrs: {
                     loading: 'lazy',
                     decoding: 'async',
@@ -158,13 +141,12 @@ export function createGroupCard(
 
 
     imageWrap.append(
-
         image
     );
 
 
     /**
-     * Small AB01 / AB02 etc. badge.
+     * Small AB01 / AB02 etc. badge (top-left).
      */
     imageWrap.append(
 
@@ -172,49 +154,13 @@ export function createGroupCard(
             'span',
 
             {
-                className:
-                    'absolute top-3 left-3 ' +
-                    'bg-accent-gold ' +
-                    'text-navy-900 ' +
-                    'text-xs font-bold ' +
-                    'px-2.5 py-1 rounded',
+                className: 'group-badge',
 
                 text:
                     groupCode(group)
             }
         )
     );
-
-
-    /**
-     * Project count shown over image.
-     */
-    if (
-        options.showStats !== false
-    ) {
-
-        imageWrap.append(
-
-            el(
-                'span',
-
-                {
-                    className:
-                        'absolute bottom-3 right-3 ' +
-                        'bg-navy-950/80 ' +
-                        'text-white text-xs ' +
-                        'px-2 py-0.5 rounded ' +
-                        'backdrop-blur-sm',
-
-                    text:
-                        formatCount(
-                            group.project_count,
-                            'project'
-                        )
-                }
-            )
-        );
-    }
 
 
     /**
@@ -234,11 +180,7 @@ export function createGroupCard(
                 'span',
 
                 {
-                    className:
-                        'absolute top-3 right-3 ' +
-                        'bg-slate-950 text-white ' +
-                        'text-[10px] font-bold ' +
-                        'px-2 py-1 rounded',
+                    className: 'group-badge group-badge-draft',
 
                     text:
                         'DRAFT'
@@ -259,8 +201,7 @@ export function createGroupCard(
             'div',
 
             {
-                className:
-                    'p-5'
+                className: 'group-card-body'
             },
 
             [
@@ -272,12 +213,7 @@ export function createGroupCard(
                     'h3',
 
                     {
-                        className:
-                            'font-bold ' +
-                            'text-navy-900 ' +
-                            'text-base mb-1 ' +
-                            'group-hover:text-accent-gold ' +
-                            'transition',
+                        className: 'group-card-title',
 
                         text:
                             group.name
@@ -295,12 +231,7 @@ export function createGroupCard(
                     'p',
 
                     {
-                        className:
-                            'text-xs ' +
-                            'text-slate-500 ' +
-                            'mb-4 ' +
-                            'line-clamp-2 ' +
-                            'min-h-8',
+                        className: 'group-card-tagline',
 
                         text:
                             group.tagline ||
@@ -324,13 +255,7 @@ export function createGroupCard(
                 'div',
 
                 {
-                    className:
-                        'text-xs ' +
-                        'text-slate-400 ' +
-                        'flex justify-between ' +
-                        'pt-3 ' +
-                        'border-t ' +
-                        'border-slate-100'
+                    className: 'group-card-stats'
                 },
 
                 [
@@ -374,13 +299,10 @@ export function createGroupCard(
                 'span',
 
                 {
-                    className:
-                        'text-xs font-semibold ' +
-                        'text-accent-gold ' +
-                        'group-hover:underline',
+                    className: 'group-card-view-link',
 
                     text:
-                        'View group →'
+                        'View group'
                 }
             )
         );
