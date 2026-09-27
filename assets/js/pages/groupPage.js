@@ -3288,6 +3288,75 @@ function setupEvents() {
   );
 }
 
+function openRequestedProjectEditor() {
+
+    if (!state.admin) {
+        return;
+    }
+
+
+    const url =
+        new URL(
+            window.location.href
+        );
+
+
+    const projectId =
+        url.searchParams.get(
+            'editProject'
+        );
+
+
+    if (!projectId) {
+        return;
+    }
+
+
+    const project =
+        state.projects.find(
+
+            item =>
+                String(item.id) ===
+                String(projectId)
+
+        );
+
+
+    if (!project) {
+
+        showToast(
+            'The requested project could not be found.',
+            'error'
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * Remove editProject from URL first
+     * so refreshing the page does not
+     * reopen the modal repeatedly.
+     */
+    url.searchParams.delete(
+        'editProject'
+    );
+
+
+    window.history.replaceState(
+        {},
+        '',
+        url
+    );
+
+
+    openProjectEditor(
+        project
+    );
+
+}
+
 /**
  * ============================================================
  * INITIALIZE GROUP PAGE
@@ -3333,6 +3402,7 @@ async function init() {
      * Load current group and related records.
      */
     await refresh();
+    openRequestedProjectEditor();
   } catch (error) {
     console.error("Group page failed to initialize:", error);
 

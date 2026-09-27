@@ -1287,3 +1287,899 @@ body.admin-login-page::after {
         scroll-behavior: auto !important;
     }
 }
+
+/* ==========================================================
+   PROJECT VIEW
+   ========================================================== */
+
+
+/* Clickable existing cards */
+
+.project-card-clickable {
+    cursor: pointer;
+}
+
+
+.project-card-clickable:focus-visible {
+    outline: 3px solid rgba(75, 16, 40, .22);
+    outline-offset: 5px;
+}
+
+
+
+/* Shared project detail width */
+
+.project-view-container {
+    width: min(
+        var(--content),
+        calc(100% - 48px)
+    );
+
+    margin-inline: auto;
+}
+
+
+
+/* Project heading */
+
+.project-view-header {
+    padding:
+        clamp(64px, 9vw, 120px)
+        0
+        clamp(44px, 6vw, 72px);
+
+    background: var(--paper);
+}
+
+
+.project-view-back {
+    display: inline-block;
+
+    margin-bottom: 48px;
+
+    color: var(--maroon-900);
+
+    font-size: .78rem;
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+.project-view-back:hover {
+    transform: translateX(-3px);
+}
+
+
+.project-view-header h1 {
+    max-width: 900px;
+
+    margin:
+        12px
+        0
+        22px;
+
+    font-size:
+        clamp(3rem, 7vw, 6rem);
+
+    line-height: .98;
+
+    letter-spacing: -.055em;
+}
+
+
+.project-view-group {
+    color: var(--maroon-900);
+
+    font-size: .8rem;
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+
+
+/* Large project image */
+
+.project-view-media-section {
+    padding:
+        0
+        0
+        clamp(64px, 8vw, 110px);
+}
+
+
+.project-view-image {
+    display: block;
+
+    width: auto;
+    height: auto;
+
+    max-width: 100%;
+    max-height: 78vh;
+
+    margin-inline: auto;
+
+    object-fit: contain;
+
+    border-radius:
+        clamp(20px, 2.5vw, 32px);
+
+    background: var(--paper-deep);
+
+    box-shadow:
+        0 24px 70px
+        rgba(42, 19, 28, 0.10);
+
+    transition:
+        opacity 300ms ease,
+        transform 400ms ease;
+}
+
+/* ==========================================================
+   Dynamic project image sizing
+   PROJECT DETAIL PAGE ONLY
+   ========================================================== */
+
+
+/* Center project images */
+
+.project-view-media-section
+.project-view-container {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+}
+
+
+/* Landscape images */
+
+.project-view-image.is-landscape {
+
+    width: 100%;
+
+    max-width: 1280px;
+}
+
+
+/* Portrait images */
+
+.project-view-image.is-portrait {
+
+    width: auto;
+
+    max-width: min(
+        720px,
+        100%
+    );
+
+    max-height: 82vh;
+}
+
+
+/* Square / near-square images */
+
+.project-view-image.is-square {
+
+    width: auto;
+
+    max-width: min(
+        900px,
+        100%
+    );
+
+    max-height: 82vh;
+}
+
+
+
+/* Main project content */
+
+.project-view-content-section {
+    padding:
+        clamp(64px, 8vw, 110px)
+        0;
+
+    background: #fff;
+}
+
+
+.project-view-content-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.6fr)
+        minmax(240px, .5fr);
+
+    gap:
+        clamp(50px, 9vw, 130px);
+
+    align-items: start;
+}
+
+
+.project-view-content-grid h2 {
+    margin: 0;
+
+    font-size:
+        clamp(2rem, 4vw, 3.8rem);
+}
+
+
+.project-view-description {
+    max-width: 760px;
+
+    margin-top: 24px;
+
+    color: var(--muted);
+
+    font-size:
+        clamp(.98rem, 1.4vw, 1.08rem);
+
+    line-height: 1.9;
+
+    white-space: pre-line;
+}
+
+
+
+/* Project metadata */
+
+.project-view-meta {
+    display: grid;
+
+    border-top:
+        1px solid var(--line);
+}
+
+
+.project-view-meta > div {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding:
+        17px 0;
+
+    border-bottom:
+        1px solid var(--line);
+}
+
+
+.project-view-meta span {
+    color: var(--soft-muted);
+
+    font-size: .68rem;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: .06em;
+}
+
+
+.project-view-meta strong {
+    font-size: .76rem;
+
+    text-align: right;
+}
+
+
+
+/* Video */
+
+.project-view-video-section {
+    padding:
+        clamp(70px, 8vw, 110px)
+        0;
+
+    background: var(--maroon-950);
+
+    color: #fff;
+}
+
+
+.project-view-video-section h2 {
+    margin:
+        8px
+        0
+        30px;
+
+    color: #fff;
+
+    font-size:
+        clamp(2rem, 4vw, 3.8rem);
+}
+
+
+.project-view-video {
+    overflow: hidden;
+
+    border-radius:
+        clamp(20px, 3vw, 32px);
+
+    background: #000;
+}
+
+
+.project-view-video iframe {
+    display: block;
+
+    width: 100%;
+
+    aspect-ratio: 16 / 9;
+
+    border: 0;
+}
+
+
+
+/* Not found */
+
+.project-view-not-found {
+    width:
+        min(
+            720px,
+            calc(100% - 48px)
+        );
+
+    min-height: 70vh;
+
+    margin-inline: auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: flex-start;
+}
+
+
+
+/* Tablet/mobile */
+
+@media (max-width: 850px) {
+
+    .project-view-content-grid {
+        grid-template-columns: 1fr;
+
+        gap: 48px;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .project-view-image {
+
+        width: auto;
+
+        max-width: 100%;
+
+        max-height: 72vh;
+
+        border-radius: 18px;
+
+    }
+
+}
+
+
+    .project-view-header h1 {
+        font-size:
+            clamp(2.7rem, 14vw, 4.5rem);
+    }
+
+
+    .project-view-image {
+        aspect-ratio: 4 / 3;
+
+        border-radius: 22px;
+    }
+
+
+    .project-view-meta > div {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 6px;
+    }
+
+
+    .project-view-meta strong {
+        text-align: left;
+    }
+
+    /* ==========================================================
+   PROJECT CARD PREVIEW
+   Keep full descriptions on project.html only
+   ========================================================== */
+
+.project-card-desc {
+    display: -webkit-box;
+
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    line-height: 1.6;
+}
+
+/* ==========================================================
+   MINIMAL PROJECT CARD NAVIGATION
+   ========================================================== */
+
+.project-card {
+    position: relative;
+
+    cursor: pointer;
+
+    transition:
+        transform 320ms cubic-bezier(.2, .8, .2, 1),
+        box-shadow 320ms ease;
+}
+
+
+/* Small visual affordance */
+
+.project-open-indicator {
+    position: absolute;
+
+    right: 18px;
+    bottom: 18px;
+
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background:
+        rgba(75, 16, 40, 0.07);
+
+    color:
+        var(--maroon-900);
+
+    pointer-events: none;
+
+    transition:
+        background-color 260ms ease,
+        color 260ms ease,
+        transform 320ms cubic-bezier(.2, .8, .2, 1);
+}
+
+
+.project-open-arrow {
+    display: block;
+
+    font-size: 1rem;
+    font-weight: 500;
+
+    line-height: 1;
+
+    transform: translateX(0);
+
+    transition:
+        transform 320ms cubic-bezier(.2, .8, .2, 1);
+}
+
+
+
+/* Card interaction */
+
+.project-card:hover {
+    transform: translateY(-4px);
+}
+
+
+.project-card:hover
+.project-open-indicator {
+
+    background:
+        var(--maroon-900);
+
+    color: #fff;
+
+    transform: scale(1.04);
+}
+
+
+.project-card:hover
+.project-open-arrow {
+
+    transform: translateX(3px);
+}
+
+
+
+/* Keyboard */
+
+.project-card:focus-visible {
+    outline:
+        2px solid
+        rgba(75, 16, 40, .32);
+
+    outline-offset: 5px;
+}
+
+
+.project-card:focus-visible
+.project-open-indicator {
+
+    background:
+        var(--maroon-900);
+
+    color: #fff;
+}
+
+
+
+/* Leave room for the arrow */
+
+.project-card-footer {
+    min-height: 54px;
+
+    padding-right: 58px;
+}
+
+/* ==========================================================
+   PROJECT DETAIL — COMPACT HEADER SPACING
+   Affects project.html only
+   ========================================================== */
+
+.project-view-page .project-view-header {
+    min-height: auto !important;
+
+    padding:
+        34px
+        0
+        26px !important;
+}
+
+
+/* Back link closer to content */
+
+.project-view-page .project-view-back {
+    margin-bottom: 26px !important;
+}
+
+
+/* Category label */
+
+.project-view-page
+#project-view-category {
+    margin-bottom: 8px !important;
+}
+
+
+/* Main project title */
+
+.project-view-page
+.project-view-header h1 {
+
+    margin:
+        0
+        0
+        14px !important;
+
+    line-height: .98;
+}
+
+
+/* Group link */
+
+.project-view-page
+.project-view-group {
+
+    display: inline-flex;
+
+    margin:
+        0 !important;
+
+    padding:
+        0 !important;
+}
+
+
+/* Remove large space before image */
+
+.project-view-page
+.project-view-media-section {
+
+    min-height: auto !important;
+
+    padding:
+        14px
+        0
+        72px !important;
+}
+
+
+/* Make sure the image container itself
+   doesn't inherit large section spacing */
+
+.project-view-page
+.project-view-media-section
+.project-view-container {
+
+    min-height: 0 !important;
+
+    margin-top: 0 !important;
+
+    padding-top: 0 !important;
+}
+
+@media (max-width: 600px) {
+
+    .project-view-page
+    .project-view-header {
+
+        padding:
+            24px
+            0
+            20px !important;
+    }
+
+
+    .project-view-page
+    .project-view-back {
+
+        margin-bottom:
+            22px !important;
+    }
+
+
+    .project-view-page
+    .project-view-media-section {
+
+        padding-top:
+            8px !important;
+    }
+
+}
+
+/* ==========================================================
+   PROJECT VIEW — ADMIN CONTROLS
+   ========================================================== */
+
+.project-view-admin-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: 18px;
+}
+
+
+/* hidden must always win */
+
+.project-view-admin-actions[hidden] {
+    display: none !important;
+}
+
+
+.project-view-admin-label {
+    margin-right: 4px;
+
+    color: var(--soft-muted);
+
+    font-size: .62rem;
+    font-weight: 800;
+
+    letter-spacing: .08em;
+
+    text-transform: uppercase;
+}
+
+
+.project-view-admin-btn {
+    min-height: 34px;
+
+    padding:
+        0
+        13px;
+
+    border:
+        1px solid
+        rgba(75, 16, 40, .14);
+
+    border-radius:
+        999px;
+
+    background:
+        rgba(255, 255, 255, .55);
+
+    color:
+        var(--maroon-900);
+
+    font: inherit;
+
+    font-size:
+        .69rem;
+
+    font-weight:
+        700;
+
+    cursor: pointer;
+
+    transition:
+        background-color .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        transform .2s ease;
+}
+
+
+.project-view-admin-btn:hover {
+    background:
+        var(--maroon-900);
+
+    border-color:
+        var(--maroon-900);
+
+    color:
+        #fff;
+
+    transform:
+        translateY(-1px);
+}
+
+
+.project-view-admin-delete {
+    border-color:
+        rgba(145, 43, 58, .16);
+
+    color:
+        #8d2938;
+}
+
+
+.project-view-admin-delete:hover {
+    background:
+        #8d2938;
+
+    border-color:
+        #8d2938;
+
+    color:
+        #fff;
+}
+
+
+.project-view-admin-btn:disabled {
+    opacity: .55;
+
+    cursor: wait;
+
+    transform: none;
+}
+
+
+@media (max-width: 600px) {
+
+    .project-view-admin-actions {
+        flex-wrap: wrap;
+    }
+
+}
+
+/* ==========================================================
+   PROJECT VIEW — SHOW COMPLETE ORIGINAL IMAGE
+   Applies ONLY to project.html
+   ========================================================== */
+
+.project-view-page .project-view-media-section {
+    padding-top: 12px !important;
+}
+
+
+.project-view-page
+.project-view-media-section
+.project-view-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    height: auto !important;
+    min-height: 0 !important;
+
+    overflow: visible !important;
+}
+
+
+/* Never crop project artwork on the detail page */
+
+.project-view-page .project-view-image,
+.project-view-page .project-view-image.is-landscape,
+.project-view-page .project-view-image.is-portrait,
+.project-view-page .project-view-image.is-square {
+
+    display: block;
+
+    width: auto !important;
+    height: auto !important;
+
+    max-width: 100% !important;
+    max-height: none !important;
+
+    aspect-ratio: auto !important;
+
+    object-fit: contain !important;
+
+    object-position: center !important;
+
+    margin: 0 auto;
+
+    border-radius: 24px;
+}
+
+
+/* Wide images can use the available content width */
+
+.project-view-page
+.project-view-image.is-landscape {
+    width: 100% !important;
+}
+
+
+/* Portrait and square images stay centred
+   without becoming unnecessarily huge */
+
+.project-view-page
+.project-view-image.is-portrait {
+    max-width: min(760px, 100%) !important;
+}
+
+
+.project-view-page
+.project-view-image.is-square {
+    max-width: min(900px, 100%) !important;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .project-view-page .project-view-image,
+    .project-view-page .project-view-image.is-landscape,
+    .project-view-page .project-view-image.is-portrait,
+    .project-view-page .project-view-image.is-square {
+
+        width: auto !important;
+        height: auto !important;
+
+        max-width: 100% !important;
+        max-height: none !important;
+
+        aspect-ratio: auto !important;
+
+        object-fit: contain !important;
+
+        border-radius: 18px;
+    }
+
+
+    .project-view-page
+    .project-view-image.is-landscape {
+
+        width: 100% !important;
+    }
+
+}

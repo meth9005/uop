@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="theme-color"
+        content="#4b1028"
+    >
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Explore student projects from the English Teaching Unit, University of Peradeniya."
+    >
+
+    <title>
+        Projects | English Teaching Unit
+    </title>
+
+
+    <!-- Supabase -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    ></script>
+
+
+    <!-- Tailwind -->
+    <script
+        src="https://cdn.tailwindcss.com"
+    ></script>
+
+    <script
+        src="assets/js/config/tailwind.js"
+    ></script>
+
+
+    <!-- Main stylesheet -->
+    <link
+        rel="stylesheet"
+        href="assets/css/app.css?v=20260927-antigravity"
+    >
+
+
+    <!-- Favicon -->
+    <link
+        rel="icon"
+        type="image/png"
+        href="assets/images/uoplogo.png"
+    >
+
+</head>
+
+
+<body class="portal bg-slate-50 text-slate-800 font-sans antialiased">
+
+
+    <!-- =========================================
+         NAVIGATION
+         ========================================= -->
+
+    <div id="site-header"></div>
+
+
+
+    <!-- =========================================
+         PROJECTS PAGE
+         ========================================= -->
+
+    <main>
+
+
+        <!-- PAGE INTRO -->
+
+        <section class="home-section">
+
+            <div class="home-container">
+
+
+                <div class="section-heading">
+
+
+                    <div>
+
+                        <p class="eyebrow">
+                            Student projects
+                        </p>
+
+
+                        <h1>
+                            Explore the work.
+                        </h1>
+
+
+                        <p>
+                            Discover presentations,
+                            documentaries, creative work
+                            and student group projects
+                            from the English Teaching Unit.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================
+                     ALL PROJECT CARDS
+
+                     projectsPage.js looks for this
+                     exact ID.
+                     ================================= -->
+
+                <div
+                    id="all-projects-container"
+                    class="home-project-grid"
+                    aria-live="polite"
+                >
+
+
+                    <p class="home-loading">
+
+                        <span
+                            class="loading-dot"
+                            aria-hidden="true"
+                        ></span>
+
+                        Loading projects
+
+                    </p>
+
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =========================================
+         FOOTER
+         ========================================= -->
+
+    <div id="site-footer"></div>
+
+
+
+    <!-- =========================================
+         IMPORTANT:
+         This is the ALL PROJECTS controller
+         ========================================= -->
+
+    <script
+        type="module"
+        src="assets/js/pages/projectsPage.js"
+    ></script>
+
+
+</body>
+
+</html>
