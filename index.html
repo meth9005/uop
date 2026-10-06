@@ -18,12 +18,51 @@
     <link rel="icon" type="image/png" href="assets/images/uoplogo.png">
 </head>
 
+<!-- Embedded CSS for Hero Background Zoom Effect -->
+    <style>
+        .home-intro {
+            position: relative;
+            overflow: hidden;
+            background-color: #0f172a; /* Slate 900 dark background */
+        }
+
+        /* Background image wrapper */
+        .home-intro-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('assets/images/uopefac.jpg');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.25; /* Overlay intensity */
+            transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s ease;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Smooth zoom effect when hovering anywhere over the hero section */
+        .home-intro:hover .home-intro-bg {
+            transform: scale(1.08);
+            opacity: 0.35;
+        }
+
+        /* Keep content strictly above background */
+        .home-intro-inner {
+            position: relative;
+            z-index: 10;
+        }
+    </style>
+</head>
+
 <body class="portal bg-slate-50 text-slate-800 font-sans antialiased">
     <div id="site-header"></div>
     <div id="admin-banner"></div>
 
     <main class="home-page">
+        <!-- HERO SECTION WITH BACKGROUND ZOOM EFFECT -->
         <section id="home" class="home-intro">
+            <!-- Background Image Layer -->
+            <div class="home-intro-bg" aria-hidden="true"></div>
+
             <div class="home-intro-inner">
                 <div class="home-intro-copy">
                     <div class="hero-kicker-row">
@@ -75,7 +114,7 @@
                 </div>
             </div>
         </section>
-
+    </main>
         <section class="home-statistics" aria-label="Showcase at a glance">
             <dl class="home-container">
                 <div><dt>Student groups</dt><dd id="stat-groups">—</dd></div>
@@ -255,21 +294,21 @@
         
               <!-- Teacher 2 -->
               <div class="card">
-                <img class="avatar" src="assets/images/ms.ab02.jpeg" alt="Ms. Chamika Weerasinghe">
+                <img class="avatar" src="assets/images/ms.ab02.jpg" alt="Ms. Chamika Weerasinghe">
                 <div class="name">Ms. Chamika Weerasinghe</div>
                 <div class="id-code">AB 02</div>
               </div>
         
               <!-- Teacher 3 -->
               <div class="card">
-                <img class="avatar" src="assets/images/ms.ab03.jpeg" alt="Ms. Manoshi Ekanayake">
+                <img class="avatar" src="assets/images/ms.ab03.jpg" alt="Ms. Manoshi Ekanayake">
                 <div class="name">Ms. Manoshi Ekanayake</div>
                 <div class="id-code">AB 03</div>
               </div>
         
               <!-- Teacher 4 -->
               <div class="card">
-                <img class="avatar" src="assets/images/ms.ab04.jpeg" alt="Ms. Uma Karunaratne">
+                <img class="avatar" src="assets/images/ms.ab04.jpg" alt="Ms. Uma Karunaratne">
                 <div class="name">Ms. Uma Karunaratne</div>
                 <div class="id-code">AB 04</div>
               </div>
