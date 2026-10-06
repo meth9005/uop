@@ -391,8 +391,32 @@ body.portal.page-ready::before { animation: page-progress .8s var(--ease-out) bo
     display: flex;
     align-items: center;
 }
-
+/**/
+ position: relative;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(8, 20, 35, 0.88) 0%,
+            rgba(8, 20, 35, 0.68) 45%,
+            rgba(8, 20, 35, 0.35) 100%
+        ),
+        url("assets/images/uopefac.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+.portal main.home-page > .home-intro::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+/**/
 .home-intro-inner {
+    position: relative;
+    z-index: 1;
+
     display: grid;
     grid-template-columns: minmax(0, .92fr) minmax(440px, 1.08fr);
     align-items: center;
