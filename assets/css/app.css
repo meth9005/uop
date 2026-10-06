@@ -383,16 +383,19 @@ body.portal.page-ready::before { animation: page-progress .8s var(--ease-out) bo
     margin: 0 auto;
 }
 
-.portal main.home-page > section { padding: clamp(72px, 9vw, 126px) 0; }
+.portal main.home-page > section { 
+    padding: clamp(72px, 9vw, 126px) 0; 
+}
+
 .portal main.home-page > .home-intro {
     min-height: min(830px, calc(100vh - 78px));
     padding-top: clamp(64px, 8vw, 108px);
     padding-bottom: clamp(58px, 7vw, 92px);
     display: flex;
     align-items: center;
-}
-/**/
- position: relative;
+
+    /* Background image */
+    position: relative;
     background:
         linear-gradient(
             90deg,
@@ -406,13 +409,14 @@ body.portal.page-ready::before { animation: page-progress .8s var(--ease-out) bo
     background-repeat: no-repeat;
     overflow: hidden;
 }
+
 .portal main.home-page > .home-intro::before {
     content: '';
     position: absolute;
     inset: 0;
     z-index: 0;
 }
-/**/
+
 .home-intro-inner {
     position: relative;
     z-index: 1;
