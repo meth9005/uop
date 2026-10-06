@@ -16,91 +16,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/app.css?v=20260927-antigravity">
     <link rel="icon" type="image/png" href="assets/images/uoplogo.png">
-
-    <style>
-        /* Teachers Panel Section Styles */
-        .teachers-section {
-            padding: 60px 20px;
-            background-color: #f7f6f2;
-        }
-
-        .teachers-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .teachers-container h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            color: #1f2937;
-        }
-
-        .teachers-container p.subtitle {
-            color: #6b7280;
-            font-size: 0.95rem;
-            margin-bottom: 40px;
-        }
-
-        .teacher-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 24px;
-            justify-content: center;
-        }
-
-        .teacher-card {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 24px 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .teacher-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        /* Decorative maroon top border */
-        .teacher-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: #800000;
-        }
-
-        .teacher-avatar {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 16px;
-            padding: 3px;
-            border: 2px solid #e5e7eb;
-        }
-
-        .teacher-name {
-            font-weight: 600;
-            font-size: 1rem;
-            color: #1f2937;
-            margin-bottom: 4px;
-        }
-
-        .teacher-id-code {
-            font-size: 0.8rem;
-            color: #6b7280;
-        }
-    </style>
 </head>
 
 <body class="portal bg-slate-50 text-slate-800 font-sans antialiased">
@@ -225,43 +140,6 @@
             </div>
         </section>
 
-        <section id="teachers" class="teachers-section">
-            <div class="teachers-container">
-                <h2>Teachers' Panel of English</h2>
-                <p class="subtitle">Meet the lecturers and instructors guiding our English language programme.</p>
-
-                <div class="teacher-grid">
-                    <!-- Teacher 1 -->
-                    <div class="teacher-card">
-                        <img class="teacher-avatar" src="https://via.placeholder.com/100" alt="Ms. Diluni Jayawardhana">
-                        <div class="teacher-name">Ms. Diluni Jayawardhana</div>
-                        <div class="teacher-id-code">AD 05</div>
-                    </div>
-
-                    <!-- Teacher 2 -->
-                    <div class="teacher-card">
-                        <img class="teacher-avatar" src="https://via.placeholder.com/100" alt="Ms. Irangika Abeysundara">
-                        <div class="teacher-name">Ms. Irangika Abeysundara</div>
-                        <div class="teacher-id-code">AD 06</div>
-                    </div>
-
-                    <!-- Teacher 3 -->
-                    <div class="teacher-card">
-                        <img class="teacher-avatar" src="https://via.placeholder.com/100" alt="Ms. Sandali Dananjana">
-                        <div class="teacher-name">Ms. Sandali Dananjana</div>
-                        <div class="teacher-id-code">AD 07</div>
-                    </div>
-
-                    <!-- Teacher 4 -->
-                    <div class="teacher-card">
-                        <img class="teacher-avatar" src="https://via.placeholder.com/100" alt="Ms. Dewmini Thenuwara">
-                        <div class="teacher-name">Ms. Dewmini Thenuwara</div>
-                        <div class="teacher-id-code">AD 08</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <section id="contact" class="home-section home-contact">
             <div class="home-container home-contact-card">
                 <div class="home-contact-lead">
@@ -280,6 +158,141 @@
             </div>
         </section>
     </main>
+
+<section>
+    <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teachers' Panel</title>
+  <style>
+    :root {
+      /* Background color from image_1.png: very pale off-white/beige */
+      --bg-color: #f7f6f2; 
+      --card-bg: #ffffff;
+      --text-main: #1f2937;
+      --text-sub: #6b7280;
+      --border-radius: 12px;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      margin: 0;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+
+    p.subtitle {
+      color: var(--text-sub);
+      font-size: 0.95rem;
+      margin-bottom: 40px;
+    }
+
+    .teacher-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      justify-content: center;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 24px 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Decorative top border for cards */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: #800000; /* Maroon color */
+    }
+
+    .avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 16px;
+      padding: 3px;
+      border: 2px solid #e5e7eb;
+    }
+
+    .name {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .id-code {
+      font-size: 0.8rem;
+      color: var(--text-sub);
+    }
+  </style>
+</head>
+
+  <div class="container">
+    <h1>Teachers' Panel of English</h1>
+    <p class="subtitle">Meet the lecturers and instructors guiding our English language programme.</p>
+
+    <div class="teacher-grid">
+      <!-- Teacher 1 -->
+      <div class="card">
+        <img class="avatar" src="https://via.placeholder.com/100" alt="Ms. Diluni Jayawardhana">
+        <div class="name">Ms. Diluni Jayawardhana</div>
+        <div class="id-code">AD 05</div>
+      </div>
+
+      <!-- Teacher 2 -->
+      <div class="card">
+        <img class="avatar" src="https://via.placeholder.com/100" alt="Ms. Irangika Abeysundara">
+        <div class="name">Ms. Irangika Abeysundara</div>
+        <div class="id-code">AD 06</div>
+      </div>
+
+      <!-- Teacher 3 -->
+      <div class="card">
+        <img class="avatar" src="https://via.placeholder.com/100" alt="Ms. Sandali Dananjana">
+        <div class="name">Ms. Sandali Dananjana</div>
+        <div class="id-code">AD 07</div>
+      </div>
+
+      <!-- Teacher 4 -->
+      <div class="card">
+        <img class="avatar" src="https://via.placeholder.com/100" alt="Ms. Dewmini Thenuwara">
+        <div class="name">Ms. Dewmini Thenuwara</div>
+        <div class="id-code">AD 08</div>
+      </div>
+    </div>
+  </div>
+</section>
 
     <div id="site-footer"></div>
     <script type="module" src="assets/js/pages/homePage.js"></script>
