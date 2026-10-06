@@ -404,7 +404,7 @@ body.portal.page-ready::before { animation: page-progress .8s var(--ease-out) bo
             rgba(8, 20, 35, 0.35) 100%
         ),
         url("assets/images/uopefac.jpg");
-    background-size: cover;
+    background-size: 100% 100%;
     background-position: center;
     background-repeat: no-repeat;
     overflow: hidden;
