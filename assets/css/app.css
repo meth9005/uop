@@ -384,14 +384,28 @@ body.portal.page-ready::before { animation: page-progress .8s var(--ease-out) bo
 }
 
 .portal main.home-page > section { padding: clamp(72px, 9vw, 126px) 0; }
-.portal main.home-page > .home-intro {
+/* .portal main.home-page > .home-intro {
     min-height: min(830px, calc(100vh - 78px));
     padding-top: clamp(64px, 8vw, 108px);
     padding-bottom: clamp(58px, 7vw, 92px);
     display: flex;
     align-items: center;
-}
+} */
 
+.portal main.home-page > .home-intro {
+    position: relative;
+    overflow: hidden;
+
+    min-height: min(830px, calc(100vh - 78px));
+    padding-top: clamp(64px, 8vw, 108px);
+    padding-bottom: clamp(58px, 7vw, 92px);
+
+    display: flex;
+    align-items: center;
+
+    /* BACKGROUND IMAGE */
+    background: url("assets/images/uopefac.jpg") center center / cover no-repeat !important;
+}
 .home-intro-inner {
     display: grid;
     grid-template-columns: minmax(0, .92fr) minmax(440px, 1.08fr);

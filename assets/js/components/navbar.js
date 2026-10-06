@@ -11,7 +11,6 @@ export function renderNavbar(activePage = "") {
     ["home", "Home", "index.html"],
     ["projects", "Projects", "projects.html"],
     ["groups", "Groups", "groups.html"],
-    ["categories", "Categories", "categories.html"],
     ["about", "About", "about.html"],
   ];
 
