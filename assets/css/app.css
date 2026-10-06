@@ -388,7 +388,7 @@ body.portal.page-ready::before { animation: page-progress .8s var(--ease-out) bo
 }
 
 .portal main.home-page > .home-intro {
-    min-height: min(830px, calc(100vh - 78px));
+    min-height: 650px;
     padding-top: clamp(64px, 8vw, 108px);
     padding-bottom: clamp(58px, 7vw, 92px);
     display: flex;
@@ -404,7 +404,7 @@ body.portal.page-ready::before { animation: page-progress .8s var(--ease-out) bo
             rgba(8, 20, 35, 0.35) 100%
         ),
         url("assets/images/uopefac.jpg");
-    background-size: 100% 100%;
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     overflow: hidden;
