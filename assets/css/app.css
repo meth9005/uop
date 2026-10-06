@@ -404,10 +404,7 @@ body.portal.page-ready::before { animation: page-progress .8s var(--ease-out) bo
     align-items: center;
 
     /* BACKGROUND IMAGE */
-    background-image: url("assets/images/uopefac.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background: url("assets/images/uopefac.jpg") center center / cover no-repeat !important;
 }
 .home-intro-inner {
     display: grid;
