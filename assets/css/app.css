@@ -129,7 +129,7 @@ body.portal.page-ready::before { animation: page-progress .8s var(--ease-out) bo
 #site-header {
     position: sticky;
     top: 0;
-    z-index: 70;
+    z-index: 0;
 }
 
 .site-navigation {
